@@ -324,15 +324,15 @@ nnoremap <Leader>tbg :call <SID>toggleBackground()<CR>
 
 " Open directory of file in explorer
 if has("win32")
-    nnoremap <silent> <Leader>od :silent :!start explorer %:p:h:gs?\/?\\\\\\?<CR>
+	nnoremap <silent> <Leader>od :silent :!start explorer %:p:h:gs?\/?\\\\\\?<CR>
 endif
 
 "==================FUNCTIONS ====================
 fun! <SID>StripTrailingWhitespaces()
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e
-    call cursor(l, c)
+	let l = line(".")
+	let c = col(".")
+	%s/\s\+$//e
+	call cursor(l, c)
 endfun
 
 fun! <SID>toggleBackground()
