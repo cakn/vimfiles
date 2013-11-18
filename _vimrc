@@ -12,7 +12,7 @@ syntax enable
 " Autosource vimrc
 " autocmd bufwritepost .vimrc source $MYVIMRC
 
-autocmd FileType _vimrc,.vimrc setlocal foldmethod=marker
+autocmd FileType vim setlocal foldmethod=marker
 
 " Disable autocomment
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -111,6 +111,7 @@ onoremap ij :normal vij<CR>
 onoremap j :normal vij<CR>
 
 onoremap w iw
+onoremap W iW
 onoremap ) i)
 onoremap ( i(
 onoremap { i{
@@ -213,7 +214,7 @@ nnoremap <A-q> q
 nnoremap q q
 
 " Copy line and increment number
-nnoremap <A-A> mzyy<C-A>P`z
+nnoremap <A-a> mzyy<C-A>P`z
 nnoremap a mzyy<C-A>P`z
 
 " Quick delete
@@ -371,4 +372,8 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 " let g:airline#extensions#whitespace#checks = [ 'trailing' ]
 
 " Snipmate
+" Disable this hotkey
 silent! iunmap <C-R><Tab>
+
+" Commentary
+autocmd FileType autohotkey setlocal commentstring=;%s
