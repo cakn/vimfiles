@@ -8,9 +8,11 @@ execute pathogen#infect()
 filetype plugin indent on
 syntax enable
 
-
+" Autocommands {{{
 " Autosource vimrc
 " autocmd bufwritepost .vimrc source $MYVIMRC
+
+autocmd FileType _vimrc,.vimrc setlocal foldmethod=marker
 
 " Disable autocomment
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -18,7 +20,9 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " Highlight word cursor is on
 " autocmd CursorMoved * match CursorSelect /\w*\%#\w*/
 autocmd CursorMoved * exe printf('match CursorSelect /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+" }}}
 
+" Settings {{{
 " Prevent exploits
 set nomodeline
 
@@ -29,7 +33,7 @@ colorscheme solarized
 set guifont=Ubuntu_Mono_derivative_Powerlin:h12:cANSI
 
 " Make sure colorscheme is set first
-highlight CursorSelect ctermbg=0
+highlight CursorSelect ctermbg=0 guibg=#073642
 
 set autoread
 
@@ -75,7 +79,10 @@ set mouse=a
 set listchars=tab:>-
 
 " Set default clipboard to system's
-set clipboard=unnamedplus
+set clipboard=unnamed
+if !has("win32")
+	set clipboard=unnamedplus
+endif
 
 set foldmethod=syntax
 set foldcolumn=2
@@ -84,6 +91,11 @@ set foldopen=block,hor,mark,percent,quickfix,search,tag,undo
 " Fast terminal
 set tf
 
+"Set encoding up here to avoid problems with alt
+set encoding=utf-8
+" Settings }}}
+
+" Text Objects {{{
 " camelCase text object
 vnoremap am :<C-U>let @z=@/<CR><Right>?\<\\|\L<CR><ESC>v/\>\\|\L<CR>:<C-U>let @/=@z<CR>gv
 vnoremap im :<C-U>let @z=@/<CR><Right>?\<\\|\L<CR><ESC>v/\>\\|\L/e-1<CR>:<C-U>let @/=@z<CR>gv
@@ -98,6 +110,20 @@ onoremap aj :normal vaj<CR>
 onoremap ij :normal vij<CR>
 onoremap j :normal vij<CR>
 
+onoremap w iw
+onoremap ) i)
+onoremap ( i(
+onoremap { i{
+onoremap } i}
+onoremap [ i[
+onoremap ] i]
+onoremap " i"
+onoremap ' i'
+onoremap < i<
+onoremap > i>
+" Text Objects }}}
+
+" Mappings {{{
 " let home and end keys to work in screen
 map [1~ <Home>
 map [4~ <End>
@@ -125,9 +151,9 @@ nnoremap m <Nop>
 nnoremap <A-M> m
 nnoremap m m
 
-" F4 close
-" Now mapped to a leader
-nnoremap <F4> :close<CR>
+" Buffer moving
+nnoremap bn :bn<CR>
+nnoremap bp :bp<CR>
 
 " Ctrl+S saving
 nnoremap <C-S> :update<CR>
@@ -210,17 +236,6 @@ nnoremap dd dd
 " nnoremap c' ci'
 " nnoremap c< ci<
 " nnoremap c> ci>
-onoremap w iw
-onoremap ) i)
-onoremap ( i(
-onoremap { i{
-onoremap } i}
-onoremap [ i[
-onoremap ] i]
-onoremap " i"
-onoremap ' i'
-onoremap < i<
-onoremap > i>
 
 " Quick move lines up and down
 nnoremap <A-j> :m .+1<CR>==
@@ -260,8 +275,8 @@ inoremap r <C-R>
 nnoremap <S-J> L3j
 nnoremap <S-K> H3k
 "Join and split lines
-nnoremap <C-J> <S-J>
-nnoremap <C-K> i<CR><Esc>
+" nnoremap <C-J> <S-J>
+" nnoremap <C-K> i<CR><Esc>
 
 " Tab outside insert mode
 "nnoremap <Tab> >>
@@ -282,7 +297,6 @@ vnoremap { <ESC>`>a }<ESC>`<i{ <ESC><Left>
 vnoremap } <ESC>`>a}<ESC>`<i{<ESC>
 
 " Negate boolean variable with !
-" nnoremap ! :let @z=@/<CR>mzviWvBi!<Esc>:s /!!//e\|:noh<CR>`z
 nnoremap ! :let @z=@/<CR>mzviWvBi!<Esc>:s /!!=/==/e<CR>:s /!!//e<CR>:s /!true/false/e<CR>:s /!false/true/e<CR>:s /!==/!=/e<CR>:let @/=@z<CR>`z
 nnoremap <C-!> !
 
@@ -322,37 +336,38 @@ nnoremap <Leader>no :tabnew ~/vimNotes.txt<CR>
 " Toggle background colors
 nnoremap <Leader>tbg :call <SID>toggleBackground()<CR>
 
+" Set directory to currently open file's
+nnoremap <Leader>cd :cd %:h<CR>
+
+" Fix trailing spaces
+nnoremap <Leader>dts mz:let @z=@/<CR>:%s/\s\+$//e\|let @/=@z<CR>`z
+
 " Open directory of file in explorer
 if has("win32")
 	nnoremap <silent> <Leader>od :silent :!start explorer %:p:h:gs?\/?\\\\\\?<CR>
 endif
+" Mappings }}}
 
 "==================FUNCTIONS ====================
-fun! <SID>StripTrailingWhitespaces()
-	let l = line(".")
-	let c = col(".")
-	%s/\s\+$//e
-	call cursor(l, c)
-endfun
-
 fun! <SID>toggleBackground()
 	if( &background == "dark" )
 		set background=light
-		highlight CursorSelect ctermbg=7
+		highlight CursorSelect ctermbg=7 guibg=#eee8d5
 	else
 		set background=dark
-		highlight CursorSelect ctermbg=0
+		highlight CursorSelect ctermbg=0 guibg=#073642
 	endif
 endfun
-
-nnoremap <Leader>dts :call <SID>StripTrailingWhitespaces()<CR>
 
 "==================PLUGINS ======================
 " Insert one character
 nnoremap <space> :<C-U>call InsertChar#insert(v:count1)<CR>
+
 " Airline
-set encoding=utf-8
 let g:airline_powerline_fonts=1
+let g:airline#extensions#tabline#enabled=1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
 " let g:airline#extensions#whitespace#checks = [ 'trailing' ]
 
 " Snipmate
