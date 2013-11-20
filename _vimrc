@@ -79,14 +79,19 @@ set mouse=a
 set listchars=tab:>-
 
 " Set default clipboard to system's
-set clipboard=unnamed
-if !has("win32")
-	set clipboard=unnamedplus
-endif
+" set clipboard=unnamed
+" if !has("win32")
+" 	set clipboard=unnamedplus
+" endif
 
 set foldmethod=syntax
 set foldcolumn=2
 set foldopen=block,hor,mark,percent,quickfix,search,tag,undo
+
+" if has("win32")
+" 	set shell=\"C:\Program\ Files\ (x86)\Git\bin\sh.exe\"
+" 	set shellcmdflag=--login\ -c
+" endif
 
 " Fast terminal
 set tf
@@ -343,9 +348,12 @@ nnoremap <Leader>cd :cd %:h<CR>
 " Fix trailing spaces
 nnoremap <Leader>dts mz:let @z=@/<CR>:%s/\s\+$//e\|let @/=@z<CR>`z
 
-" Open directory of file in explorer
 if has("win32")
-	nnoremap <silent> <Leader>od :silent :!start explorer %:p:h:gs?\/?\\\\\\?<CR>
+	" Open directory of file in explorer
+	nnoremap <silent> <Leader>od :silent :!start explorer %:p:h:8<CR>
+
+	" Run file
+	nnoremap <Leader>exe :silent :!cd %:p:h:8 && start %:p:8<CR>
 endif
 " Mappings }}}
 
