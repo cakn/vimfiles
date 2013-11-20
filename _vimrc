@@ -72,6 +72,8 @@ nohl
 
 set scrolloff=2
 
+set cmdheight=2
+
 set nostartofline
 
 set mouse=a
@@ -154,7 +156,7 @@ noremap <S-S> B
 
 " Make marks harder
 nnoremap m <Nop>
-nnoremap <A-M> m
+nnoremap <A-m> m
 nnoremap m m
 
 " Buffer moving
@@ -184,13 +186,13 @@ nnoremap <Leader>pvd :let @z=@/<CR>"xp:'[,']s/\s*=.*/;/\|let @/=@z<CR>qxq
 
 " Ctrl+v pasting
 nnoremap <C-V> p
-nnoremap <A-V> <C-V>
+nnoremap <A-v> <C-V>
 nnoremap v <C-V>
 inoremap <C-V> <C-O>p
-inoremap <A-V> <C-V>
+inoremap <A-v> <C-V>
 inoremap v <C-V>
 cnoremap <C-V> <C-R>"
-cnoremap <A-V> <C-V>
+cnoremap <A-v> <C-V>
 cnoremap v <C-V>
 
 " yank pasting
@@ -274,7 +276,7 @@ inoremap <C-E> <C-O>$
 
 " Delete characteer in insert mode
 inoremap <C-R> <Del>
-inoremap <A-R> <C-R>
+inoremap <A-r> <C-R>
 inoremap r <C-R>
 
 "Shift j k to move quickly up and down
