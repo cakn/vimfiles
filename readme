@@ -5,6 +5,10 @@ ln -s ~/.vim/_gvimrc ~/.gvimrc
 cd ~/.vim
 git submodule update --init
 
+YouCompleteMe plugin
+cd ~/.vim/bundle/YouCompleteMe
+./install.sh --clang-completer
+
 Windows
 mklink %userprofile%\_vimrc %userprofile%\vimfiles\_vimrc
 mklink %userprofile%\_vimrc %userprofile%\vimfiles\_vimrc
