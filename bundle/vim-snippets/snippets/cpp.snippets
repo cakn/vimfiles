@@ -78,7 +78,7 @@ snippet cl
 		${0:/* data */}
 	};
 # member function implementation
-snippet mfun
+snippet mf
 	${4:void} ${1:`vim_snippets#Filename('$1', 'ClassName')`}::${2:memberFunction}(${3}) {
 		${0}
 	}
@@ -128,4 +128,18 @@ snippet ld
 snippet lld
 	[${1}](${2}){
 		${3}
+	}
+# #include
+snippet #i,
+	#include <${1}>
+snippet #i'
+	#include "${1}"
+# Ctor and Dtor init
+snippet cdi
+	${1:`vim_snippets#Filename('$1', 'name')`}::$1(${2})
+	{
+	}
+
+	~$1::$1(${3})
+	{
 	}

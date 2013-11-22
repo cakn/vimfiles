@@ -3,7 +3,10 @@ set nocompatible
 " Removes all autocmds
 " autocmd!
 
+" let g:pathogen_disable = ['vim-snipmate', 'vim-airline']
+" call add(g:pathogen_disable, 'airline')
 execute pathogen#infect()
+Helptags
 
 filetype plugin indent on
 syntax enable
@@ -111,8 +114,19 @@ onoremap im :normal vim<CR>
 onoremap m :normal vim<CR>
 
 " param text object
-vnoremap aj :<C-U>let @z=@/<CR><Right>?\s*\<\(\w\\|\[\\|\]\)\+\s\+\w\+\s*[,)]<CR><ESC>v/\(\w\\|\[\\|\]\)\+\s\+\w\+\s*,\=\ze)\=/e<CR>:<C-U>let @/=@z<CR>gv
-vnoremap ij :<C-U>let @z=@/<CR><Right>?\s*\zs\<\(\w\\|\[\\|\]\)\+\s\+\w\+\s*\ze[,)]<CR><ESC>v/\(\w\\|\[\\|\]\)\+\s\+\w\+\s*\ze,\=)\=/e<CR>:<C-U>let @/=@z<CR>gv
+" vnoremap aj :<C-U>let @z=@/<CR><Right>?\s*\<\(\w\\|[\[\]*:]])\+\s\+\w\+\s*[,)]<CR><ESC>v/\(\w\\|\[\\|\]\\|\*\)\+\s\+\w\+\s*,\=\ze)\=/e<CR>:<C-U>let @/=@z<CR>gv
+" vnoremap <Leader>1 <Esc><Left>?[(,]?e-1<CR>v
+" vnoremap <Leader>2 /[,)]<CR>o<Esc>
+" nnoremap <Leader>3 /\(\%V[(,][^,]*\ze)\)\\|\(\%V[,(]\zs[^,]*,\)<CR>
+" nnoremap <Leader>4 v/\(\%V[(,][^,]\{-}\ze\s*)\)\\|\(\%V[^,]*,\)/e<CR>
+vnoremap aj <Esc>:let @z=@/<CR><Left>?[(,]?e-1<CR>v/[,)]<CR>o<Esc>/\(\%V[(,][^,]*\ze)\)\\|\(\%V[,(]\zs[^,]*,\)<CR>v/\(\%V[(,][^,]\{-}\ze\s*)\)\\|\(\%V[^,]*,\)/e<CR>:<C-U>let @/=@z<CR>gv
+" vnoremap ij :<C-U>let @z=@/<CR><Right>?\s*\zs\<\(\w\\|\[\\|\]\\|\*\)\+\s\+\w\+\s*\ze[,)]<CR><ESC>v/\(\w\\|\[\\|\]\\|\*\)\+\s\+\w\+\s*\ze,\=)\=/e<CR>:<C-U>let @/=@z<CR>gv
+vnoremap <Leader>1 <Esc><Left>?[(,]?e<CR>v
+vnoremap <Leader>2 /[,)]<CR>o<Esc>
+nnoremap <Leader>3 /\(\s*\zs[^,]*\ze)\)\\|\(\s*\zs[^(,]*\ze,\)/s<CR>
+" Move left instead of s-1 for 1 letter case
+nnoremap <Leader>4 v/\(\s*[,)]\)/s<CR><Left>
+vnoremap ij <Esc>:let @z=@/<CR><Left>?[(,]?e<CR>v/[,)]<CR>o<Esc>/\(\s*\zs[^,]*\ze)\)\\|\(\s*\zs[^(,]*\ze,\)/s<CR>v/\(\s*[,)]\)/s<CR><Left>:<C-U>let @/=@z<CR>gv
 onoremap aj :normal vaj<CR>
 onoremap ij :normal vij<CR>
 onoremap j :normal vij<CR>
@@ -138,6 +152,9 @@ map [4~ <End>
 imap [1~ <Home>
 imap [4~ <End>
 
+" Allow typing ` with quake console
+inoremap ~~ `
+
 " Change : to ; for convenience
 noremap ; :
 nnoremap , ;
@@ -151,8 +168,8 @@ noremap 0 ^
 noremap ^ 0
 
 " Move left easier
-noremap s b
-noremap <S-S> B
+nnoremap s b
+nnoremap <S-S> B
 
 " Make marks harder
 nnoremap m <Nop>
@@ -162,6 +179,11 @@ nnoremap m m
 " Buffer moving
 nnoremap bn :bn<CR>
 nnoremap bp :bp<CR>
+nnoremap bd :bp<bar>sp<bar>bn<bar>bd<CR>
+nnoremap bb :b#<CR>
+
+" Windows
+nnoremap w <C-w>
 
 " Ctrl+S saving
 nnoremap <C-S> :update<CR>
@@ -197,7 +219,7 @@ cnoremap v <C-V>
 
 " yank pasting
 nnoremap py "0p
-nnoremap pc p
+nnoremap pc "+p
 
 " Paste to new line
 nnoremap <C-P> mz:pu<CR>='z
@@ -273,6 +295,8 @@ cnoremap <C-L> <Right>
 
 " Move to end of line
 inoremap <C-E> <C-O>$
+" Move to beginning of line
+inoremap <C-W> <C-O>^
 
 " Delete characteer in insert mode
 inoremap <C-R> <Del>
@@ -310,27 +334,37 @@ nnoremap <C-!> !
 
 " Auto brace completion
 inoremap {<CR>  {<CR>}<Esc>O
-inoremap <expr> (<Space> pumvisible() ? "\<CR>(\<Space>)\<Left>" : "(\<Space>)\<Left>"
+" inoremap <expr> (<Space> pumvisible() ? "\<CR>(\<Space>)\<Left>" : "(\<Space>)\<Left>"
 inoremap [ []<Left>
 
 " Turn off highlighting with <C-L> (redraw screen)
 nnoremap <C-L> :nohlsearch\|let @/=""<CR><C-L>
 
+" Autocomplete on Ctrl-F
+inoremap <C-F> <C-X>
+
 " autocomplete with Ctrl+Space
-inoremap <C-Space> <C-X><C-U><C-R>=pumvisible() ? "\<lt>Down>" : ""<CR>
+" inoremap <C-Space> <C-X><C-U><C-R>=pumvisible() ? "\<lt>Down>" : ""<CR>
 " <Nul> for terminal
-inoremap <Nul> <C-X><C-U><C-R>=pumvisible() ? "\<lt>Down>" : ""<CR>
+" inoremap <Nul> <C-X><C-U><C-R>=pumvisible() ? "\<lt>Down>" : ""<CR>
 " Ctrl+n highlight first
-inoremap <C-N> <C-N><C-R>=pumvisible() ? "\<lt>Down>" : ""<CR>
+" inoremap <C-N> <C-N><C-R>=pumvisible() ? "\<lt>Down>" : ""<CR>
 " autoenter with nonchar
-inoremap <expr> . pumvisible() ? "\<CR>." : "."
-inoremap <expr> ( pumvisible() ? "\<CR>(" : "("
-inoremap <expr> <Space> pumvisible() ? "\<CR>\<Space>" : "\<Space>"
-" Quick ;<Enter>
-inoremap <expr> ; pumvisible() ? "\<CR>;" : ";\<CR>"
+" inoremap <expr> . pumvisible() ? "\<CR>." : "."
+" inoremap <expr> ( pumvisible() ? "\<CR>(" : "("
+" inoremap <expr> <Space> pumvisible() ? "\<CR>\<Space>" : "\<Space>"
+" " Quick ;<Enter>
+" inoremap <expr> ; pumvisible() ? "\<CR>;" : ";\<CR>"
+inoremap ; ;<CR>
 
 " Close file
 noremap <Leader>cl :clo<CR>
+
+" Move window to new tab
+nnoremap <Leader>bt <C-W>s<C-W>T
+
+" Make file
+nnoremap <Leader>mk :make<CR>
 
 " Edit vimrc, gvimrc files
 nnoremap <Leader>ev :tabnew $MYVIMRC<CR>
@@ -383,7 +417,26 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 
 " Snipmate
 " Disable this hotkey
-silent! iunmap <C-R><Tab>
+" silent! iunmap <C-R><Tab>
+imap <C-o> <Esc>a<Plug>snipMateNextOrTrigger
+vmap <C-o> <Plug>snipMateNextOrTrigger
+" Reload snippets
+nnoremap <Leader>rls :call ReloadAllSnippets()<CR>
 
 " Commentary
 autocmd FileType autohotkey setlocal commentstring=;%s
+
+" YouCompleteMe
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+
+" let g:UltiSnipsExpandTrigger = '<C-b>'
+" let g:UltiSnipsListSnippets = '<C-b>'
+" let g:UltiSnipsJumpForwardTrigger = '<C-b>'
+" let g:UltiSnipsJumpBackwardTrigger = '<C-b>'
+
+" FSwitch
+nnoremap <Leader>gp :FSHere<CR>
+nnoremap <Leader>gh :FSLeft<CR>
+nnoremap <Leader>gsh :FSSwitchLeft<CR>
+nnoremap <Leader>gl :FSRight<CR>
+nnoremap <Leader>gsl :FSSwitchRight<CR>
