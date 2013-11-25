@@ -15,13 +15,16 @@ syntax enable
 " Autosource vimrc
 " autocmd bufwritepost .vimrc source $MYVIMRC
 
+" Restore last cursor position of file
+autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+
+" Enable marker folds for .vimrc files
 autocmd FileType vim setlocal foldmethod=marker
 
 " Disable autocomment
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Highlight word cursor is on
-" autocmd CursorMoved * match CursorSelect /\w*\%#\w*/
 autocmd CursorMoved * exe printf('match CursorSelect /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 " }}}
 
@@ -43,6 +46,7 @@ set autoread
 set confirm
 
 set number
+set relativenumber
 set showcmd
 set ruler
 set laststatus=2
@@ -89,9 +93,9 @@ set listchars=tab:>-
 " 	set clipboard=unnamedplus
 " endif
 
-set foldmethod=syntax
-set foldcolumn=2
-set foldopen=block,hor,mark,percent,quickfix,search,tag,undo
+" set foldmethod=syntax
+" set foldcolumn=2
+" set foldopen=block,hor,mark,percent,quickfix,search,tag,undo,jump
 
 " if has("win32")
 " 	set shell=\"C:\Program\ Files\ (x86)\Git\bin\sh.exe\"
@@ -100,6 +104,9 @@ set foldopen=block,hor,mark,percent,quickfix,search,tag,undo
 
 " Fast terminal
 set tf
+
+" Match <>
+set matchpairs+=<:>
 
 "Set encoding up here to avoid problems with alt
 set encoding=utf-8
@@ -182,13 +189,16 @@ nnoremap bp :bp<CR>
 nnoremap bd :bp<bar>sp<bar>bn<bar>bd<CR>
 nnoremap bb :b#<CR>
 
+" Tag moving
+nnoremap go g<C-]>
+
 " Windows
 nnoremap w <C-w>
 
 " Ctrl+S saving
 nnoremap <C-S> :update<CR>
 vnoremap <C-S> <C-C>:update<CR>
-inoremap <C-S> <Esc>:update<CR>
+inoremap <C-S> <Esc>:update<CR>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
 " Ctrl+c jk copy line
 nnoremap <C-C>j yyp
 nnoremap <C-C>k yyP
@@ -196,7 +206,7 @@ vnoremap <C-C>j y`>p
 vnoremap <C-C>k y`<P
 
 " Ctrl+c copy
-vnoremap <C-C> y
+vnoremap <C-C> "+y
 " Y copy to end of line
 nnoremap Y y$
 
@@ -210,16 +220,19 @@ nnoremap <Leader>pvd :let @z=@/<CR>"xp:'[,']s/\s*=.*/;/\|let @/=@z<CR>qxq
 nnoremap <C-V> p
 nnoremap <A-v> <C-V>
 nnoremap v <C-V>
-inoremap <C-V> <C-O>p
+inoremap <C-V> <C-O>"+p
 inoremap <A-v> <C-V>
 inoremap v <C-V>
 cnoremap <C-V> <C-R>"
 cnoremap <A-v> <C-V>
 cnoremap v <C-V>
+vnoremap <C-V> "+p
 
 " yank pasting
 nnoremap py "0p
 nnoremap pc "+p
+inoremap <C-P>c <C-O>"+p
+inoremap <C-P>y <C-O>p
 
 " Paste to new line
 nnoremap <C-P> mz:pu<CR>='z
@@ -236,6 +249,7 @@ nnoremap <CR> o<Esc>
 " inoremap qr <Esc>:normal! :let @z=@/\\\|.g/^\s*$/d<CR>:let @/=@z<CR>
 inoremap qr <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
 vnoremap qr <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
+xnoremap qr <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
 " Disable q to prevent accidental recording
 nnoremap qr <Nop>
 nnoremap q <Nop>
@@ -247,8 +261,11 @@ nnoremap <A-a> mzyy<C-A>P`z
 nnoremap a mzyy<C-A>P`z
 
 " Quick delete
+" Map each to avoid recursive calls in normal
 nnoremap dw daw
+nnoremap dW daW
 nnoremap dj :normal daj<CR>
+nnoremap dm :normal dam<CR>
 " Stops vim from for command after dd
 nnoremap dd dd
 " Quick inner word
@@ -298,7 +315,7 @@ inoremap <C-E> <C-O>$
 " Move to beginning of line
 inoremap <C-W> <C-O>^
 
-" Delete characteer in insert mode
+" Delete character in insert mode
 inoremap <C-R> <Del>
 inoremap <A-r> <C-R>
 inoremap r <C-R>
@@ -335,7 +352,7 @@ nnoremap <C-!> !
 " Auto brace completion
 inoremap {<CR>  {<CR>}<Esc>O
 " inoremap <expr> (<Space> pumvisible() ? "\<CR>(\<Space>)\<Left>" : "(\<Space>)\<Left>"
-inoremap [ []<Left>
+" inoremap [ []<Left>
 
 " Turn off highlighting with <C-L> (redraw screen)
 nnoremap <C-L> :nohlsearch\|let @/=""<CR><C-L>
@@ -365,6 +382,8 @@ nnoremap <Leader>bt <C-W>s<C-W>T
 
 " Make file
 nnoremap <Leader>mk :make<CR>
+nnoremap <Leader>md :make debug<CR>
+nnoremap <Leader>mr :make run<CR>
 
 " Edit vimrc, gvimrc files
 nnoremap <Leader>ev :tabnew $MYVIMRC<CR>
@@ -383,6 +402,9 @@ nnoremap <Leader>cd :cd %:h<CR>
 
 " Fix trailing spaces
 nnoremap <Leader>dts mz:let @z=@/<CR>:%s/\s\+$//e\|let @/=@z<CR>`z
+
+" Run ctags
+nnoremap <Leader>xctag :!ctags-exuberant *.cpp *.h<CR>
 
 if has("win32")
 	" Open directory of file in explorer
@@ -417,7 +439,7 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 
 " Snipmate
 " Disable this hotkey
-" silent! iunmap <C-R><Tab>
+silent! iunmap <C-R><Tab>
 imap <C-o> <Esc>a<Plug>snipMateNextOrTrigger
 vmap <C-o> <Plug>snipMateNextOrTrigger
 " Reload snippets
@@ -435,8 +457,14 @@ let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 " let g:UltiSnipsJumpBackwardTrigger = '<C-b>'
 
 " FSwitch
-nnoremap <Leader>gp :FSHere<CR>
+nnoremap <Leader>g; :FSHere<CR>
 nnoremap <Leader>gh :FSLeft<CR>
 nnoremap <Leader>gsh :FSSwitchLeft<CR>
 nnoremap <Leader>gl :FSRight<CR>
 nnoremap <Leader>gsl :FSSwitchRight<CR>
+
+"Unite
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+" nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files -start-insert file_rec/async:!<cr>
+nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files -start-insert file<cr>
+

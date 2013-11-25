@@ -52,12 +52,12 @@ snippet once
 ## Control Statements
 # if
 snippet if
-	if (${1:/* condition */}) {
+	if(${1:/* condition */}){
 		${2}
 	}
 # else
 snippet el
-	else {
+	else{
 		${1}
 	}
 # else if
@@ -73,7 +73,7 @@ snippet t
 	${1:/* condition */} ? ${2:a} : ${3:b}
 # switch
 snippet switch
-	switch (${1:/* variable */}) {
+	switch(${1:/* variable */}){
 		case ${2:/* variable case */}:
 			${3}
 			${4:break;}${5}
@@ -82,7 +82,7 @@ snippet switch
 	}
 # switch without default
 snippet switchndef
-	switch (${1:/* variable */}) {
+	switch(${1:/* variable */}){
 		case ${2:/* variable case */}:
 			${3}
 			${4:break;}${5}
@@ -96,12 +96,12 @@ snippet case
 ## Loops
 # for
 snippet for
-	for (${2:i} = 0; $2 < ${1:count}; $2${3:++}) {
+	for(${2:i} = 0; $2 < ${1:count}; ${3:++}$2){
 		${4}
 	}
 # for (custom)
 snippet forr
-	for (${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++}) {
+	for(${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++}){
 		${5}
 	}
 # while
@@ -210,6 +210,12 @@ snippet getopt
 			${0}
 		}
 	}
+##
+## Struct
+snippet nst
+	struct ${1:name}{
+		${2}
+	};
 ##
 ## Miscellaneous
 # This is kind of convenient
