@@ -3,8 +3,6 @@ set nocompatible
 " Removes all autocmds
 " autocmd!
 
-" let g:pathogen_disable = ['vim-snipmate', 'vim-airline']
-" call add(g:pathogen_disable, 'airline')
 execute pathogen#infect()
 Helptags
 
@@ -114,11 +112,11 @@ set encoding=utf-8
 
 " Text Objects {{{
 " camelCase text object
-vnoremap am :<C-U>let @z=@/<CR><Right>?\<\\|\L<CR><ESC>v/\>\\|\L<CR>:<C-U>let @/=@z<CR>gv
-vnoremap im :<C-U>let @z=@/<CR><Right>?\<\\|\L<CR><ESC>v/\>\\|\L/e-1<CR>:<C-U>let @/=@z<CR>gv
-onoremap am :normal vam<CR>
-onoremap im :normal vim<CR>
-onoremap m :normal vim<CR>
+vnoremap al :<C-U>let @z=@/<CR><Right>?\<\\|\L<CR><ESC>v/\>\\|\L<CR>:<C-U>let @/=@z<CR>gv
+vnoremap il :<C-U>let @z=@/<CR><Right>?\<\\|\L<CR><ESC>v/\>\\|\L<CR><Left>:<C-U>let @/=@z<CR>gv
+onoremap al :normal vam<CR>
+onoremap il :normal vim<CR>
+onoremap l :normal vim<CR>
 
 " param text object
 " vnoremap aj :<C-U>let @z=@/<CR><Right>?\s*\<\(\w\\|[\[\]*:]])\+\s\+\w\+\s*[,)]<CR><ESC>v/\(\w\\|\[\\|\]\\|\*\)\+\s\+\w\+\s*,\=\ze)\=/e<CR>:<C-U>let @/=@z<CR>gv
@@ -128,16 +126,26 @@ onoremap m :normal vim<CR>
 " nnoremap <Leader>4 v/\(\%V[(,][^,]\{-}\ze\s*)\)\\|\(\%V[^,]*,\)/e<CR>
 vnoremap aj <Esc>:let @z=@/<CR><Left>?[(,]?e-1<CR>v/[,)]<CR>o<Esc>/\(\%V[(,][^,]*\ze)\)\\|\(\%V[,(]\zs[^,]*,\)<CR>v/\(\%V[(,][^,]\{-}\ze\s*)\)\\|\(\%V[^,]*,\)/e<CR>:<C-U>let @/=@z<CR>gv
 " vnoremap ij :<C-U>let @z=@/<CR><Right>?\s*\zs\<\(\w\\|\[\\|\]\\|\*\)\+\s\+\w\+\s*\ze[,)]<CR><ESC>v/\(\w\\|\[\\|\]\\|\*\)\+\s\+\w\+\s*\ze,\=)\=/e<CR>:<C-U>let @/=@z<CR>gv
-vnoremap <Leader>1 <Esc><Left>?[(,]?e<CR>v
-vnoremap <Leader>2 /[,)]<CR>o<Esc>
-nnoremap <Leader>3 /\(\s*\zs[^,]*\ze)\)\\|\(\s*\zs[^(,]*\ze,\)/s<CR>
-" Move left instead of s-1 for 1 letter case
-nnoremap <Leader>4 v/\(\s*[,)]\)/s<CR><Left>
+" vnoremap <Leader>1 <Esc><Left>?[(,]?e<CR>v
+" vnoremap <Leader>2 /[,)]<CR>o<Esc>
+" nnoremap <Leader>3 /\(\s*\zs[^,]*\ze)\)\\|\(\s*\zs[^(,]*\ze,\)/s<CR>
+" " Move left instead of s-1 for 1 letter case
+" nnoremap <Leader>4 v/\(\s*[,)]\)/s<CR><Left>
 vnoremap ij <Esc>:let @z=@/<CR><Left>?[(,]?e<CR>v/[,)]<CR>o<Esc>/\(\s*\zs[^,]*\ze)\)\\|\(\s*\zs[^(,]*\ze,\)/s<CR>v/\(\s*[,)]\)/s<CR><Left>:<C-U>let @/=@z<CR>gv
 onoremap aj :normal vaj<CR>
 onoremap ij :normal vij<CR>
 onoremap j :normal vij<CR>
 
+" Function text object
+vnoremap iy <Esc>[[v%<Left>o<Right>
+vnoremap ay <Esc>:let @z=@/<CR>[[?\<\w\+\s\+\w\+(<CR>:let @/=@z<CR>v]]%
+
+onoremap k iw
+onoremap K iW
+onoremap ak aw
+onoremap ik iw
+onoremap aK aW
+onoremap iK iW
 onoremap w iw
 onoremap W iW
 onoremap ) i)
@@ -199,9 +207,10 @@ nnoremap w <C-w>
 nnoremap <C-S> :update<CR>
 vnoremap <C-S> <C-C>:update<CR>
 inoremap <C-S> <Esc>:update<CR>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
+
 " Ctrl+c jk copy line
-nnoremap <C-C>j yyp
-nnoremap <C-C>k yyP
+nnoremap <C-C>j mzyyp`zj
+nnoremap <C-C>k mzyyP`zk
 vnoremap <C-C>j y`>p
 vnoremap <C-C>k y`<P
 
@@ -231,6 +240,7 @@ vnoremap <C-V> "+p
 " yank pasting
 nnoremap py "0p
 nnoremap pc "+p
+nnoremap pp p
 inoremap <C-P>c <C-O>"+p
 inoremap <C-P>y <C-O>p
 
@@ -265,9 +275,11 @@ nnoremap a mzyy<C-A>P`z
 nnoremap dw daw
 nnoremap dW daW
 nnoremap dj :normal daj<CR>
-nnoremap dm :normal dam<CR>
-" Stops vim from for command after dd
+nnoremap dl :normal dil<CR>
+" Stops vim from waiting for a command after dd
 nnoremap dd dd
+" Change bracket to leave space
+nnoremap c( ci(<Space><Space><Left>
 " Quick inner word
 " nnoremap cw ciw
 " " Quick yank word
@@ -289,15 +301,21 @@ nnoremap <A-j> :m .+1<CR>==
 nnoremap <A-k> :m .-2<CR>==
 inoremap <A-j> <Esc>:m .+1<CR>==gi
 inoremap <A-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-j> :m '>+1<CR>gv=gv
-vnoremap <A-k> :m '<-2<CR>gv=gv
+vnoremap <A-j> :m '>+1<CR>gv
+vnoremap <A-k> :m '<-2<CR>gv
 " Terminal inputs
 nnoremap j :m .+1<CR>==
 nnoremap k :m .-2<CR>==
 inoremap j <Esc>:m .+1<CR>==gi
 inoremap k <Esc>:m .-2<CR>==gi
-vnoremap j :m '>+1<CR>gv=gv
-vnoremap k :m '<-2<CR>gv=gv
+vnoremap j :m '>+1<CR>gv
+vnoremap k :m '<-2<CR>gv
+
+" Move word
+nnoremap <A-h> dawbPh
+nnoremap h dawbPh
+nnoremap <A-l> dawelph
+nnoremap l dawelph
 
 "hjkl move in insert
 inoremap <C-J> <Down>
@@ -468,3 +486,5 @@ call unite#filters#matcher_default#use(['matcher_fuzzy'])
 " nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files -start-insert file_rec/async:!<cr>
 nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files -start-insert file<cr>
 
+" text object function
+" let g:textobj_function_no_default_key_mappings=1
