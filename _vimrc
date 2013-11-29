@@ -412,6 +412,10 @@ nnoremap <Leader>sgv :so $MYGVIMRC<CR>
 " Quick notes file
 nnoremap <Leader>no :tabnew ~/vimNotes.txt<CR>
 
+if( has("win32") )
+	nnoremap <Leader>ahk :tabnew ~/Documents/Autohotkey/Autohotkey.ahk<CR>
+endif
+
 " Toggle background colors
 nnoremap <Leader>tbg :call <SID>toggleBackground()<CR>
 
