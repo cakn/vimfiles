@@ -257,14 +257,14 @@ nnoremap <CR> o<Esc>
 
 " Quick escape insert mode
 " inoremap qr <Esc>:normal! :let @z=@/\\\|.g/^\s*$/d<CR>:let @/=@z<CR>
-inoremap qr <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
-vnoremap qr <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
-xnoremap qr <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
+inoremap jw <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
+vnoremap jw <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
+xnoremap jw <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
 " Disable q to prevent accidental recording
-nnoremap qr <Nop>
-nnoremap q <Nop>
-nnoremap <A-q> q
-nnoremap q q
+" nnoremap qr <Nop>
+" nnoremap q <Nop>
+" nnoremap <A-q> q
+" nnoremap q q
 
 " Copy line and increment number
 nnoremap <A-a> mzyy<C-A>P`z
@@ -410,10 +410,14 @@ nnoremap <Leader>sv :so $MYVIMRC<CR>
 nnoremap <Leader>sgv :so $MYGVIMRC<CR>
 
 " Quick notes file
-nnoremap <Leader>no :tabnew ~/vimNotes.txt<CR>
+nnoremap <Leader>en :tabnew ~/vimNotes.txt<CR>
+
+"Bash rc files
+nnoremap <Leader>eb :tabnew ~/.bashrc<CR>
+nnoremap <Leader>ei :tabnew ~/.inputrc<CR>
 
 if( has("win32") )
-	nnoremap <Leader>ahk :tabnew ~/Documents/Autohotkey/Autohotkey.ahk<CR>
+	nnoremap <Leader>ehk :tabnew ~/Documents/Autohotkey/Autohotkey.ahk<CR>
 endif
 
 " Toggle background colors
@@ -433,8 +437,10 @@ if has("win32")
 	nnoremap <silent> <Leader>od :silent :!start explorer %:p:h:8<CR>
 
 	" Run file
-	nnoremap <Leader>exe :silent :!cd %:p:h:8 && start %:p:8<CR>
+	nnoremap <Leader>xe :silent :!cd %:p:h:8 && start %:p:8<CR>
 endif
+
+nnoremap <Leader>xp :!python %:p:8<CR>
 " Mappings }}}
 
 "==================FUNCTIONS ====================
