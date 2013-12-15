@@ -243,6 +243,9 @@ nnoremap pc "+p
 nnoremap pp p
 inoremap <C-P>c <C-O>"+p
 inoremap <C-P>y <C-O>p
+nnoremap Py "0P
+nnoremap Pc "+P
+nnoremap PP P
 
 " Paste to new line
 nnoremap <C-P> mz:pu<CR>='z
@@ -255,11 +258,14 @@ inoremap <C-T> a<Esc>k:norm yim<CR>`^a<BS><C-O>p
 " Insert line
 nnoremap <CR> o<Esc>
 
+"Swap letters
+nnoremap gl xhpl
+
 " Quick escape insert mode
 " inoremap qr <Esc>:normal! :let @z=@/\\\|.g/^\s*$/d<CR>:let @/=@z<CR>
-inoremap jw <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
-vnoremap jw <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
-xnoremap jw <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
+inoremap wj <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
+vnoremap wj <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
+xnoremap wj <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
 " Disable q to prevent accidental recording
 " nnoremap qr <Nop>
 " nnoremap q <Nop>
@@ -345,6 +351,8 @@ nnoremap <S-K> H3k
 " nnoremap <C-J> <S-J>
 " nnoremap <C-K> i<CR><Esc>
 
+nnoremap >> >>
+nnoremap << <<
 " Tab outside insert mode
 "nnoremap <Tab> >>
 "vnoremap <Tab> >gv " Disable for Snipmate compatibility
@@ -444,6 +452,23 @@ nnoremap <Leader>xp :!python %:p:8<CR>
 " Mappings }}}
 
 "==================FUNCTIONS ====================
+function! VimColorTest(outfile, fgend, bgend)
+	let result = []
+		for fg in range(a:fgend)
+			for bg in range(a:bgend)
+				let kw = printf('%-7s', printf('c_%d_%d', fg, bg))
+				let h = printf('hi %s ctermfg=%d ctermbg=%d', kw, fg, bg)
+				let s = printf('syn keyword %s %s', kw, kw)
+				call add(result, printf('%-32s | %s', h, s))
+			endfor
+		endfor
+	call writefile(result, a:outfile)
+	execute 'edit '.a:outfile
+	source %
+endfunction
+" Increase numbers in next line to see more colors.
+command! VimColorTest call VimColorTest('vim-color-test.tmp', 12, 16)
+
 fun! <SID>toggleBackground()
 	if( &background == "dark" )
 		set background=light
