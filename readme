@@ -11,7 +11,8 @@ cd ~/.vim/bundle/YouCompleteMe
 
 Windows
 mklink %userprofile%\_vimrc %userprofile%\vimfiles\_vimrc
-mklink %userprofile%\_vimrc %userprofile%\vimfiles\_vimrc
+mklink %userprofile%\_gvimrc %userprofile%\vimfiles\_gvimrc
+mklink %userprofile%\_vsvimrc %userprofile%\vimfiles\_vsvimrc
 
 Update all submodules
 git submodule foreach git pull origin master

@@ -39,6 +39,11 @@ set guifont=Ubuntu_Mono_derivative_Powerlin:h12:cANSI
 " Make sure colorscheme is set first
 highlight CursorSelect ctermbg=0 guibg=#073642
 
+if has("gui_running") 
+	set background=light
+	highlight CursorSelect ctermbg=7 guibg=#eee8d5
+endif
+
 set autoread
 
 set confirm
@@ -85,12 +90,6 @@ set mouse=a
 
 set listchars=tab:>-
 
-" Set default clipboard to system's
-" set clipboard=unnamed
-" if !has("win32")
-" 	set clipboard=unnamedplus
-" endif
-
 " set foldmethod=syntax
 " set foldcolumn=2
 " set foldopen=block,hor,mark,percent,quickfix,search,tag,undo,jump
@@ -112,11 +111,13 @@ set encoding=utf-8
 
 " Text Objects {{{
 " camelCase text object
-vnoremap al :<C-U>let @z=@/<CR><Right>?\<\\|\L<CR><ESC>v/\>\\|\L<CR>:<C-U>let @/=@z<CR>gv
-vnoremap il :<C-U>let @z=@/<CR><Right>?\<\\|\L<CR><ESC>v/\>\\|\L<CR><Left>:<C-U>let @/=@z<CR>gv
-onoremap al :normal vam<CR>
-onoremap il :normal vim<CR>
-onoremap l :normal vim<CR>
+vnoremap al :<C-U>let @z=@/<CR><Right>?\<\\|\L<CR>v/\>\\|\L<CR>:<C-U>let @/=@z<CR>gv
+vnoremap il :<C-U>let @z=@/<CR><Right>?\<\\|\L<CR>v/\>\\|\L<CR><Left>:<C-U>let @/=@z<CR>gv
+onoremap al :normal val<CR>
+onoremap il :normal vil<CR>
+onoremap l :normal vil<CR>
+
+onoremap y l
 
 " param text object
 " vnoremap aj :<C-U>let @z=@/<CR><Right>?\s*\<\(\w\\|[\[\]*:]])\+\s\+\w\+\s*[,)]<CR><ESC>v/\(\w\\|\[\\|\]\\|\*\)\+\s\+\w\+\s*,\=\ze)\=/e<CR>:<C-U>let @/=@z<CR>gv
@@ -137,8 +138,8 @@ onoremap ij :normal vij<CR>
 onoremap j :normal vij<CR>
 
 " Function text object
-vnoremap iy <Esc>[[v%<Left>o<Right>
-vnoremap ay <Esc>:let @z=@/<CR>[[?\<\w\+\s\+\w\+(<CR>:let @/=@z<CR>v]]%
+vnoremap iu <Esc>[[v%<Left>o<Right>
+vnoremap au <Esc>:let @z=@/<CR>[[?\<\w\+\s\+\w\+(<CR>:let @/=@z<CR>v]]%
 
 onoremap k iw
 onoremap K iW
@@ -185,6 +186,7 @@ noremap ^ 0
 " Move left easier
 nnoremap s b
 nnoremap <S-S> B
+vnoremap s b
 
 " Make marks harder
 nnoremap m <Nop>
@@ -209,27 +211,26 @@ vnoremap <C-S> <C-C>:update<CR>
 inoremap <C-S> <Esc>:update<CR>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
 
 " Ctrl+c jk copy line
-nnoremap <C-C>j mzyyp`zj
-nnoremap <C-C>k mzyyP`zk
-vnoremap <C-C>j y`>p
-vnoremap <C-C>k y`<P
+nnoremap <C-C>j mzyyp`z:normal gcc<CR>j
+nnoremap <C-C>k mzyyP`z:normal gcc<CR>k
+vnoremap <C-C>j ygv:normal gcc<CR>`>p
+vnoremap <C-C>k ygv:normal gcc<CR>`<P
+
+" Ctrl+u copy line
+nnoremap <C-U> mzyyp`zj
 
 " Ctrl+c copy
 vnoremap <C-C> "+y
 " Y copy to end of line
 nnoremap Y y$
-
-" Copy variable declarations
-" Copies from start of line to =
-nnoremap <Leader>cvd :let @z=@/\|.g/^\s*\w*\s\+\w*\s*=/y X\|s/^\s*\zs\w*\s\+\ze\w*\s*=//\|let @/=@z<CR>
-vnoremap <Leader>cvd :<C-U>let @z=@/<CR>gv:g/^\s*\w*\s\+\w*\s*=/y X<CR>gv:s/^\s*\zs\w*\s\+\ze\w*\s*=//\|let @/=@z<CR>
-nnoremap <Leader>pvd :let @z=@/<CR>"xp:'[,']s/\s*=.*/;/\|let @/=@z<CR>qxq
+" redefine yy to work even if we remap y to an text object
+nnoremap yy yy
 
 " Ctrl+v pasting
-nnoremap <C-V> p
+nnoremap <C-V> "+p
 nnoremap <A-v> <C-V>
 nnoremap v <C-V>
-inoremap <C-V> <C-O>"+p
+inoremap <C-V> <Left><C-O>"+p
 inoremap <A-v> <C-V>
 inoremap v <C-V>
 cnoremap <C-V> <C-R>"
@@ -258,14 +259,10 @@ inoremap <C-T> a<Esc>k:norm yim<CR>`^a<BS><C-O>p
 " Insert line
 nnoremap <CR> o<Esc>
 
-"Swap letters
-nnoremap gl xhpl
-
 " Quick escape insert mode
-" inoremap qr <Esc>:normal! :let @z=@/\\\|.g/^\s*$/d<CR>:let @/=@z<CR>
-inoremap wj <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
-vnoremap wj <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
-xnoremap wj <Esc>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
+inoremap wj <Esc>:call <SID>escape()<CR>
+vnoremap wj <Esc>:call <SID>escape()<CR>
+xnoremap wj <Esc>:call <SID>escape()<CR>
 " Disable q to prevent accidental recording
 " nnoremap qr <Nop>
 " nnoremap q <Nop>
@@ -280,6 +277,12 @@ nnoremap a mzyy<C-A>P`z
 " Map each to avoid recursive calls in normal
 nnoremap dw daw
 nnoremap dW daW
+nnoremap d" da"
+nnoremap d< da<
+nnoremap d> da>
+nnoremap d' da'
+nnoremap d( da(
+nnoremap d) da)
 nnoremap dj :normal daj<CR>
 nnoremap dl :normal dil<CR>
 " Stops vim from waiting for a command after dd
@@ -317,11 +320,14 @@ inoremap k <Esc>:m .-2<CR>==gi
 vnoremap j :m '>+1<CR>gv
 vnoremap k :m '<-2<CR>gv
 
-" Move word
-nnoremap <A-h> dawbPh
-nnoremap h dawbPh
-nnoremap <A-l> dawelph
-nnoremap l dawelph
+"Swap letters
+nnoremap gl Xp
+
+" Swap word
+nnoremap <A-h> "_yiw?\w\+\_W\+\%#<CR>:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>:noh<CR><c-o>
+nnoremap <A-l> "_yiw:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR><c-o>/\w\+\_W\+<CR>:noh<CR>
+nnoremap h "_yiw?\w\+\_W\+\%#<CR>:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>:noh<CR><c-o>
+nnoremap l "_yiw?\w\+\_W\+\%#<CR>:s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>:noh<CR><c-o>
 
 "hjkl move in insert
 inoremap <C-J> <Down>
@@ -372,16 +378,14 @@ vnoremap { <ESC>`>a }<ESC>`<i{ <ESC><Left>
 vnoremap } <ESC>`>a}<ESC>`<i{<ESC>
 
 " Negate boolean variable with !
-nnoremap ! :let @z=@/<CR>mzviWvBi!<Esc>:s /!!=/==/e<CR>:s /!!//e<CR>:s /!true/false/e<CR>:s /!false/true/e<CR>:s /!==/!=/e<CR>:let @/=@z<CR>`z
+nnoremap ! :let @z=@/<CR>mzviWovi!<Esc>:s /!!=/==/e<CR>:s /!!//e<CR>:s /!true/false/e<CR>:s /!false/true/e<CR>:s /!==/!=/e<CR>:let @/=@z<CR>`z
 nnoremap <C-!> !
 
-" Auto brace completion
-inoremap {<CR>  {<CR>}<Esc>O
 " inoremap <expr> (<Space> pumvisible() ? "\<CR>(\<Space>)\<Left>" : "(\<Space>)\<Left>"
 " inoremap [ []<Left>
 
 " Turn off highlighting with <C-L> (redraw screen)
-nnoremap <C-L> :nohlsearch\|let @/=""<CR><C-L>
+nnoremap <C-L> :nohlsearch<CR><C-L>
 
 " Autocomplete on Ctrl-F
 inoremap <C-F> <C-X>
@@ -398,7 +402,6 @@ inoremap <C-F> <C-X>
 " inoremap <expr> <Space> pumvisible() ? "\<CR>\<Space>" : "\<Space>"
 " " Quick ;<Enter>
 " inoremap <expr> ; pumvisible() ? "\<CR>;" : ";\<CR>"
-inoremap ; ;<CR>
 
 " Close file
 noremap <Leader>cl :clo<CR>
@@ -452,6 +455,10 @@ nnoremap <Leader>xp :!python %:p:8<CR>
 " Mappings }}}
 
 "==================FUNCTIONS ====================
+function! <SID>escape()
+	.g/^\s*$/d
+endfunction
+
 function! VimColorTest(outfile, fgend, bgend)
 	let result = []
 		for fg in range(a:fgend)

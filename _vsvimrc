@@ -1,0 +1,37 @@
+source _vimrc
+source ~\vimfiles\ftplugin\cpp.vim
+
+" Stop from moving when selecting text objects
+set noincsearch
+
+nnoremap <Leader>sv :source _vsvimrc<CR>
+
+" camelCase text object
+nnoremap cl v<Esc><Right>?\<\|\L<CR>v/\>\|\L<CR><Left><Esc>:noh<CR>gvc
+nnoremap dl v<Esc><Right>?\<\|\L<CR>v/\>\|\L<CR><Left><Esc>:noh<CR>gvd
+
+" param text object
+nnoremap cj <Right>?[,(]<CR>/[^\s]<CR>v/[,)]<CR><Left><Esc>:noh<CR>gvc
+nnoremap dj <Right>?[,(]<CR><Right>v/[,)]<CR><Left><Esc>:noh<CR>gvd
+
+" inoremap wj <Esc>
+" vnoremap wj <Esc>
+" xnoremap wj <Esc>
+
+nnoremap gl :vsc Edit.CharTranspose<CR>h
+
+" nnoremap <A-h> "xdiwdwep"xp
+nnoremap <A-h> <Right>bi!!!<Esc>?\w<CR>bmzi!!!<Esc>b:s/!!!\(\w\+\)\(\W\+\)!!!\(\w\+\)/\3\2\1/<CR>:noh<CR>`z
+nnoremap <A-l> :vsc Edit.WordTranspose<CR>
+
+nnoremap <A-j> :vsc Edit.MoveLineDown<CR>
+nnoremap <A-k> :vsc Edit.MoveLineUp<CR>
+
+vnoremap " <ESC>`><Left>a"<ESC>`<i"<ESC>
+vnoremap ' <ESC>`><Left>a'<ESC>`<i'<ESC>
+vnoremap ( <ESC>`><Left>a )<ESC>`<i( <ESC><Left>
+vnoremap ) <ESC>`><Left>a)<ESC>`<i(<ESC>
+vnoremap [ <ESC>`><Left>a ]<ESC>`<i[ <ESC><Left>
+vnoremap ] <ESC>`><Left>a]<ESC>`<i[<ESC>
+vnoremap { <ESC>`><Left>a }<ESC>`<i{ <ESC><Left>
+vnoremap } <ESC>`><Left>a}<ESC>`<i{<ESC>
