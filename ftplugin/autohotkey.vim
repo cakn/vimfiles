@@ -1,3 +1,4 @@
-set foldmethod=manual
+setlocal foldmethod=marker
 
 inoremap {<CR>  {<CR>}<Esc>O
+echo "HI"

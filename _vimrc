@@ -39,7 +39,7 @@ set guifont=Ubuntu_Mono_derivative_Powerlin:h12:cANSI
 " Make sure colorscheme is set first
 highlight CursorSelect ctermbg=0 guibg=#073642
 
-if has("gui_running") 
+if has("gui_running")
 	set background=light
 	highlight CursorSelect ctermbg=7 guibg=#eee8d5
 endif
@@ -283,6 +283,8 @@ nnoremap d> da>
 nnoremap d' da'
 nnoremap d( da(
 nnoremap d) da)
+nnoremap d{ da{
+nnoremap d} da}
 nnoremap dj :normal daj<CR>
 nnoremap dl :normal dil<CR>
 " Stops vim from waiting for a command after dd
@@ -406,6 +408,8 @@ inoremap <C-F> <C-X>
 " Close file
 noremap <Leader>cl :clo<CR>
 
+" New tab
+nnoremap <Leader>tn :tabnew<CR>
 " Move window to new tab
 nnoremap <Leader>bt <C-W>s<C-W>T
 
@@ -429,6 +433,7 @@ nnoremap <Leader>ei :tabnew ~/.inputrc<CR>
 
 if( has("win32") )
 	nnoremap <Leader>ehk :tabnew ~/Documents/Autohotkey/Autohotkey.ahk<CR>
+	nnoremap <Leader>es :tabnew ~/_vsvimrc<CR>
 endif
 
 " Toggle background colors
@@ -438,10 +443,14 @@ nnoremap <Leader>tbg :call <SID>toggleBackground()<CR>
 nnoremap <Leader>cd :cd %:h<CR>
 
 " Fix trailing spaces
-nnoremap <Leader>dts mz:let @z=@/<CR>:%s/\s\+$//e\|let @/=@z<CR>`z
+nnoremap <Leader>dts :call <SID>deleteTrailingSpaces()<CR>
 
 " Run ctags
 nnoremap <Leader>xctag :!ctags-exuberant *.cpp *.h<CR>
+
+" Insert fold marker
+nnoremap <Leader>fmo o{{{<Esc>:normal gc<CR>
+nnoremap <Leader>fmc o}}}<Esc>:normal gc<CR>
 
 if has("win32")
 	" Open directory of file in explorer
@@ -452,11 +461,52 @@ if has("win32")
 endif
 
 nnoremap <Leader>xp :!python %:p:8<CR>
+
+if has("gui_running")
+	" Unbind ALt+letter keys{{{
+	silent! iunmap a
+	silent! iunmap b
+	silent! iunmap c
+	silent! iunmap d
+	silent! iunmap e
+	silent! iunmap f
+	silent! iunmap g
+	silent! iunmap h
+	silent! iunmap i
+	silent! iunmap j
+	silent! iunmap k
+	silent! iunmap l
+	silent! iunmap m
+	silent! iunmap n
+	silent! iunmap o
+	silent! iunmap p
+	silent! iunmap q
+	silent! iunmap r
+	silent! iunmap s
+	silent! iunmap t
+	silent! iunmap u
+	silent! iunmap v
+	silent! iunmap w
+	silent! iunmap x
+	silent! iunmap y
+	silent! iunmap z
+	silent! iunmap [1~
+	silent! iunmap [4~
+	" }}}
+endif
 " Mappings }}}
 
 "==================FUNCTIONS ====================
+" VsVim has trouble parsing this. Moved down here so it would source all the mappings
 function! <SID>escape()
 	.g/^\s*$/d
+endfunction
+
+" Fix trailing spaces
+function! <SID>deleteTrailingSpaces()
+	let l:winview = winsaveview()
+	%s/\s\+$//e
+	call winrestview(l:winview)
 endfunction
 
 function! VimColorTest(outfile, fgend, bgend)
@@ -506,6 +556,9 @@ vmap <C-o> <Plug>snipMateNextOrTrigger
 nnoremap <Leader>rls :call ReloadAllSnippets()<CR>
 
 " Commentary
+silent! nunmap gcc
+nmap gc :normal! mz<CR><Plug>CommentaryLine:normal! `z<CR>
+xmap gc <Esc>:normal! mzgv<CR><Plug>Commentary:normal! `z<CR>
 autocmd FileType autohotkey setlocal commentstring=;%s
 
 " YouCompleteMe
@@ -527,6 +580,3 @@ nnoremap <Leader>gsl :FSSwitchRight<CR>
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 " nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files -start-insert file_rec/async:!<cr>
 nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files -start-insert file<cr>
-
-" text object function
-" let g:textobj_function_no_default_key_mappings=1

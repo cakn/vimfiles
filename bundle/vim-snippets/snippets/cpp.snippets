@@ -132,7 +132,7 @@ snippet iter
 	}
 
 # auto iterator
-snippet itera
+snippet ita
 	for (auto ${1:i} = ${2:container}.begin(); $1 != $2.end(); ++$1) {
 		${3:std::cout << *$1 << std::endl;}
 	}
@@ -147,9 +147,9 @@ snippet lld
 		${3}
 	}
 # #include
-snippet in,
+snippet inb
 	#include <${1}>
-snippet in'
+snippet inq
 	#include "${1}"
 # Ctor and Dtor init
 snippet ncd

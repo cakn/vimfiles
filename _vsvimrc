@@ -1,10 +1,39 @@
-source _vimrc
+source ~\_vimrc
 source ~\vimfiles\ftplugin\cpp.vim
+
+iunmap a
+iunmap b
+iunmap c
+iunmap d
+iunmap e
+iunmap f
+iunmap g
+iunmap h
+iunmap i
+iunmap j
+iunmap k
+iunmap l
+iunmap m
+iunmap n
+iunmap o
+iunmap p
+iunmap q
+iunmap r
+iunmap s
+iunmap t
+iunmap u
+iunmap v
+iunmap w
+iunmap x
+iunmap y
+iunmap z
+iunmap [1~
+iunmap [4~
 
 " Stop from moving when selecting text objects
 set noincsearch
 
-nnoremap <Leader>sv :source _vsvimrc<CR>
+nnoremap <Leader>sv :source ~\_vsvimrc<CR>
 
 " camelCase text object
 nnoremap cl v<Esc><Right>?\<\|\L<CR>v/\>\|\L<CR><Left><Esc>:noh<CR>gvc
@@ -14,9 +43,9 @@ nnoremap dl v<Esc><Right>?\<\|\L<CR>v/\>\|\L<CR><Left><Esc>:noh<CR>gvd
 nnoremap cj <Right>?[,(]<CR>/[^\s]<CR>v/[,)]<CR><Left><Esc>:noh<CR>gvc
 nnoremap dj <Right>?[,(]<CR><Right>v/[,)]<CR><Left><Esc>:noh<CR>gvd
 
-" inoremap wj <Esc>
-" vnoremap wj <Esc>
-" xnoremap wj <Esc>
+inoremap wj <Esc>:.g/^\s*$/d<CR>
+vnoremap wj <Esc>:.g/^\s*$/d<CR>
+xnoremap wj <Esc>:.g/^\s*$/d<CR>
 
 nnoremap gl :vsc Edit.CharTranspose<CR>h
 
@@ -35,3 +64,50 @@ vnoremap [ <ESC>`><Left>a ]<ESC>`<i[ <ESC><Left>
 vnoremap ] <ESC>`><Left>a]<ESC>`<i[<ESC>
 vnoremap { <ESC>`><Left>a }<ESC>`<i{ <ESC><Left>
 vnoremap } <ESC>`><Left>a}<ESC>`<i{<ESC>
+
+" Insert single character
+nnoremap <Space> i_<Esc>r
+
+" inoremap <C-o> <C-o>:vsc Edit.InvokeSnippetFromShortcut<CR>
+inoremap <C-o> <Tab>
+
+nnoremap go <Right>bi;vsc Edit.GoToDefinition <Esc>F;vEEE<Left>"zyvEE<Right>"_d@z<CR><CR><CR>
+nnoremap gf :vsc Edit.OpenFile<CR>
+nnoremap <C-O> :vsc View.NavigateBackward<CR>
+nnoremap <C-I> :vsc View.NavigateForward<CR>
+
+" Tab navigation
+nnoremap bn gt
+nnoremap bp gT
+
+" Window navigation
+nnoremap wh :vsc TabGroupJumper.Connect.JumpLeft<CR>
+nnoremap wl :vsc TabGroupJumper.Connect.JumpRight<CR>
+nnoremap wk :vsc TabGroupJumper.Connect.JumpUp<CR>
+nnoremap wj :vsc TabGroupJumper.Connect.JumpDown<CR>
+
+" Align Assignments
+nnoremap <Leader>aa :vsc Edit.AlignAssignments<CR>
+vnoremap <Leader>aa :vsc Edit.AlignAssignments<CR>
+
+" Breakpoints
+" Create/Destroy
+nnoremap <Leader>bb :vsc Debug.ToggleBreakpoint<CR>
+" Enable/Disable
+nnoremap <Leader>bt :vsc Debug.EnableBreakpoint<CR>
+nnoremap <Leader>bc :vsc EditorContextMenus.CodeWindow.Breakpoint.BreakpointCondition<CR>
+
+" Open directory
+nnoremap <Leader>od :vsc File.OpenContainingFolder<CR>
+
+" Delete trailing spaces
+nnoremap <Leader>dts mz:%s/\s\+$//e<CR>`z
+
+" Switch to header
+nnoremap <Leader>g; :vsc EditorContextMenus.CodeWindow.GoToHeaderFile<CR>
+nnoremap <Leader>gh :vsc EditorContextMenus.CodeWindow.GoToHeaderFile<CR>:vsc Window.MovetoPreviousTabGroup<CR>
+nnoremap <Leader>gl :vsc EditorContextMenus.CodeWindow.GoToHeaderFile<CR>:vsc Window.MovetoNextTabGroup<CR>
+
+" Comment out
+nnoremap gc :vsc Edit.CommentSelection<CR>:s ?////??<CR>
+vnoremap gc <Esc>mp`>mx`<mzI//<Esc>^v/[^/]<CR><Left>"zyuo<Esc>"zp:s ?////?gv;s %^\(\\s*\)//%\\1%?<CR>:s ?^//?gvh;s %^\(\\s*\)\(\\S\+\)%\\1//\\2%<CR>"zyyuuu`zv`x<Esc>@z`p:noh<CR>
