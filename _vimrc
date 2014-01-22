@@ -1,5 +1,6 @@
 set nocompatible
 
+
 " Removes all autocmds
 " autocmd!
 
@@ -208,7 +209,7 @@ nnoremap w <C-w>
 " Ctrl+S saving
 nnoremap <C-S> :update<CR>
 vnoremap <C-S> <C-C>:update<CR>
-inoremap <C-S> <Esc>:update<CR>:let @z=@/\|.g/^\s*$/d<CR>:let @/=@z<CR>
+inoremap <C-S> <Esc>:call <SID>escape()<CR>:update<CR>
 
 " Ctrl+c jk copy line
 nnoremap <C-C>j mzyyp`z:normal gcc<CR>j
@@ -230,7 +231,7 @@ nnoremap yy yy
 nnoremap <C-V> "+p
 nnoremap <A-v> <C-V>
 nnoremap v <C-V>
-inoremap <C-V> <Left><C-O>"+p
+inoremap <C-V> <C-R>+
 inoremap <A-v> <C-V>
 inoremap v <C-V>
 cnoremap <C-V> <C-R>"
@@ -258,6 +259,10 @@ inoremap <C-T> a<Esc>k:norm yim<CR>`^a<BS><C-O>p
 
 " Insert line
 nnoremap <CR> o<Esc>
+
+" Insert mode insert lines
+inoremap <S-CR> <C-o>O
+inoremap <C-CR> <C-o>o
 
 " Quick escape insert mode
 inoremap wj <Esc>:call <SID>escape()<CR>
@@ -379,6 +384,9 @@ vnoremap ] <ESC>`>a]<ESC>`<i[<ESC>
 vnoremap { <ESC>`>a }<ESC>`<i{ <ESC><Left>
 vnoremap } <ESC>`>a}<ESC>`<i{<ESC>
 
+"Visual mode set register
+vnoremap <C-R> "
+
 " Negate boolean variable with !
 nnoremap ! :let @z=@/<CR>mzviWovi!<Esc>:s /!!=/==/e<CR>:s /!!//e<CR>:s /!true/false/e<CR>:s /!false/true/e<CR>:s /!==/!=/e<CR>:let @/=@z<CR>`z
 nnoremap <C-!> !
@@ -431,6 +439,9 @@ nnoremap <Leader>en :tabnew ~/vimNotes.txt<CR>
 nnoremap <Leader>eb :tabnew ~/.bashrc<CR>
 nnoremap <Leader>ei :tabnew ~/.inputrc<CR>
 
+" File plugin files
+nnoremap <Leader>ef :tabnew ~/vimfiles/ftplugin<CR>
+
 if( has("win32") )
 	nnoremap <Leader>ehk :tabnew ~/Documents/Autohotkey/Autohotkey.ahk<CR>
 	nnoremap <Leader>es :tabnew ~/_vsvimrc<CR>
@@ -449,8 +460,8 @@ nnoremap <Leader>dts :call <SID>deleteTrailingSpaces()<CR>
 nnoremap <Leader>xctag :!ctags-exuberant *.cpp *.h<CR>
 
 " Insert fold marker
-nnoremap <Leader>fmo o{{{<Esc>:normal gc<CR>
-nnoremap <Leader>fmc o}}}<Esc>:normal gc<CR>
+nnoremap <Leader>imo o{{{<Esc>:normal gc<CR>
+nnoremap <Leader>imc o}}}<Esc>:normal gc<CR>
 
 if has("win32")
 	" Open directory of file in explorer
@@ -460,7 +471,7 @@ if has("win32")
 	nnoremap <Leader>xe :silent :!cd %:p:h:8 && start %:p:8<CR>
 endif
 
-nnoremap <Leader>xp :!python %:p:8<CR>
+nnoremap <Leader>xp :!C:/Python33/python.exe %:p:8<CR>
 
 if has("gui_running")
 	" Unbind ALt+letter keys{{{
@@ -499,7 +510,7 @@ endif
 "==================FUNCTIONS ====================
 " VsVim has trouble parsing this. Moved down here so it would source all the mappings
 function! <SID>escape()
-	.g/^\s*$/d
+	silent! .g/^\s*$/d
 endfunction
 
 " Fix trailing spaces
@@ -563,6 +574,12 @@ autocmd FileType autohotkey setlocal commentstring=;%s
 
 " YouCompleteMe
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+if has("win32")
+	let g:ycm_path_to_python_interpreter = 'C:/Python27/pythonw.exe'
+endif
+
+"Syntastic
+let g:syntastic_enable_signs = 0
 
 " let g:UltiSnipsExpandTrigger = '<C-b>'
 " let g:UltiSnipsListSnippets = '<C-b>'
@@ -580,3 +597,5 @@ nnoremap <Leader>gsl :FSSwitchRight<CR>
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 " nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files -start-insert file_rec/async:!<cr>
 nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files -start-insert file<cr>
+
+nnoremap <Leader>js :%s /\n//<CR>:%s /\(nA\)/ \1\r/g<CR>
