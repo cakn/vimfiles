@@ -7,4 +7,4 @@ nnoremap <Leader>pvd :let @z=@/<CR>"xp:'[,']s/\s*=.*/;/\|let @/=@z<CR>qxq
 " Auto brace completion
 inoremap {<CR>  {<CR>}<Esc>O
 
-inoremap ; ;<CR>
+inoremap ; <ESC>A;<CR>

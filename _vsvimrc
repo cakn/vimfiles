@@ -1,6 +1,9 @@
 source ~\_vimrc
 source ~\vimfiles\ftplugin\cpp.vim
 
+" use the relative number plugin
+set nonumber
+
 iunmap a
 iunmap b
 iunmap c
@@ -30,14 +33,18 @@ iunmap z
 iunmap [1~
 iunmap [4~
 
+" Unmap autobrace complete
+iunmap {<CR>
+
+
 " Stop from moving when selecting text objects
 set noincsearch
 
 nnoremap <Leader>sv :source ~\_vsvimrc<CR>
 
 " camelCase text object
-nnoremap cl v<Esc><Right>?\<\|\L<CR>v/\>\|\L<CR><Left><Esc>:noh<CR>gvc
-nnoremap dl v<Esc><Right>?\<\|\L<CR>v/\>\|\L<CR><Left><Esc>:noh<CR>gvd
+nnoremap cl <Right>v<Esc><Right>?\<\|\L<CR>v/\>\|\L<CR><Left><Esc>:noh<CR>gvc
+nnoremap dl <Right>v<Esc><Right>?\<\|\L<CR>v/\>\|\L<CR><Left><Esc>:noh<CR>gvd
 
 " param text object
 nnoremap cj <Right>?[,(]<CR>/[^\s]<CR>v/[,)]<CR><Left><Esc>:noh<CR>gvc
@@ -46,16 +53,28 @@ nnoremap dj <Right>?[,(]<CR><Right>v/[,)]<CR><Left><Esc>:noh<CR>gvd
 inoremap wj <Esc>:.g/^\s*$/d<CR>
 vnoremap wj <Esc>:.g/^\s*$/d<CR>
 xnoremap wj <Esc>:.g/^\s*$/d<CR>
+" Ctrl+s escape
+nnoremap <C-S> :vsc File.SaveSelectedItems<CR>
+inoremap <C-S> <Esc>:.g/^\s*$/d<CR>:vsc File.SaveSelectedItems<CR>
 
 nnoremap gl :vsc Edit.CharTranspose<CR>h
+
+" implement gi and g;
+nnoremap gi :vsc View.NavigateBackward<CR>i
+nnoremap g; :vsc View.NavigateForward<CR>
 
 " nnoremap <A-h> "xdiwdwep"xp
 nnoremap <A-h> <Right>bi!!!<Esc>?\w<CR>bmzi!!!<Esc>b:s/!!!\(\w\+\)\(\W\+\)!!!\(\w\+\)/\3\2\1/<CR>:noh<CR>`z
 nnoremap <A-l> :vsc Edit.WordTranspose<CR>
 
-nnoremap <A-j> :vsc Edit.MoveLineDown<CR>
-nnoremap <A-k> :vsc Edit.MoveLineUp<CR>
+" nnoremap <A-j> :vsc Edit.MoveLineDown<CR>
+" nnoremap <A-k> :vsc Edit.MoveLineUp<CR>
+nnoremap <A-j> :vsc Edit.MoveSelectedLinesDown<CR>
+nnoremap <A-k> :vsc Edit.MoveSelectedLinesUp<CR>
+vnoremap <A-j> :vsc Edit.MoveSelectedLinesDown<CR>
+vnoremap <A-k> :vsc Edit.MoveSelectedLinesUp<CR>
 
+vnoremap w iw
 vnoremap " <ESC>`><Left>a"<ESC>`<i"<ESC>
 vnoremap ' <ESC>`><Left>a'<ESC>`<i'<ESC>
 vnoremap ( <ESC>`><Left>a )<ESC>`<i( <ESC><Left>
@@ -68,10 +87,13 @@ vnoremap } <ESC>`><Left>a}<ESC>`<i{<ESC>
 " Insert single character
 nnoremap <Space> i_<Esc>r
 
+inoremap <C-Y> a<Esc>kyw`^a<BS><C-O>p<Right>
+
 " inoremap <C-o> <C-o>:vsc Edit.InvokeSnippetFromShortcut<CR>
 inoremap <C-o> <Tab>
 
 nnoremap go <Right>bi;vsc Edit.GoToDefinition <Esc>F;vEEE<Left>"zyvEE<Right>"_d@z<CR><CR><CR>
+nnoremap go :vsc Edit.PeekDefinition<CR>
 nnoremap gf :vsc Edit.OpenFile<CR>
 nnoremap <C-O> :vsc View.NavigateBackward<CR>
 nnoremap <C-I> :vsc View.NavigateForward<CR>
@@ -80,11 +102,21 @@ nnoremap <C-I> :vsc View.NavigateForward<CR>
 nnoremap bn gt
 nnoremap bp gT
 
+" Move to end of line fix
+inoremap <C-E> <Esc>$a
+
 " Window navigation
-nnoremap wh :vsc TabGroupJumper.Connect.JumpLeft<CR>
-nnoremap wl :vsc TabGroupJumper.Connect.JumpRight<CR>
-nnoremap wk :vsc TabGroupJumper.Connect.JumpUp<CR>
-nnoremap wj :vsc TabGroupJumper.Connect.JumpDown<CR>
+" nnoremap wh :vsc TabGroupJumper.Connect.JumpLeft<CR>
+" nnoremap wl :vsc TabGroupJumper.Connect.JumpRight<CR>
+" nnoremap wk :vsc TabGroupJumper.Connect.JumpUp<CR>
+" nnoremap wj :vsc TabGroupJumper.Connect.JumpDown<CR>
+nnoremap wh :vsc vsExt.GotoLeftDocument<CR>
+nnoremap wl :vsc vsExt.GotoRightDocument<CR>
+nnoremap wk :vsc vsExt.GotoUpDocument<CR>
+nnoremap wj :vsc vsExt.GotoDownDocument<CR>
+nnoremap wth :vsc Window.MovetoPreviousTabGroup<CR>
+nnoremap wtl :vsc Window.MovetoNextTabGroup<CR>
+nnoremap wc :close<CR>
 
 " Align Assignments
 nnoremap <Leader>aa :vsc Edit.AlignAssignments<CR>
@@ -104,10 +136,40 @@ nnoremap <Leader>od :vsc File.OpenContainingFolder<CR>
 nnoremap <Leader>dts mz:%s/\s\+$//e<CR>`z
 
 " Switch to header
-nnoremap <Leader>g; :vsc EditorContextMenus.CodeWindow.GoToHeaderFile<CR>
-nnoremap <Leader>gh :vsc EditorContextMenus.CodeWindow.GoToHeaderFile<CR>:vsc Window.MovetoPreviousTabGroup<CR>
-nnoremap <Leader>gl :vsc EditorContextMenus.CodeWindow.GoToHeaderFile<CR>:vsc Window.MovetoNextTabGroup<CR>
+" nnoremap <Leader>g; :vsc EditorContextMenus.CodeWindow.GoToHeaderFile<CR>
+" nnoremap <Leader>gh :vsc EditorContextMenus.CodeWindow.GoToHeaderFile<CR>:vsc Window.MovetoPreviousTabGroup<CR>
+" nnoremap <Leader>gl :vsc EditorContextMenus.CodeWindow.GoToHeaderFile<CR>:vsc Window.MovetoNextTabGroup<CR>
+nnoremap <Leader>g; :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<CR>
+nnoremap <Leader>gh :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<CR>:vsc Window.MovetoPreviousTabGroup<CR>
+nnoremap <Leader>gl :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<CR>:vsc Window.MovetoNextTabGroup<CR>
 
 " Comment out
 nnoremap gc :vsc Edit.CommentSelection<CR>:s ?////??<CR>
 vnoremap gc <Esc>mp`>mx`<mzI//<Esc>^v/[^/]<CR><Left>"zyuo<Esc>"zp:s ?////?gv;s %^\(\\s*\)//%\\1%?<CR>:s ?^//?gvh;s %^\(\\s*\)\(\\S\+\)%\\1//\\2%<CR>"zyyuuu`zv`x<Esc>@z`p:noh<CR>
+
+" Debugging / Building
+nnoremap <Leader>mx :vsc Debug.StartWithoutDebugging<CR>
+nnoremap <Leader>md :vsc Debug.Start<CR>
+nnoremap <Leader>mb :vsc Build.BuildSelection<CR>
+nnoremap <Leader>mc :vsc Build.CleanSelection<CR>
+nnoremap <Leader>dstop :vsc Debug.StopDebugging<CR>
+nnoremap <Leader>dres :vsc Debug.Restart<CR>
+
+" Testing
+nnoremap <Leader>tx :vsc TestExplorer.RunAllTests<CR>
+nnoremap <Leader>ta :vsc TestExplorer.RunAllTests<CR>
+nnoremap <Leader>tf :vsc TestExplorer.RunFailedTests<CR>
+nnoremap <Leader>tn :vsc TestExplorer.RunNotRunTests<CR>
+
+" Project
+nnoremap <Leader>pac :vsc Project.AddClass<CR><CR>
+
+" File Navigation
+nnoremap <Leader>f :vsc Edit.NavigateTo<CR>
+
+" Manual settings
+" Ctrl+Enter Edit.LineOpenBelow
+" Alt+k Edit.MoveSelectedLinesUp
+" Alt+j Edit.MoveSelectedLinesDown
+
+nnoremap tt :vsc Window.NextSplitPane<CR>

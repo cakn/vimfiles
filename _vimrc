@@ -106,6 +106,8 @@ set tf
 " Match <>
 set matchpairs+=<:>
 
+set lazyredraw
+
 "Set encoding up here to avoid problems with alt
 set encoding=utf-8
 " Settings }}}
@@ -137,6 +139,8 @@ vnoremap ij <Esc>:let @z=@/<CR><Left>?[(,]?e<CR>v/[,)]<CR>o<Esc>/\(\s*\zs[^,]*\z
 onoremap aj :normal vaj<CR>
 onoremap ij :normal vij<CR>
 onoremap j :normal vij<CR>
+
+onoremap y l
 
 " Function text object
 vnoremap iu <Esc>[[v%<Left>o<Right>
@@ -211,11 +215,16 @@ nnoremap <C-S> :update<CR>
 vnoremap <C-S> <C-C>:update<CR>
 inoremap <C-S> <Esc>:call <SID>escape()<CR>:update<CR>
 
-" Ctrl+c jk copy line
+" Ctrl+c jk comment and copy line
 nnoremap <C-C>j mzyyp`z:normal gcc<CR>j
 nnoremap <C-C>k mzyyP`z:normal gcc<CR>k
 vnoremap <C-C>j ygv:normal gcc<CR>`>p
 vnoremap <C-C>k ygv:normal gcc<CR>`<P
+" Shift+Alt copy line
+nnoremap <A-J> mzyyp`zj
+nnoremap <A-K> mzyyp`z
+inoremap <A-J> <Esc>yyp`^<Down>i
+inoremap <A-K> <Esc>yyP`^<Up>i
 
 " Ctrl+u copy line
 nnoremap <C-U> mzyyp`zj
@@ -228,7 +237,7 @@ nnoremap Y y$
 nnoremap yy yy
 
 " Ctrl+v pasting
-nnoremap <C-V> "+p
+nnoremap <C-V> "+P
 nnoremap <A-v> <C-V>
 nnoremap v <C-V>
 inoremap <C-V> <C-R>+
@@ -237,17 +246,23 @@ inoremap v <C-V>
 cnoremap <C-V> <C-R>"
 cnoremap <A-v> <C-V>
 cnoremap v <C-V>
-vnoremap <C-V> "+p
+vnoremap <C-V> "+P
 
 " yank pasting
-nnoremap py "0p
-nnoremap pc "+p
-nnoremap pp p
-inoremap <C-P>c <C-O>"+p
-inoremap <C-P>y <C-O>p
-nnoremap Py "0P
-nnoremap Pc "+P
-nnoremap PP P
+nnoremap py "0P
+nnoremap pc "+P
+nnoremap pp P
+inoremap <C-P>c <C-O>"+P
+inoremap <C-P><C-C> <C-O>"+P
+inoremap <C-P>y <C-O>"0P
+inoremap <C-P><C-Y> <C-O>"0P
+nnoremap Py "0p
+nnoremap Pc "+p
+nnoremap PP p
+
+" Replace word with last yanked
+nnoremap pw "_ciw<C-R>0<Esc>
+nnoremap pk "_ciw<C-R>0<Esc>
 
 " Paste to new line
 nnoremap <C-P> mz:pu<CR>='z
@@ -282,11 +297,13 @@ nnoremap a mzyy<C-A>P`z
 " Map each to avoid recursive calls in normal
 nnoremap dw daw
 nnoremap dW daW
+nnoremap dk daw
+nnoremap dK daW
 nnoremap d" da"
 nnoremap d< da<
 nnoremap d> da>
 nnoremap d' da'
-nnoremap d( da(
+nnoremap d( di(
 nnoremap d) da)
 nnoremap d{ da{
 nnoremap d} da}
@@ -359,13 +376,21 @@ inoremap r <C-R>
 
 "Shift j k to move quickly up and down
 nnoremap <S-J> L3j
+vnoremap <S-J> L3j
 nnoremap <S-K> H3k
+vnoremap <S-K> H3k
 "Join and split lines
 " nnoremap <C-J> <S-J>
 " nnoremap <C-K> i<CR><Esc>
 
+" Swap [ and { to move quickly between functions
+nnoremap [ [[
+nnoremap ] ]]
+
 nnoremap >> >>
 nnoremap << <<
+vnoremap > >gv
+vnoremap < <gv
 " Tab outside insert mode
 "nnoremap <Tab> >>
 "vnoremap <Tab> >gv " Disable for Snipmate compatibility
@@ -397,8 +422,8 @@ nnoremap <C-!> !
 " Turn off highlighting with <C-L> (redraw screen)
 nnoremap <C-L> :nohlsearch<CR><C-L>
 
-" Autocomplete on Ctrl-F
-inoremap <C-F> <C-X>
+" To end of word in insert mode
+inoremap <C-F> <Esc>ea
 
 " autocomplete with Ctrl+Space
 " inoremap <C-Space> <C-X><C-U><C-R>=pumvisible() ? "\<lt>Down>" : ""<CR>
