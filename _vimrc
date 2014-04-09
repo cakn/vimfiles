@@ -54,6 +54,7 @@ set relativenumber
 set showcmd
 set ruler
 set laststatus=2
+set showbreak=…
 
 set autoindent
 set cindent
@@ -483,6 +484,10 @@ nnoremap <Leader>dts :call <SID>deleteTrailingSpaces()<CR>
 
 " Run ctags
 nnoremap <Leader>xctag :!ctags-exuberant *.cpp *.h<CR>
+
+" Run python on selected
+nnoremap <Leader>py :.!python<CR>
+vnoremap <Leader>py :!python<CR>
 
 " Insert fold marker
 nnoremap <Leader>imo o{{{<Esc>:normal gc<CR>

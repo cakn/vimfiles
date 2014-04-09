@@ -25,3 +25,9 @@
 [submodule "bundle/syntastic"]
 	path = bundle/syntastic
 	url = https://github.com/scrooloose/syntastic
+[submodule "bundle/colorizer"]
+	path = bundle/colorizer
+	url = https://github.com/lilydjwg/colorizer.git
+[submodule "bundle/HiLinkTrace"]
+	path = bundle/HiLinkTrace
+	url = https://github.com/gerw/vim-HiLinkTrace.git

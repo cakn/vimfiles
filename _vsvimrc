@@ -4,6 +4,9 @@ source ~\vimfiles\ftplugin\cpp.vim
 " use the relative number plugin
 set nonumber
 
+" allow normal backspace
+set backspace=indent,eol,start
+
 iunmap a
 iunmap b
 iunmap c
@@ -50,10 +53,12 @@ nnoremap dl <Right>v<Esc><Right>?\<\|\L<CR>v/\>\|\L<CR><Left><Esc>:noh<CR>gvd
 nnoremap cj <Right>?[,(]<CR>/[^\s]<CR>v/[,)]<CR><Left><Esc>:noh<CR>gvc
 nnoremap dj <Right>?[,(]<CR><Right>v/[,)]<CR><Left><Esc>:noh<CR>gvd
 
+" wj as <Esc> and remove blank line at cursor 
 inoremap wj <Esc>:.g/^\s*$/d<CR>
 vnoremap wj <Esc>:.g/^\s*$/d<CR>
 xnoremap wj <Esc>:.g/^\s*$/d<CR>
-" Ctrl+s escape
+
+" Ctrl+s also escapes
 nnoremap <C-S> :vsc File.SaveSelectedItems<CR>
 inoremap <C-S> <Esc>:.g/^\s*$/d<CR>:vsc File.SaveSelectedItems<CR>
 
@@ -61,7 +66,7 @@ nnoremap gl :vsc Edit.CharTranspose<CR>h
 
 " implement gi and g;
 nnoremap gi :vsc View.NavigateBackward<CR>i
-nnoremap g; :vsc View.NavigateForward<CR>
+nnoremap g; :vsc View.NavigateBackward<CR>
 
 " nnoremap <A-h> "xdiwdwep"xp
 nnoremap <A-h> <Right>bi!!!<Esc>?\w<CR>bmzi!!!<Esc>b:s/!!!\(\w\+\)\(\W\+\)!!!\(\w\+\)/\3\2\1/<CR>:noh<CR>`z
@@ -94,6 +99,7 @@ inoremap <C-o> <Tab>
 
 nnoremap go <Right>bi;vsc Edit.GoToDefinition <Esc>F;vEEE<Left>"zyvEE<Right>"_d@z<CR><CR><CR>
 nnoremap go :vsc Edit.PeekDefinition<CR>
+nnoremap gt :vsc Window.KeepTabOpen<CR>
 nnoremap gf :vsc Edit.OpenFile<CR>
 nnoremap <C-O> :vsc View.NavigateBackward<CR>
 nnoremap <C-I> :vsc View.NavigateForward<CR>
@@ -160,6 +166,8 @@ nnoremap <Leader>tx :vsc TestExplorer.RunAllTests<CR>
 nnoremap <Leader>ta :vsc TestExplorer.RunAllTests<CR>
 nnoremap <Leader>tf :vsc TestExplorer.RunFailedTests<CR>
 nnoremap <Leader>tn :vsc TestExplorer.RunNotRunTests<CR>
+nnoremap <Leader>td :vsc TestExplorer.DebugAllTestsInContext<CR>
+nnoremap <Leader>tc :vsc TestExplorer.CancelTests<CR>
 
 " Project
 nnoremap <Leader>pac :vsc Project.AddClass<CR><CR>
