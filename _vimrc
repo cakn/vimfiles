@@ -1,6 +1,5 @@
 set nocompatible
 
-
 " Removes all autocmds
 " autocmd!
 
@@ -26,6 +25,8 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " Highlight word cursor is on
 autocmd CursorMoved * exe printf('match CursorSelect /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 " }}}
+
+au BufNewFile,BufRead *.jsfl set filetype=javascript
 
 " Settings {{{
 " Prevent exploits
@@ -180,6 +181,8 @@ inoremap ~~ `
 " Change : to ; for convenience
 noremap ; :
 nnoremap , ;
+noremap q; q:
+noremap @; @:
 
 " Swap jump to marks
 noremap ' `
@@ -284,11 +287,6 @@ inoremap <C-CR> <C-o>o
 inoremap wj <Esc>:call <SID>escape()<CR>
 vnoremap wj <Esc>:call <SID>escape()<CR>
 xnoremap wj <Esc>:call <SID>escape()<CR>
-" Disable q to prevent accidental recording
-" nnoremap qr <Nop>
-" nnoremap q <Nop>
-" nnoremap <A-q> q
-" nnoremap q q
 
 " Copy line and increment number
 nnoremap <A-a> mzyy<C-A>P`z
@@ -627,5 +625,9 @@ nnoremap <Leader>gsl :FSSwitchRight<CR>
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 " nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files -start-insert file_rec/async:!<cr>
 nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files -start-insert file<cr>
+
+" Tabularize
+nnoremap <leader>aa :Tabularize /=<CR>
+vnoremap <leader>aa :Tabularize /=<CR>
 
 nnoremap <Leader>js :%s /\n//<CR>:%s /\(nA\)/ \1\r/g<CR>
