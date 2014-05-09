@@ -31,3 +31,9 @@
 [submodule "bundle/HiLinkTrace"]
 	path = bundle/HiLinkTrace
 	url = https://github.com/gerw/vim-HiLinkTrace.git
+[submodule "bundle/tabular"]
+	path = bundle/tabular
+	url = https://github.com/godlygeek/tabular
+[submodule "bundle/YouCompleteMe"]
+	path = bundle/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe.git
