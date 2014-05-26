@@ -3,8 +3,11 @@ set nocompatible
 " Removes all autocmds
 " autocmd!
 
+let g:pathogen_disabled = []
+" call add( g:pathogen_disabled, 'YouCompleteMe' )
+
 execute pathogen#infect()
-Helptags
+" Helptags
 
 filetype plugin indent on
 syntax enable
@@ -603,8 +606,9 @@ autocmd FileType autohotkey setlocal commentstring=;%s
 " YouCompleteMe
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 if has("win32")
-	let g:ycm_path_to_python_interpreter = 'C:/Python27/pythonw.exe'
+	let g:ycm_path_to_python_interpreter = 'D:/Python27/pythonw.exe'
 endif
+let g:loaded_youcompleteme = 1
 
 "Syntastic
 let g:syntastic_enable_signs = 0
