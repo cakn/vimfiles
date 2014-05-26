@@ -1,0 +1,8 @@
+Install cmake and is on path
+Make sure msbuild is on path
+Right python is on path
+Make sure to run "git submodule update --init --recursive" in YCM (Startup error messages in vim)
+Check for conflicting msvcr90.dll ( Runtime Error! )
+Check vimrc if we're setting python path wrong
+
+Install LLVM/Clang and libclang.dll is in path (Not sure if this helps)
