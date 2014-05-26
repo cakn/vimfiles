@@ -3,6 +3,7 @@ set nocompatible
 " Removes all autocmds
 " autocmd!
 
+
 execute pathogen#infect()
 Helptags
 
@@ -40,6 +41,7 @@ set guifont=Ubuntu_Mono_derivative_Powerlin:h12:cANSI
 
 " Make sure colorscheme is set first
 highlight CursorSelect ctermbg=0 guibg=#073642
+highlight MatchParen ctermbg=7 guibg=#eee8d5
 
 if has("gui_running")
 	set background=light
@@ -114,13 +116,23 @@ set lazyredraw
 set encoding=utf-8
 " Settings }}}
 
+
 " Text Objects {{{
 " camelCase text object
-vnoremap al :<C-U>let @z=@/<CR><Right>?\<\\|\L<CR>v/\>\\|\L<CR>:<C-U>let @/=@z<CR>gv
-vnoremap il :<C-U>let @z=@/<CR><Right>?\<\\|\L<CR>v/\>\\|\L<CR><Left>:<C-U>let @/=@z<CR>gv
-onoremap al :normal val<CR>
-onoremap il :normal vil<CR>
-onoremap l :normal vil<CR>
+" vnoremap al :<C-U>let @z=@/<CR><Right>?\<\\|\L<CR>v/\>\\|\L<CR>:<C-U>let @/=@z<CR>gv
+" vnoremap il :<C-U>let @z=@/<CR><Right>?\<\\|\L<CR>v/\>\\|\L<CR><Left>:<C-U>let @/=@z<CR>gv
+" onoremap al :normal val<CR>
+" onoremap il :normal vil<CR>
+" onoremap l :normal vil<CR>
+
+" CamelCaseMotion plugin
+silent! unmap ,w
+silent! unmap ,b
+silent! unmap ,e
+omap il <Plug>CamelCaseMotion_iw
+xmap il <Plug>CamelCaseMotion_iw
+omap l <Plug>CamelCaseMotion_iw
+omap <silent> iw <Plug>CamelCaseMotion_iw
 
 onoremap y l
 
@@ -141,8 +153,6 @@ vnoremap ij <Esc>:let @z=@/<CR><Left>?[(,]?e<CR>v/[,)]<CR>o<Esc>/\(\s*\zs[^,]*\z
 onoremap aj :normal vaj<CR>
 onoremap ij :normal vij<CR>
 onoremap j :normal vij<CR>
-
-onoremap y l
 
 " Function text object
 vnoremap iu <Esc>[[v%<Left>o<Right>
@@ -247,22 +257,22 @@ nnoremap v <C-V>
 inoremap <C-V> <C-R>+
 inoremap <A-v> <C-V>
 inoremap v <C-V>
-cnoremap <C-V> <C-R>"
+cnoremap <C-V> <C-R>+
 cnoremap <A-v> <C-V>
 cnoremap v <C-V>
 vnoremap <C-V> "+P
 
 " yank pasting
-nnoremap py "0P
-nnoremap pc "+P
-nnoremap pp P
+nnoremap py "0p
+nnoremap pc "+p
+nnoremap pp p
 inoremap <C-P>c <C-O>"+P
 inoremap <C-P><C-C> <C-O>"+P
 inoremap <C-P>y <C-O>"0P
 inoremap <C-P><C-Y> <C-O>"0P
-nnoremap Py "0p
-nnoremap Pc "+p
-nnoremap PP p
+nnoremap Py "0P
+nnoremap Pc "+P
+nnoremap PP P
 
 " Replace word with last yanked
 nnoremap pw "_ciw<C-R>0<Esc>
@@ -372,6 +382,7 @@ inoremap <C-W> <C-O>^
 inoremap <C-R> <Del>
 inoremap <A-r> <C-R>
 inoremap r <C-R>
+cnoremap <A-r> <C-R>
 
 "Shift j k to move quickly up and down
 nnoremap <S-J> L3j
@@ -599,6 +610,7 @@ silent! nunmap gcc
 nmap gc :normal! mz<CR><Plug>CommentaryLine:normal! `z<CR>
 xmap gc <Esc>:normal! mzgv<CR><Plug>Commentary:normal! `z<CR>
 autocmd FileType autohotkey setlocal commentstring=;%s
+autocmd FileType actionscript setlocal commentstring=//%s
 
 " YouCompleteMe
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
