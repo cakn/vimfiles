@@ -1,4 +1,5 @@
-git clone https://github.com/cakn/vimfiles.git ~/.vim
+git clone "https://github.com/cakn/vimfiles.git" ~/.vim
+(Note: use quotes around url for cygwin git )
 ln -s ~/.vim/_vimrc ~/.vimrc
 ln -s ~/.vim/_gvimrc ~/.gvimrc
 
