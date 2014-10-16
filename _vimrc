@@ -35,21 +35,29 @@ au BufNewFile,BufRead *.jsfl set filetype=javascript
 " Prevent exploits
 set nomodeline
 
-set background=dark
 set t_Co=256
-colorscheme solarized
 "set guifont=Lucida_Sans_Typewriter:h12:cANSI
 " set guifont=Ubuntu_Mono_derivative_Powerlin:h12:cANSI
 set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
 
-" Make sure colorscheme is set first
-highlight CursorSelect ctermbg=0 guibg=#073642
-highlight MatchParen ctermbg=7 guibg=#eee8d5
+" Make sure colorscheme is set first before highlight
 
-if has("gui_running")
-	set background=light
-	highlight CursorSelect ctermbg=7 guibg=#eee8d5
-endif
+" colorscheme solarized
+" highlight CursorSelect ctermbg=0 guibg=#073642
+" highlight MatchParen ctermbg=7 guibg=#eee8d5
+" set background=dark
+" if has("gui_running")
+	" set background=light
+	" highlight CursorSelect ctermbg=7 guibg=#eee8d5
+" endif
+
+" let g:molokai_original=1
+let g:rehash256=1
+set background=dark
+colorscheme molokai
+highlight CursorSelect ctermbg=0 guibg=#333333
+" highlight MatchParen ctermbg=7 guibg=#eee8d5
+
 
 set autoread
 
@@ -594,9 +602,9 @@ endfun
 nnoremap <space> :<C-U>call InsertChar#insert(v:count1)<CR>
 
 " Airline
-if has("gui_running")
-	let g:airline_powerline_fonts=1
-endif
+" if has("gui_running")
+" 	let g:airline_powerline_fonts=1
+" endif
 
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#left_sep = ' '
