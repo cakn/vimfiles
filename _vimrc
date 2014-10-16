@@ -39,7 +39,8 @@ set background=dark
 set t_Co=256
 colorscheme solarized
 "set guifont=Lucida_Sans_Typewriter:h12:cANSI
-set guifont=Ubuntu_Mono_derivative_Powerlin:h12:cANSI
+" set guifont=Ubuntu_Mono_derivative_Powerlin:h12:cANSI
+set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
 
 " Make sure colorscheme is set first
 highlight CursorSelect ctermbg=0 guibg=#073642
@@ -593,7 +594,10 @@ endfun
 nnoremap <space> :<C-U>call InsertChar#insert(v:count1)<CR>
 
 " Airline
-let g:airline_powerline_fonts=1
+if has("gui_running")
+	let g:airline_powerline_fonts=1
+endif
+
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
@@ -609,6 +613,10 @@ nnoremap <Leader>rls :call ReloadAllSnippets()<CR>
 
 " Commentary
 silent! nunmap gcc
+" Append motion past gc to comment all lines past motion
+silent! nunmap gc
+"Uncomment current and adjacent commented lines
+silent! nunmap gcu
 nmap gc :normal! mz<CR><Plug>CommentaryLine:normal! `z<CR>
 xmap gc <Esc>:normal! mzgv<CR><Plug>Commentary:normal! `z<CR>
 autocmd FileType autohotkey setlocal commentstring=;%s
