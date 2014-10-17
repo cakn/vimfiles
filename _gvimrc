@@ -3,3 +3,10 @@ set guioptions-=m
 
 " Airline
 let g:airline_powerline_fonts=1
+
+" Set window size
+if has("gui_running")
+	" GUI is running or is about to start.
+	" Maximize gvim window (for an alternative on Windows, see simalt below).
+	set lines=50 columns=100
+endif
