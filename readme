@@ -22,3 +22,7 @@ Add submodule
 git submodule add URL bundle/name
 git add .
 git commit -m "install submodule"
+
+
+Bash links
+ln -s ~/.vim/{.bashrc,.inputrc,.dir_colors,.startxwinrc} ~
