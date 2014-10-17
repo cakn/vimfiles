@@ -17,3 +17,8 @@ mklink %userprofile%\_vsvimrc %userprofile%\vimfiles\_vsvimrc
 
 Update all submodules
 git submodule foreach git pull origin master
+
+Add submodule
+git submodule add URL bundle/name
+git add .
+git commit -m "install submodule"
