@@ -35,28 +35,36 @@ au BufNewFile,BufRead *.jsfl set filetype=javascript
 " Prevent exploits
 set nomodeline
 
-set t_Co=256
+" set term=xterm
+" set t_Co=256
+" let &t_AB="\e[48;5;%dm"
+" let &t_AF="\e[38;5;%dm"
 "set guifont=Lucida_Sans_Typewriter:h12:cANSI
 " set guifont=Ubuntu_Mono_derivative_Powerlin:h12:cANSI
 set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
 
 " Make sure colorscheme is set first before highlight
 
-" colorscheme solarized
-" highlight CursorSelect ctermbg=0 guibg=#073642
-" highlight MatchParen ctermbg=7 guibg=#eee8d5
-" set background=dark
-" if has("gui_running")
-	" set background=light
-	" highlight CursorSelect ctermbg=7 guibg=#eee8d5
-" endif
-
-" let g:molokai_original=1
-let g:rehash256=1
-set background=dark
-colorscheme molokai
-highlight CursorSelect ctermbg=0 guibg=#333333
-" highlight MatchParen ctermbg=7 guibg=#eee8d5
+if !has("gui_running")
+	set t_Co=16
+	let g:solarized_termcolors=16
+	let g:solarized_termtrans=1
+	set background=dark
+	colorscheme solarized
+	highlight CursorSelect ctermbg=0 guibg=#073642
+	highlight MatchParen ctermbg=7 guibg=#eee8d5
+	if has("gui_running")
+		set background=light
+		highlight CursorSelect ctermbg=7 guibg=#eee8d5
+	endif
+else
+	let g:molokai_original=1
+	let g:rehash256=1
+	set background=dark
+	colorscheme molokai
+	highlight CursorSelect ctermbg=0 guibg=#333333
+	" highlight MatchParen ctermbg=7 guibg=#eee8d5
+endif
 
 
 set autoread
