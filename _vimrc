@@ -35,10 +35,6 @@ au BufNewFile,BufRead *.jsfl set filetype=javascript
 " Prevent exploits
 set nomodeline
 
-" set term=xterm
-" set t_Co=256
-" let &t_AB="\e[48;5;%dm"
-" let &t_AF="\e[38;5;%dm"
 "set guifont=Lucida_Sans_Typewriter:h12:cANSI
 " set guifont=Ubuntu_Mono_derivative_Powerlin:h12:cANSI
 set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
@@ -46,10 +42,16 @@ set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
 " Make sure colorscheme is set first before highlight
 
 if !has("gui_running")
+	" Good enough settings for cygwin with conemu
+	set term=xterm-256
 	set t_Co=16
-	let g:solarized_termcolors=16
-	let g:solarized_termtrans=1
+	" set term=cygwin
+	" let g:solarized_termcolors=16
+	" let g:solarized_termtrans=1
 	set background=dark
+	let g:solarized_bold=0
+	let g:solarized_italic=0
+	let g:solarized_underline=0
 	colorscheme solarized
 	highlight CursorSelect ctermbg=0 guibg=#073642
 	highlight MatchParen ctermbg=7 guibg=#eee8d5
