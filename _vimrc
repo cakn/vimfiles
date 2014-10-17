@@ -405,10 +405,10 @@ inoremap <C-E> <C-O>$
 inoremap <C-W> <C-O>^
 
 " Delete character in insert mode
-inoremap <C-R> <Del>
-inoremap <A-r> <C-R>
-inoremap r <C-R>
-cnoremap <A-r> <C-R>
+inoremap <C-D> <Del>
+" inoremap <A-r> <C-R>
+" inoremap r <C-R>
+" cnoremap <A-r> <C-R>
 
 "Shift j k to move quickly up and down
 nnoremap <S-J> L3j
