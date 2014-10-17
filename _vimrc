@@ -198,6 +198,11 @@ onoremap > i>
 " Text Objects }}}
 
 " Mappings {{{
+
+" Mouse mappings
+" doubleclick to open fold
+map <2-LeftMouse> za
+
 " let home and end keys to work in screen
 map [1~ <Home>
 map [4~ <End>
