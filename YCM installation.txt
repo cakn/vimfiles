@@ -6,3 +6,29 @@ Check for conflicting msvcr90.dll ( Runtime Error! )
 Check vimrc if we're setting python path wrong
 
 Install LLVM/Clang and libclang.dll is in path (Not sure if this helps)
+
+Cygwin instructions
+Cygwin packages of python, gcc4, and cmake, and regular GNU make
+Clang
+LLVM?
+
+In ~/.vim/bundle/YouCompleteMe/third_party/ycmd/build.sh add cmake_args to the section
+cmake_args=""
+omnisharp_completer=false
+for flag in $@; do
+
+Don't use this one
+-DEXTERNAL_LIBCLANG_PATH=/usr/lib/libclang.dll.a
+Might not need these args
+-DPYTHON_INCLUDE_DIR=/usr/include/python2.7 -DPYTHON_LIBRARY=/usr/lib/libpython2.7.dll.a
+
+LONG_BIT error
+Modify wrap_python.hpp in boost python cpp/BoostParts/boost/python/detail/wrap_python.hpp
+ // Some things we need in order to get Python.h to work with compilers other
+ // than MSVC on Win32
+ //
+-#if defined(_WIN32) || defined(__CYGWIN__)
++#if defined(_WIN32)
+
+
+Run ./install.sh from base directory
