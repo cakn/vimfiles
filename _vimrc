@@ -633,22 +633,23 @@ vmap <C-o> <Plug>snipMateNextOrTrigger
 nnoremap <Leader>rls :call ReloadAllSnippets()<CR>
 
 " Commentary
-silent! nunmap gcc
-" Append motion past gc to comment all lines past motion
-silent! nunmap gc
-"Uncomment current and adjacent commented lines
-silent! nunmap gcu
+" changed plugin file with the binds commentary plugin runs after vimrc
+" silent! nunmap gcc
+" silent! nunmap gc
+" silent! nunmap gcu
 nmap gc :normal! mz<CR><Plug>CommentaryLine:normal! `z<CR>
 xmap gc <Esc>:normal! mzgv<CR><Plug>Commentary:normal! `z<CR>
 autocmd FileType autohotkey setlocal commentstring=;%s
 autocmd FileType actionscript setlocal commentstring=//%s
 
 " YouCompleteMe
-let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-if has("win32")
-	let g:ycm_path_to_python_interpreter = 'D:/Python27/pythonw.exe'
-endif
-let g:loaded_youcompleteme = 1
+" let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+" if has("win32")
+" 	let g:ycm_path_to_python_interpreter = 'D:/Python27/pythonw.exe'
+" endif
+" if !has("gui_running")
+	let g:loaded_youcompleteme = 1
+" endif
 
 "Syntastic
 let g:syntastic_enable_signs = 0
