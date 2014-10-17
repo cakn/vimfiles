@@ -496,10 +496,11 @@ nnoremap <Leader>en :tabnew ~/vimNotes.txt<CR>
 
 "Bash rc files
 nnoremap <Leader>eb :tabnew ~/.bashrc<CR>
-nnoremap <Leader>ei :tabnew ~/.inputrc<CR>
+nnoremap <Leader>ebi :tabnew ~/.inputrc<CR>
 
 " File plugin files
-nnoremap <Leader>ef :tabnew ~/vimfiles/ftplugin<CR>
+nnoremap <Leader>ef :tabnew ~/.vim/ftplugin<CR>
+nnoremap <Leader>eap :tabnew ~/.vim/after/plugin<CR>
 
 if( has("win32") )
 	nnoremap <Leader>ehk :tabnew ~/Documents/Autohotkey/Autohotkey.ahk<CR>
@@ -625,20 +626,12 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 " let g:airline#extensions#whitespace#checks = [ 'trailing' ]
 
 " Snipmate
-" Disable this hotkey
-silent! iunmap <C-R><Tab>
 imap <C-o> <Esc>a<Plug>snipMateNextOrTrigger
 vmap <C-o> <Plug>snipMateNextOrTrigger
 " Reload snippets
 nnoremap <Leader>rls :call ReloadAllSnippets()<CR>
 
 " Commentary
-" changed plugin file with the binds commentary plugin runs after vimrc
-" silent! nunmap gcc
-" silent! nunmap gc
-" silent! nunmap gcu
-nmap gc :normal! mz<CR><Plug>CommentaryLine:normal! `z<CR>
-xmap gc <Esc>:normal! mzgv<CR><Plug>Commentary:normal! `z<CR>
 autocmd FileType autohotkey setlocal commentstring=;%s
 autocmd FileType actionscript setlocal commentstring=//%s
 
