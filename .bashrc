@@ -130,6 +130,12 @@ alias ga='git add'
 alias gap='git add -p'
 
 alias start='cygstart'
+
+alias lvst='f_livestream'
+
+f_livestream(){
+	livestreamer twitch.tv/$1 best &
+}
 # Umask
 #
 # /etc/profile sets 022, removing write perms to group + others.
