@@ -498,14 +498,15 @@ nnoremap <Leader>en :tabnew ~/vimNotes.txt<CR>
 
 "Bash rc files
 nnoremap <Leader>eb :tabnew ~/.bashrc<CR>
+nnoremap <Leader>ebb :tabnew ~/.bashrc<CR>
 nnoremap <Leader>ebi :tabnew ~/.inputrc<CR>
 
 " File plugin files
 nnoremap <Leader>ef :tabnew ~/.vim/ftplugin<CR>
 nnoremap <Leader>eap :tabnew ~/.vim/after/plugin<CR>
 
-if( has("win32") )
-	nnoremap <Leader>ehk :tabnew ~/Documents/Autohotkey/Autohotkey.ahk<CR>
+if( has("win32") || has("win32unix") )
+	nnoremap <Leader>ehk :tabnew ~/Autohotkey.ahk<CR>
 	nnoremap <Leader>es :tabnew ~/_vsvimrc<CR>
 endif
 
@@ -694,6 +695,10 @@ let g:neocomplete#sources#syntax#min_keyword_length = 3
 " endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" inoremap <expr><Tab>
+" 		\ neocomplete#complete_common_string() != '' ?
+" 		\   neocomplete#complete_common_string() :
+" 		\ pumvisible() ? "\<C-n>" : "\<Tab>"
 " <C-h>, <BS>: close popup and delete backword char.
 " inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 " inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
