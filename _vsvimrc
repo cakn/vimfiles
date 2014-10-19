@@ -112,14 +112,14 @@ nnoremap bp gT
 inoremap <C-E> <Esc>$a
 
 " Window navigation
-" nnoremap wh :vsc TabGroupJumper.Connect.JumpLeft<CR>
-" nnoremap wl :vsc TabGroupJumper.Connect.JumpRight<CR>
-" nnoremap wk :vsc TabGroupJumper.Connect.JumpUp<CR>
-" nnoremap wj :vsc TabGroupJumper.Connect.JumpDown<CR>
-nnoremap wh :vsc vsExt.GotoLeftDocument<CR>
-nnoremap wl :vsc vsExt.GotoRightDocument<CR>
-nnoremap wk :vsc vsExt.GotoUpDocument<CR>
-nnoremap wj :vsc vsExt.GotoDownDocument<CR>
+nnoremap wh :vsc TabGroupJumper.Connect.JumpLeft<CR>
+nnoremap wl :vsc TabGroupJumper.Connect.JumpRight<CR>
+nnoremap wk :vsc TabGroupJumper.Connect.JumpUp<CR>
+nnoremap wj :vsc TabGroupJumper.Connect.JumpDown<CR>
+" nnoremap wh :vsc vsExt.GotoLeftDocument<CR>
+" nnoremap wl :vsc vsExt.GotoRightDocument<CR>
+" nnoremap wk :vsc vsExt.GotoUpDocument<CR>
+" nnoremap wj :vsc vsExt.GotoDownDocument<CR>
 nnoremap wth :vsc Window.MovetoPreviousTabGroup<CR>
 nnoremap wtl :vsc Window.MovetoNextTabGroup<CR>
 nnoremap wc :close<CR>
