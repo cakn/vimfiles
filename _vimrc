@@ -27,9 +27,11 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Highlight word cursor is on
 autocmd CursorMoved * exe printf('match CursorSelect /\V\<%s\>/', escape(expand('<cword>'), '/\'))
-" }}}
 
 au BufNewFile,BufRead *.jsfl set filetype=javascript
+
+" }}}
+
 
 " Settings {{{
 " Prevent exploits
@@ -60,12 +62,14 @@ if !has("gui_running")
 		highlight CursorSelect ctermbg=7 guibg=#eee8d5
 	endif
 else
-	let g:molokai_original=1
-	let g:rehash256=1
-	set background=dark
-	colorscheme molokai
+	colorscheme wombat
 	highlight CursorSelect ctermbg=0 guibg=#333333
-	" highlight MatchParen ctermbg=7 guibg=#eee8d5
+
+	" let g:molokai_original=1
+	" let g:rehash256=1
+	" set background=dark
+	" colorscheme molokai
+	" highlight CursorSelect ctermbg=0 guibg=#333333
 endif
 
 
