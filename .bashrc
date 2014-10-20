@@ -136,10 +136,54 @@ alias gap='git add -p'
 alias start='cygstart'
 
 alias lvst='f_livestream'
-
 f_livestream(){
 	livestreamer twitch.tv/$1 best &
 }
+
+# start program {{{
+alias sp='start_program'
+_start_program() 
+{
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    # prev="${COMP_WORDS[COMP_CWORD-1]}"
+    opts="vlc"
+
+    # if [[ ${cur} == -* ]] ; then
+        COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+        return 0
+    # fi
+}
+start_program(){
+	case "$1" in
+		vlc)
+			cygstart 'D:\Program Files\VLC\vlc-2.1.5\vlc.exe'
+			;;
+		*)
+			echo 'Program not found'
+			;;
+	esac
+}
+complete -o nospace -F _start_program start_program 
+complete -o nospace -F _start_program sp 
+# }}}
+
+# function for moving up multiple times (up 4 to move up 4 times)
+# up(){
+# 	local d=""
+# 	limit=$1
+# 	for ((i=1 ; i <= limit ; i++))
+# 	do
+# 		d=$d/..
+# 	done
+# 	d=$(echo $d | sed 's/^\///')
+# 	if [ -z "$d" ]; then
+# 		d=..
+# 	fi
+# 	cd $d
+# }
+
 # Umask
 #
 # /etc/profile sets 022, removing write perms to group + others.
