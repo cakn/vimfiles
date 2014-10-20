@@ -286,7 +286,7 @@ nnoremap yy yy
 nnoremap <C-V> "+P
 nnoremap <A-v> <C-V>
 nnoremap v <C-V>
-inoremap <C-V> <C-R>+
+inoremap <C-V> <C-O>:set paste<CR><C-R>+<C-O>:set nopaste<CR>
 inoremap <A-v> <C-V>
 inoremap v <C-V>
 cnoremap <C-V> <C-R>+
