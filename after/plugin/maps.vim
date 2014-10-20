@@ -1,3 +1,8 @@
+" CamelCaseMotion plugin
+silent! unmap ,w
+silent! unmap ,b
+silent! unmap ,e
+
 " Commentary
 silent! nunmap gcc
 silent! nunmap gcu
