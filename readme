@@ -15,20 +15,5 @@ mklink %userprofile%\_vimrc %userprofile%\vimfiles\_vimrc
 mklink %userprofile%\_gvimrc %userprofile%\vimfiles\_gvimrc
 mklink %userprofile%\_vsvimrc %userprofile%\vimfiles\_vsvimrc
 
-Update all submodules
-git submodule foreach git pull origin master
-
-Add submodule
-git submodule add URL bundle/name
-git add .
-git commit -m "install submodule"
-
-Delete submodule
-git submodule deinit asubmodule    
-git rm asubmodule
-# Note: asubmodule (no trailing slash)
-# or, if you want to leave it in your working tree
-git rm --cached asubmodule
-
 Bash links
 ln -s ~/.vim/{.bashrc,.inputrc,.dir_colors,.startxwinrc} ~
