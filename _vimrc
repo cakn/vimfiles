@@ -7,7 +7,7 @@ let g:pathogen_disabled = []
 " call add( g:pathogen_disabled, 'YouCompleteMe' )
 
 execute pathogen#infect()
-" Helptags
+Helptags
 
 filetype plugin indent on
 syntax enable
@@ -513,7 +513,8 @@ nnoremap <Leader>eap :tabnew ~/.vim/after/plugin<CR>
 
 " Plugins
 " Snippet files
-nnoremap <Leader>eps :tabnew ~/.vim/bundle/vim-snippets/UltiSnips/<CR>
+" nnoremap <Leader>eps :tabnew ~/.vim/bundle/vim-snippets/UltiSnips/<CR>
+nnoremap <Leader>eps :UltiSnipsEdit<CR>
 
 if( has("win32") || has("win32unix") )
 	nnoremap <Leader>ehk :tabnew ~/Autohotkey.ahk<CR>
@@ -586,12 +587,12 @@ endif
 
 "==================FUNCTIONS ====================
 " VsVim has trouble parsing this. Moved down here so it would source all the mappings
-function! <SID>escape()
+function! s:escape()
 	silent! .g/^\s*$/d
 endfunction
 
 " Fix trailing spaces
-function! <SID>deleteTrailingSpaces()
+function! s:deleteTrailingSpaces()
 	let l:winview = winsaveview()
 	%s/\s\+$//e
 	call winrestview(l:winview)
@@ -614,7 +615,7 @@ endfunction
 " Increase numbers in next line to see more colors.
 command! VimColorTest call VimColorTest('vim-color-test.tmp', 12, 16)
 
-fun! <SID>toggleBackground()
+fun! s:toggleBackground()
 	if( &background == "dark" )
 		set background=light
 		highlight CursorSelect ctermbg=7 guibg=#eee8d5
@@ -688,7 +689,6 @@ function! g:UltiSnips_Complete()
     return ""
 endfunction
 
-" let g:UltiSnipsSnippetDirectories=["ultisnips snippets"]
 let g:UltiSnipsExpandTrigger = '<Tab>'
 " let g:UltiSnipsListSnippets = '<C-b>'
 let g:UltiSnipsJumpForwardTrigger = '<Tab>'
