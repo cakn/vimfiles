@@ -634,12 +634,6 @@ let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 " let g:airline#extensions#whitespace#checks = [ 'trailing' ]
 
-" Snipmate
-imap <C-o> <Esc>a<Plug>snipMateNextOrTrigger
-vmap <C-o> <Plug>snipMateNextOrTrigger
-" Reload snippets
-nnoremap <Leader>rls :call ReloadAllSnippets()<CR>
-
 " Commentary
 autocmd FileType autohotkey setlocal commentstring=;%s
 autocmd FileType actionscript setlocal commentstring=//%s
