@@ -19,8 +19,8 @@ syntax enable
 " Restore last cursor position of file
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
-" Enable marker folds for .vimrc files
-autocmd FileType vim setlocal foldmethod=marker
+" Enable marker folds for .vimrc files and shell files
+autocmd FileType vim,sh setlocal foldmethod=marker
 
 " Disable autocomment
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -531,8 +531,8 @@ nnoremap <Leader>py :.!python<CR>
 vnoremap <Leader>py :!python<CR>
 
 " Insert fold marker
-nnoremap <Leader>imo o{{{<Esc>:normal gc<CR>
-nnoremap <Leader>imc o}}}<Esc>:normal gc<CR>
+nnoremap <Leader>ifo o{{{<Esc>:normal gc<CR>
+nnoremap <Leader>ifc o}}}<Esc>:normal gc<CR>
 
 if has("win32")
 	" Open directory of file in explorer
