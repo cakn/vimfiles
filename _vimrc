@@ -511,6 +511,10 @@ nnoremap <Leader>ebi :tabnew ~/.inputrc<CR>
 nnoremap <Leader>ef :tabnew ~/.vim/ftplugin<CR>
 nnoremap <Leader>eap :tabnew ~/.vim/after/plugin<CR>
 
+" Plugins
+" Snippet files
+nnoremap <Leader>eps :tabnew ~/.vim/bundle/vim-snippets/UltiSnips/<CR>
+
 if( has("win32") || has("win32unix") )
 	nnoremap <Leader>ehk :tabnew ~/Autohotkey.ahk<CR>
 	nnoremap <Leader>es :tabnew ~/_vsvimrc<CR>
@@ -650,11 +654,6 @@ autocmd FileType actionscript setlocal commentstring=//%s
 "Syntastic
 let g:syntastic_enable_signs = 0
 
-" let g:UltiSnipsExpandTrigger = '<C-b>'
-" let g:UltiSnipsListSnippets = '<C-b>'
-" let g:UltiSnipsJumpForwardTrigger = '<C-b>'
-" let g:UltiSnipsJumpBackwardTrigger = '<C-b>'
-
 " FSwitch
 nnoremap <Leader>g; :FSHere<CR>
 nnoremap <Leader>gh :FSLeft<CR>
@@ -673,7 +672,31 @@ vnoremap <leader>aa :Tabularize /=<CR>
 
 nnoremap <Leader>js :%s /\n//<CR>:%s /\(nA\)/ \1\r/g<CR>
 
-" Neocomplete
+" Ultisnips
+function! g:UltiSnips_Complete()
+    call UltiSnips#ExpandSnippet()
+    if g:ulti_expand_res == 0
+        if pumvisible()
+            return "\<C-n>"
+        else
+            call UltiSnips#JumpForwards()
+            if g:ulti_jump_forwards_res == 0
+               return "\<TAB>"
+            endif
+        endif
+    endif
+    return ""
+endfunction
+
+" let g:UltiSnipsSnippetDirectories=["ultisnips snippets"]
+let g:UltiSnipsExpandTrigger = '<Tab>'
+" let g:UltiSnipsListSnippets = '<C-b>'
+let g:UltiSnipsJumpForwardTrigger = '<Tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<S-Tab>'
+au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+inoremap <expr> <CR> pumvisible() ? neocomplete#close_popup() : "\<CR>"
+
+" Neocomplete {{{
 let g:neocomplete#enable_at_startup=1
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
@@ -694,7 +717,7 @@ let g:neocomplete#sources#syntax#min_keyword_length = 3
 " 	"return pumvisible() ? neocomplete#close_popup() : "\<CR>"
 " endfunction
 " <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " inoremap <expr><Tab>
 " 		\ neocomplete#complete_common_string() != '' ?
 " 		\   neocomplete#complete_common_string() :
@@ -735,4 +758,5 @@ endif
 "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+" }}}
 
