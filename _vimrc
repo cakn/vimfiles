@@ -151,13 +151,15 @@ set encoding=utf-8
 " onoremap l :normal vil<CR>
 
 " CamelCaseMotion plugin
-silent! unmap ,w
-silent! unmap ,b
-silent! unmap ,e
-omap il <Plug>CamelCaseMotion_iw
-xmap il <Plug>CamelCaseMotion_iw
-omap l <Plug>CamelCaseMotion_iw
-omap <silent> iw <Plug>CamelCaseMotion_iw
+" ie seems to do what is wanted instead of iw
+" omap il <Plug>CamelCaseMotion_iw
+" xmap il <Plug>CamelCaseMotion_iw
+" omap l <Plug>CamelCaseMotion_iw
+" omap <silent> iw <Plug>CamelCaseMotion_iw
+omap il <Plug>CamelCaseMotion_ie
+xmap il <Plug>CamelCaseMotion_ie
+omap l <Plug>CamelCaseMotion_ie
+omap <silent> iw <Plug>CamelCaseMotion_ie
 
 onoremap y l
 
