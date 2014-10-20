@@ -1,6 +1,7 @@
 # For connection to xserver
 export DISPLAY="localhost:0"
 
+# custom directory colours for solarized conemu
 eval "$(dircolors ~/.dir_colors)"
 
 # To the extent possible under law, the author(s) have dedicated all
@@ -118,9 +119,12 @@ alias grep='grep --color'                     # show differences in colour
 alias ls='ls -hF --color=tty'                 # classify files in colour
 alias dir='ls --color=auto --format=vertical'
 alias vdir='ls --color=auto --format=long'
-alias ll='ls -l'                              # long list
+alias ll='ls -lhA'                              # long list
 alias la='ls -A'                              # all but . and ..
 alias l='ls -CF'                              #
+
+alias ..='cd ..'
+alias ...='cd ../..'
 
 alias gs='git status'
 alias gc='git commit'
