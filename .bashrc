@@ -112,6 +112,7 @@ alias mv='mv -i'
 # alias less='less -r'                          # raw control characters
 # alias whence='type -a'                        # where, of a sort
 alias grep='grep --color'                     # show differences in colour
+alias search='grep -lr --exclude-dir=.svn --exclude=*.swp'
 # alias egrep='egrep --color=auto'              # show differences in colour
 # alias fgrep='fgrep --color=auto'              # show differences in colour
 #
@@ -135,39 +136,7 @@ alias gap='git add -p'
 
 alias start='cygstart'
 
-alias lvst='f_livestream'
-f_livestream(){
-	livestreamer twitch.tv/$1 best &
-}
-
-# start program {{{
-alias sp='start_program'
-_start_program() 
-{
-    local cur prev opts
-    COMPREPLY=()
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    # prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="vlc"
-
-    # if [[ ${cur} == -* ]] ; then
-        COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
-        return 0
-    # fi
-}
-start_program(){
-	case "$1" in
-		vlc)
-			cygstart 'D:\Program Files\VLC\vlc-2.1.5\vlc.exe'
-			;;
-		*)
-			echo 'Program not found'
-			;;
-	esac
-}
-complete -o nospace -F _start_program start_program 
-complete -o nospace -F _start_program sp 
-# }}}
+source ~/priPaths.sh
 
 # function for moving up multiple times (up 4 to move up 4 times)
 # up(){
