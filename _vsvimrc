@@ -39,6 +39,8 @@ iunmap [4~
 " Unmap autobrace complete
 iunmap {<CR>
 
+" Unmap neovim completion
+iunmap <CR>
 
 " Stop from moving when selecting text objects
 set noincsearch
@@ -53,10 +55,10 @@ nnoremap dl <Right>v<Esc><Right>?\<\|\L<CR>v/\>\|\L<CR><Left><Esc>:noh<CR>gvd
 nnoremap cj <Right>?[,(]<CR>/[^\s]<CR>v/[,)]<CR><Left><Esc>:noh<CR>gvc
 nnoremap dj <Right>?[,(]<CR><Right>v/[,)]<CR><Left><Esc>:noh<CR>gvd
 
-" wj as <Esc> and remove blank line at cursor 
-inoremap wj <Esc>:.g/^\s*$/d<CR>
-vnoremap wj <Esc>:.g/^\s*$/d<CR>
-xnoremap wj <Esc>:.g/^\s*$/d<CR>
+" sj as <Esc> and remove blank line at cursor 
+inoremap sj <Esc>:.g/^\s*$/d<CR>
+vnoremap sj <Esc>:.g/^\s*$/d<CR>
+xnoremap sj <Esc>:.g/^\s*$/d<CR>
 
 " Ctrl+s also escapes
 nnoremap <C-S> :vsc File.SaveSelectedItems<CR>
@@ -72,12 +74,14 @@ nnoremap g; :vsc View.NavigateBackward<CR>
 nnoremap <A-h> <Right>bi!!!<Esc>?\w<CR>bmzi!!!<Esc>b:s/!!!\(\w\+\)\(\W\+\)!!!\(\w\+\)/\3\2\1/<CR>:noh<CR>`z
 nnoremap <A-l> :vsc Edit.WordTranspose<CR>
 
-" nnoremap <A-j> :vsc Edit.MoveLineDown<CR>
-" nnoremap <A-k> :vsc Edit.MoveLineUp<CR>
-nnoremap <A-j> :vsc Edit.MoveSelectedLinesDown<CR>
-nnoremap <A-k> :vsc Edit.MoveSelectedLinesUp<CR>
-vnoremap <A-j> :vsc Edit.MoveSelectedLinesDown<CR>
-vnoremap <A-k> :vsc Edit.MoveSelectedLinesUp<CR>
+nnoremap <A-j> :vsc Edit.MoveLineDown<CR>
+nnoremap <A-k> :vsc Edit.MoveLineUp<CR>
+vnoremap <A-j> :vsc Edit.MoveLineDown<CR>gv
+vnoremap <A-k> :vsc Edit.MoveLineUp<CR>gv
+" nnoremap <A-j> :vsc Edit.MoveSelectedLinesDown<CR>
+" nnoremap <A-k> :vsc Edit.MoveSelectedLinesUp<CR>
+" vnoremap <A-j> :vsc Edit.MoveSelectedLinesDown<CR>
+" vnoremap <A-k> :vsc Edit.MoveSelectedLinesUp<CR>
 
 vnoremap w iw
 vnoremap " <ESC>`><Left>a"<ESC>`<i"<ESC>
