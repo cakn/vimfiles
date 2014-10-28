@@ -326,9 +326,9 @@ inoremap <S-CR> <C-o>O
 inoremap <C-CR> <C-o>o
 
 " Quick escape insert mode
-inoremap wj <Esc>:call <SID>escape()<CR>
-vnoremap wj <Esc>:call <SID>escape()<CR>
-xnoremap wj <Esc>:call <SID>escape()<CR>
+inoremap sj <Esc>:call <SID>escape()<CR>
+vnoremap sj <Esc>:call <SID>escape()<CR>
+xnoremap sj <Esc>:call <SID>escape()<CR>
 
 " Copy line and increment number
 nnoremap <A-a> mzyy<C-A>P`z
@@ -547,8 +547,9 @@ if has("win32")
 
 	" Run file
 	nnoremap <Leader>xe :silent :!cd %:p:h:8 && start %:p:8<CR>
+elseif has("win32unix") 
+	nnoremap <silent> <Leader>od :silent :!cygstart '%:p:h:8'<CR>
 endif
-
 nnoremap <Leader>xp :!C:/Python33/python.exe %:p:8<CR>
 
 if has("gui_running")
