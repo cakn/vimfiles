@@ -8,3 +8,4 @@ nnoremap <Leader>pvd :let @z=@/<CR>"xp:'[,']s/\s*=.*/;/\|let @/=@z<CR>qxq
 inoremap {<CR>  {<CR>}<Esc>O
 
 inoremap ; <ESC>A;<CR>
+inoremap <A-;> ;

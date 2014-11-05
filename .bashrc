@@ -113,6 +113,7 @@ alias mv='mv -i'
 # alias whence='type -a'                        # where, of a sort
 alias grep='grep --color'                     # show differences in colour
 alias search='grep -lr --exclude-dir=.svn --exclude=*.swp'
+alias searchf='find . -name '
 # alias egrep='egrep --color=auto'              # show differences in colour
 # alias fgrep='fgrep --color=auto'              # show differences in colour
 #
@@ -126,6 +127,7 @@ alias l='ls -CF'                              #
 
 alias ..='cd ..'
 alias ...='cd ../..'
+alias ....='cd ../../..'
 
 alias gs='git status'
 alias gc='git commit'

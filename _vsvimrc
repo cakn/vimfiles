@@ -102,11 +102,11 @@ inoremap <C-Y> a<Esc>kyw`^a<BS><C-O>p<Right>
 inoremap <C-o> <Tab>
 
 nnoremap go <Right>bi;vsc Edit.GoToDefinition <Esc>F;vEEE<Left>"zyvEE<Right>"_d@z<CR><CR><CR>
-nnoremap go :vsc Edit.PeekDefinition<CR>
+" nnoremap go :vsc Edit.PeekDefinition<CR>
 nnoremap gt :vsc Window.KeepTabOpen<CR>
 nnoremap gf :vsc Edit.OpenFile<CR>
-nnoremap <C-O> :vsc View.NavigateBackward<CR>
-nnoremap <C-I> :vsc View.NavigateForward<CR>
+" nnoremap <C-O> :vsc View.NavigateBackward<CR>
+" nnoremap <C-I> :vsc View.NavigateForward<CR>
 
 " Tab navigation
 nnoremap bn gt
@@ -129,8 +129,14 @@ nnoremap wtl :vsc Window.MovetoNextTabGroup<CR>
 nnoremap wc :close<CR>
 
 " Align Assignments
-nnoremap <Leader>aa :vsc Edit.AlignAssignments<CR>
-vnoremap <Leader>aa :vsc Edit.AlignAssignments<CR>
+" Code align plugin
+nnoremap <Leader>as :vsc Edit.AlignByString<CR>
+vnoremap <Leader>as :vsc Edit.AlignByString<CR>
+nnoremap <Leader>aa :vsc Edit.AlignByEquals<CR>
+vnoremap <Leader>aa :vsc Edit.AlignByEquals<CR>
+
+" nnoremap <Leader>aa :vsc Edit.AlignAssignments<CR>
+" vnoremap <Leader>aa :vsc Edit.AlignAssignments<CR>
 
 " Breakpoints
 " Create/Destroy
@@ -160,8 +166,10 @@ vnoremap gc <Esc>mp`>mx`<mzI//<Esc>^v/[^/]<CR><Left>"zyuo<Esc>"zp:s ?////?gv;s %
 " Debugging / Building
 nnoremap <Leader>mx :vsc Debug.StartWithoutDebugging<CR>
 nnoremap <Leader>md :vsc Debug.Start<CR>
-nnoremap <Leader>mb :vsc Build.BuildSelection<CR>
+" nnoremap <Leader>mb :vsc Build.BuildSelection<CR>
+nnoremap <Leader>mb :vsc Build.BuildSolution<CR>
 nnoremap <Leader>mc :vsc Build.CleanSelection<CR>
+nnoremap <Leader>mf :vsc Build.Compile<CR>
 nnoremap <Leader>dstop :vsc Debug.StopDebugging<CR>
 nnoremap <Leader>dres :vsc Debug.Restart<CR>
 
@@ -185,3 +193,5 @@ nnoremap <Leader>f :vsc Edit.NavigateTo<CR>
 " Alt+j Edit.MoveSelectedLinesDown
 
 nnoremap tt :vsc Window.NextSplitPane<CR>
+
+nnoremap <S-Space> :vsc Edit.QuickInfo<CR>

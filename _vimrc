@@ -209,7 +209,7 @@ onoremap > i>
 
 " Mouse mappings
 " doubleclick to open fold
-map <2-LeftMouse> za
+nmap <2-LeftMouse> za
 
 " let home and end keys to work in screen
 map [1~ <Home>
@@ -425,6 +425,10 @@ vnoremap <S-K> H3k
 " nnoremap <C-J> <S-J>
 " nnoremap <C-K> i<CR><Esc>
 
+"Shift H L to move to front/end of the line
+nnoremap H <Home>
+nnoremap L <End>
+
 " Swap [ and { to move quickly between functions
 nnoremap [ [[
 nnoremap ] ]]
@@ -526,6 +530,9 @@ nnoremap <Leader>tbg :call <SID>toggleBackground()<CR>
 
 " Set directory to currently open file's
 nnoremap <Leader>cd :cd %:h<CR>
+
+" Insert file name
+nnoremap <Leader>ifn i<C-R>=expand("%:t:r")<CR><Esc>
 
 " Fix trailing spaces
 nnoremap <Leader>dts :call <SID>deleteTrailingSpaces()<CR>
