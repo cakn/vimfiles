@@ -62,8 +62,10 @@ if !has("gui_running")
 		highlight CursorSelect ctermbg=7 guibg=#eee8d5
 	endif
 else
-	colorscheme wombat
-	highlight CursorSelect ctermbg=0 guibg=#333333
+	" colorscheme wombat
+	colorscheme Tomorrow
+	" highlight CursorSelect ctermbg=0 guibg=#333333
+	highlight CursorSelect ctermbg=0 guibg=#EAEAEA
 
 	" let g:molokai_original=1
 	" let g:rehash256=1
