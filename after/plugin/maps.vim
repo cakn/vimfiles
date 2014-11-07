@@ -6,8 +6,9 @@ silent! unmap ,e
 " Commentary
 silent! nunmap gcc
 silent! nunmap gcu
-nmap gc :normal! mz<CR><Plug>CommentaryLine:normal! `z<CR>
-xmap gc <Esc>:normal! mzgv<CR><Plug>Commentary:normal! `z<CR>
+
+nnoremap gc mz:execute "normal \<Plug>CommentaryLine"<CR>`z
+xnoremap gc <Esc>mzgv:execute "normal \<Plug>CommentaryLine"<CR>`z
 
 " Snipmate
 silent! iunmap <C-R><Tab>
