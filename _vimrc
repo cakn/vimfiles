@@ -88,9 +88,12 @@ set showbreak=…
 
 set autoindent
 set cindent
-set shiftwidth=4
-set softtabstop=4
-set tabstop=4
+" Tab length for >> indenting
+set shiftwidth=2
+" Tab distance when inserting a tab
+set softtabstop=2
+" Width that a \t is interpreted
+set tabstop=2
 
 " Disable textwidth so vim doesn't autobreak long lines
 set textwidth=0
@@ -138,6 +141,8 @@ set tf
 set matchpairs+=<:>
 
 set lazyredraw
+
+set timeoutlen=250
 
 "Set encoding up here to avoid problems with alt
 set encoding=utf-8
@@ -224,7 +229,8 @@ inoremap ~~ `
 
 " Change : to ; for convenience
 noremap ; :
-nnoremap , ;
+noremap , ;
+noremap : ,
 noremap q; q:
 noremap @; @:
 
@@ -308,9 +314,11 @@ nnoremap Py "0P
 nnoremap Pc "+P
 nnoremap PP P
 
-" Replace word with last yanked
+" Replace motion with last yanked
 nnoremap pw "_ciw<C-R>0<Esc>
 nnoremap pk "_ciw<C-R>0<Esc>
+" Using param motion to replace param with last yanked
+nnoremap pj :normal "_cj<CR>a<C-R>0<Esc>
 
 " Paste to new line
 nnoremap <C-P> mz:pu<CR>='z
@@ -556,10 +564,10 @@ if has("win32")
 
 	" Run file
 	nnoremap <Leader>xe :silent :!cd %:p:h:8 && start %:p:8<CR>
-elseif has("win32unix") 
+elseif has("win32unix")
 	nnoremap <silent> <Leader>od :silent :!cygstart '%:p:h:8'<CR>
+	nnoremap <Leader>xp :!/cygdrive/c/Python27/python.exe $(cygpath -d '%:p:8')<CR>
 endif
-nnoremap <Leader>xp :!C:/Python33/python.exe %:p:8<CR>
 
 if has("gui_running")
 	" Unbind ALt+letter keys{{{
