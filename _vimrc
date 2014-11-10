@@ -101,7 +101,9 @@ set textwidth=0
 set wildmenu
 set wildmode=longest:full
 
-set completeopt=longest,menu,preview
+set completeopt=longest,menu
+" No preview scratch window that constantly moves the text around
+set completeopt-=preview
 
 " Backspace over lines and tabs
 set backspace=2
@@ -438,6 +440,8 @@ vnoremap <S-K> H3k
 "Shift H L to move to front/end of the line
 nnoremap H <Home>
 nnoremap L <End>
+vnoremap H <Home>
+vnoremap L <End>
 
 " Swap [ and { to move quickly between functions
 nnoremap [ [[
