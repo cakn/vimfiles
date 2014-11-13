@@ -694,16 +694,27 @@ nnoremap <Leader>gsl :FSSwitchRight<CR>
 
 "Unite
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=files -start-insert buffer file_rec/async:!<cr>
-nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files -start-insert file buffer<cr>
+" Change async command to exclude files if slow
+call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', '\v\.pcx$|\.frm$')
+" Async is slow on windows?
+nnoremap <leader>r :<C-u>Unite -buffer-name=files -start-insert buffer file_rec<cr>
+nnoremap <leader>f :<C-u>Unite -buffer-name=files -start-insert file buffer<cr>
+" nnoremap <leader>f :<C-u>Unite -buffer-name=files -start-insert file buffer<cr>
+g:unite_ignore_source_files = ['*.svn', '*.spt', '*.frm']
 
 autocmd FileType unite call s:unite_my_settings()
 function! s:unite_my_settings() "{{{
 	" Overwrite settings.
-	imap <buffer> jj <Plug>(unite_insert_leave)
+	imap <buffer> sj <Plug>(unite_insert_leave)
+	nmap <buffer> sj <Plug>(unite_all_exit)bp
+	nmap <buffer> q <Plug>(unite_all_exit)bp
+	imap <buffer> <TAB> <Plug>(unite_complete)
+	nmap <buffer> J <Plug>(unite_select_next_line)
+	nmap <buffer> K <Plug>(unite_select_previous_line)<Plug>(unite_select_previous_line)<Plug>(unite_select_previous_line)
+	imap <buffer> <C-j> <Plug>(unite_select_next_line)
+	imap <buffer> <C-k> <Plug>(unite_select_previous_line)
 	"imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
 	imap <buffer><expr> j unite#smart_map('j', '')
-	imap <buffer> <TAB> <Plug>(unite_select_next_line)
 	imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
 	imap <buffer> ' <Plug>(unite_quick_match_default_action)
 	nmap <buffer> ' <Plug>(unite_quick_match_default_action)
@@ -717,13 +728,14 @@ function! s:unite_my_settings() "{{{
 	nmap <buffer> <C-j> <Plug>(unite_toggle_auto_preview)
 	nmap <buffer> <C-r> <Plug>(unite_narrowing_input_history)
 	imap <buffer> <C-r> <Plug>(unite_narrowing_input_history)
-	nnoremap <silent><buffer><expr> l
-	\ unite#smart_map('l', unite#do_action('default'))
+	map <buffer> <C-l> <Plug>(unite_redraw)
+	" nnoremap <silent><buffer><expr> l
+	" \ unite#smart_map('l', unite#do_action('default'))
 	let unite = unite#get_current_unite()
 	if unite.profile_name ==# 'search'
-	nnoremap <silent><buffer><expr> r unite#do_action('replace')
+		nnoremap <silent><buffer><expr> r unite#do_action('replace')
 	else
-	nnoremap <silent><buffer><expr> r unite#do_action('rename')
+		nnoremap <silent><buffer><expr> r unite#do_action('rename')
 	endif
 	nnoremap <silent><buffer><expr> cd unite#do_action('lcd')
 	nnoremap <buffer><expr> S unite#mappings#set_current_filters(
