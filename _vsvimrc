@@ -161,7 +161,7 @@ nnoremap <Leader>gl :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<CR>:
 
 " Comment out
 nnoremap gc :vsc Edit.CommentSelection<CR>:s ?////??<CR>
-vnoremap gc <Esc>mp`>mx`<mzI//<Esc>^v/[^/]<CR><Left>"zyuo<Esc>"zp:s ?////?gv;s %^\(\\s*\)//%\\1%?<CR>:s ?^//?gvh;s %^\(\\s*\)\(\\S\+\)%\\1//\\2%<CR>"zyyuuu`zv`x<Esc>@z`p:noh<CR>
+vnoremap gc :s?^\s*?&//?<CR>gv:s?////??<CR>
 
 " Debugging / Building
 nnoremap <Leader>mx :vsc Debug.StartWithoutDebugging<CR>
