@@ -526,7 +526,8 @@ nnoremap <Leader>ebb :tabnew ~/.bashrc<CR>
 nnoremap <Leader>ebi :tabnew ~/.inputrc<CR>
 
 " File plugin files
-nnoremap <Leader>ef :tabnew ~/.vim/ftplugin<CR>
+nnoremap <Leader>efp :tabnew ~/.vim/ftplugin<CR>
+nnoremap <Leader>esp :tabnew ~/.vim/syntax<CR>
 nnoremap <Leader>eap :tabnew ~/.vim/after/plugin<CR>
 
 " Plugins
@@ -664,6 +665,7 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 " Commentary
 autocmd FileType autohotkey setlocal commentstring=;%s
 autocmd FileType actionscript setlocal commentstring=//%s
+autocmd FileType sg setlocal commentstring=#%s
 
 " YouCompleteMe
 " let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
@@ -675,7 +677,13 @@ autocmd FileType actionscript setlocal commentstring=//%s
 " endif
 
 "Syntastic
+" let g:syntastic_mode_map = { 'mode': 'active',
+                           " \ 'active_filetypes': ['javascript'],
+                           " \ 'passive_filetypes': ['html'] }
 let g:syntastic_enable_signs = 0
+let g:syntastic_javascript_checkers = ['closurecompiler']
+let g:syntastic_javascript_closurecompiler_path = 'D:\\cygwin64\\home\\Kenneth\\compiler.jar'
+" let g:syntastic_javascript_closurecompiler_path = '/cygdrive/d/cygwin64/home/Kenneth/compiler.jar'
 
 " FSwitch
 nnoremap <Leader>g; :FSHere<CR>
@@ -686,8 +694,44 @@ nnoremap <Leader>gsl :FSSwitchRight<CR>
 
 "Unite
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-" nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files -start-insert file_rec/async:!<cr>
-nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files -start-insert file<cr>
+nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=files -start-insert buffer file_rec/async:!<cr>
+nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files -start-insert file buffer<cr>
+
+autocmd FileType unite call s:unite_my_settings()
+function! s:unite_my_settings() "{{{
+	" Overwrite settings.
+	imap <buffer> jj <Plug>(unite_insert_leave)
+	"imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
+	imap <buffer><expr> j unite#smart_map('j', '')
+	imap <buffer> <TAB> <Plug>(unite_select_next_line)
+	imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
+	imap <buffer> ' <Plug>(unite_quick_match_default_action)
+	nmap <buffer> ' <Plug>(unite_quick_match_default_action)
+	imap <buffer><expr> x
+	\ unite#smart_map('x', "\<Plug>(unite_quick_match_choose_action)")
+	nmap <buffer> x <Plug>(unite_quick_match_choose_action)
+	nmap <buffer> <C-z> <Plug>(unite_toggle_transpose_window)
+	imap <buffer> <C-z> <Plug>(unite_toggle_transpose_window)
+	imap <buffer> <C-y> <Plug>(unite_narrowing_path)
+	nmap <buffer> <C-y> <Plug>(unite_narrowing_path)
+	nmap <buffer> <C-j> <Plug>(unite_toggle_auto_preview)
+	nmap <buffer> <C-r> <Plug>(unite_narrowing_input_history)
+	imap <buffer> <C-r> <Plug>(unite_narrowing_input_history)
+	nnoremap <silent><buffer><expr> l
+	\ unite#smart_map('l', unite#do_action('default'))
+	let unite = unite#get_current_unite()
+	if unite.profile_name ==# 'search'
+	nnoremap <silent><buffer><expr> r unite#do_action('replace')
+	else
+	nnoremap <silent><buffer><expr> r unite#do_action('rename')
+	endif
+	nnoremap <silent><buffer><expr> cd unite#do_action('lcd')
+	nnoremap <buffer><expr> S unite#mappings#set_current_filters(
+	\ empty(unite#mappings#get_current_filters()) ?
+	\ ['sorter_reverse'] : [])
+	" Runs "split" action by <C-s>.
+	imap <silent><buffer><expr> <C-s> unite#do_action('split')
+endfunction "}}}
 
 " Tabularize
 nnoremap <leader>aa :Tabularize /=<CR>
@@ -781,4 +825,3 @@ endif
 "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 " }}}
-
