@@ -55,7 +55,7 @@ nnoremap dl <Right>v<Esc><Right>?\<\|\L<CR>v/\>\|\L<CR><Left><Esc>:noh<CR>gvd
 nnoremap cj <Right>?[,(]<CR>/[^\s]<CR>v/[,)]<CR><Left><Esc>:noh<CR>gvc
 nnoremap dj <Right>?[,(]<CR><Right>v/[,)]<CR><Left><Esc>:noh<CR>gvd
 
-" sj as <Esc> and remove blank line at cursor 
+" sj as <Esc> and remove blank line at cursor
 inoremap sj <Esc>:.g/^\s*$/d<CR>
 vnoremap sj <Esc>:.g/^\s*$/d<CR>
 xnoremap sj <Esc>:.g/^\s*$/d<CR>
@@ -92,6 +92,7 @@ vnoremap [ <ESC>`><Left>a ]<ESC>`<i[ <ESC><Left>
 vnoremap ] <ESC>`><Left>a]<ESC>`<i[<ESC>
 vnoremap { <ESC>`><Left>a }<ESC>`<i{ <ESC><Left>
 vnoremap } <ESC>`><Left>a}<ESC>`<i{<ESC>
+vnoremap * <ESC>`><Left>a*/<ESC>`<i/*<ESC>
 
 " Insert single character
 nnoremap <Space> i_<Esc>r
@@ -99,6 +100,8 @@ nnoremap <Space> i_<Esc>r
 inoremap <C-Y> a<Esc>kyw`^a<BS><C-O>p<Right>
 
 " inoremap <C-o> <C-o>:vsc Edit.InvokeSnippetFromShortcut<CR>
+" Not working, visual selection does not stay
+" vnoremap <C-o> :vsc Edit.SurroundWith<CR>
 inoremap <C-o> <Tab>
 
 nnoremap go <Right>bi;vsc Edit.GoToDefinition <Esc>F;vEEE<Left>"zyvEE<Right>"_d@z<CR><CR><CR>
@@ -186,6 +189,7 @@ nnoremap <Leader>pac :vsc Project.AddClass<CR><CR>
 
 " File Navigation
 nnoremap <Leader>f :vsc Edit.NavigateTo<CR>
+" nnoremap <Leader>f :vsc Window.QuickLaunch<CR>
 
 " Manual settings
 " Ctrl+Enter Edit.LineOpenBelow
@@ -195,3 +199,8 @@ nnoremap <Leader>f :vsc Edit.NavigateTo<CR>
 nnoremap tt :vsc Window.NextSplitPane<CR>
 
 nnoremap <S-Space> :vsc Edit.QuickInfo<CR>
+
+" Insert file name
+" inoremap <C-B> <C-R>%<C-O>dF.<Del>
+" Insert file name with proper undo
+inoremap fln <Esc>mzi<C-R>%<Esc>F.hv'zyu"0pa::
