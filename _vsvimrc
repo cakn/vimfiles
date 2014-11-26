@@ -70,6 +70,7 @@ nnoremap gl :vsc Edit.CharTranspose<CR>h
 nnoremap gi :vsc View.NavigateBackward<CR>i
 nnoremap g; :vsc View.NavigateBackward<CR>
 
+inoremap ~; ;
 " nnoremap <A-h> "xdiwdwep"xp
 nnoremap <A-h> <Right>bi!!!<Esc>?\w<CR>bmzi!!!<Esc>b:s/!!!\(\w\+\)\(\W\+\)!!!\(\w\+\)/\3\2\1/<CR>:noh<CR>`z
 nnoremap <A-l> :vsc Edit.WordTranspose<CR>
@@ -102,21 +103,31 @@ inoremap <C-Y> a<Esc>kyw`^a<BS><C-O>p<Right>
 " inoremap <C-o> <C-o>:vsc Edit.InvokeSnippetFromShortcut<CR>
 " Not working, visual selection does not stay
 " vnoremap <C-o> :vsc Edit.SurroundWith<CR>
-inoremap <C-o> <Tab>
+inoremap <C-O> <Tab>
+vnoremap <C-O>:vsc SurroundWith<CR>
+xnoremap <C-O> <Tab>
 
-nnoremap go <Right>bi;vsc Edit.GoToDefinition <Esc>F;vEEE<Left>"zyvEE<Right>"_d@z<CR><CR><CR>
+nnoremap go "zyiw:vsc Edit.GoToDefinition <C-R>z<CR>
 " nnoremap go :vsc Edit.PeekDefinition<CR>
-nnoremap gt :vsc Window.KeepTabOpen<CR>
 nnoremap gf :vsc Edit.OpenFile<CR>
-" nnoremap <C-O> :vsc View.NavigateBackward<CR>
-" nnoremap <C-I> :vsc View.NavigateForward<CR>
+nnoremap <C-O> :vsc View.NavigateBackward<CR>
+nnoremap <C-I> :vsc View.NavigateForward<CR>
+
+vnoremap y <Esc>mzgvy`z
 
 " Tab navigation
 nnoremap bn gt
 nnoremap bp gT
+nnoremap bd :close<CR>
+nnoremap bj gt
+nnoremap bk gT
+nnoremap bl gt
+nnoremap bh gT
+" nnoremap gt :vsc Window.KeepTabOpen<CR>
 
 " Move to end of line fix
 inoremap <C-E> <Esc>$a
+
 
 " Window navigation
 nnoremap wh :vsc TabGroupJumper.Connect.JumpLeft<CR>
@@ -162,14 +173,19 @@ nnoremap <Leader>g; :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<CR>
 nnoremap <Leader>gh :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<CR>:vsc Window.MovetoPreviousTabGroup<CR>
 nnoremap <Leader>gl :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<CR>:vsc Window.MovetoNextTabGroup<CR>
 
+" Go to error
+nnoremap ge :vsc View.ErrorList<CR>
+
 " Comment out
 nnoremap gc :vsc Edit.CommentSelection<CR>:s ?////??<CR>
 vnoremap gc :s?^\s*?&//?<CR>gv:s?////??<CR>
+nnoremap <C-C>j mzyyp`z:vsc Edit.CommentSelection<CR>hhj
+nnoremap <C-C>k mzyyP`z:vsc Edit.CommentSelection<CR>hhk
 
 " Debugging / Building
 nnoremap <Leader>mx :vsc Debug.StartWithoutDebugging<CR>
 nnoremap <Leader>md :vsc Debug.Start<CR>
-" nnoremap <Leader>mb :vsc Build.BuildSelection<CR>
+nnoremap <Leader>ms :vsc Build.BuildSelection<CR>
 nnoremap <Leader>mb :vsc Build.BuildSolution<CR>
 nnoremap <Leader>mc :vsc Build.CleanSelection<CR>
 nnoremap <Leader>mf :vsc Build.Compile<CR>
@@ -177,30 +193,33 @@ nnoremap <Leader>dstop :vsc Debug.StopDebugging<CR>
 nnoremap <Leader>dres :vsc Debug.Restart<CR>
 
 " Testing
-nnoremap <Leader>tx :vsc TestExplorer.RunAllTests<CR>
+" nnoremap <Leader>tx :vsc TestExplorer.RunAllTests<CR>
 nnoremap <Leader>ta :vsc TestExplorer.RunAllTests<CR>
 nnoremap <Leader>tf :vsc TestExplorer.RunFailedTests<CR>
 nnoremap <Leader>tn :vsc TestExplorer.RunNotRunTests<CR>
 nnoremap <Leader>td :vsc TestExplorer.DebugAllTestsInContext<CR>
 nnoremap <Leader>tc :vsc TestExplorer.CancelTests<CR>
+nnoremap <Leader>tl :vsc TestExplorer.RepeatLastRun<CR>
 
 " Project
 nnoremap <Leader>pac :vsc Project.AddClass<CR><CR>
 
+" change file
+" Clang format
+nnoremap <Leader>ccf mzggVG:vsc Tools.ClangFormat<CR>`z
+vnoremap <Leader>ccf :vsc Tools.ClangFormat<CR>
+vnoremap gq :vsc Tools.ClangFormat<CR>
+
 " File Navigation
 nnoremap <Leader>f :vsc Edit.NavigateTo<CR>
 " nnoremap <Leader>f :vsc Window.QuickLaunch<CR>
-
-" Manual settings
-" Ctrl+Enter Edit.LineOpenBelow
-" Alt+k Edit.MoveSelectedLinesUp
-" Alt+j Edit.MoveSelectedLinesDown
-
-nnoremap tt :vsc Window.NextSplitPane<CR>
 
 nnoremap <S-Space> :vsc Edit.QuickInfo<CR>
 
 " Insert file name
 " inoremap <C-B> <C-R>%<C-O>dF.<Del>
 " Insert file name with proper undo
-inoremap fln <Esc>mzi<C-R>%<Esc>F.hv'zyu"0pa::
+inoremap fln <Esc>mzi<C-R>%<Esc>F.hv`zyu"0pa::
+
+" Manual settings
+" Ctrl+Enter Edit.LineOpenBelow

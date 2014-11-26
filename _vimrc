@@ -94,6 +94,7 @@ set shiftwidth=2
 set softtabstop=2
 " Width that a \t is interpreted
 set tabstop=2
+set expandtab
 
 " Disable textwidth so vim doesn't autobreak long lines
 set textwidth=0
@@ -119,7 +120,7 @@ nohl
 
 set scrolloff=2
 
-set cmdheight=2
+set cmdheight=1
 
 set nostartofline
 
@@ -277,10 +278,10 @@ nnoremap <C-C>k mzyyP`z:normal gcc<CR>k
 vnoremap <C-C>j ygv:normal gcc<CR>`>p
 vnoremap <C-C>k ygv:normal gcc<CR>`<P
 " Shift+Alt copy line
-nnoremap <A-J> mzyyp`zj
-nnoremap <A-K> mzyyp`z
-inoremap <A-J> <Esc>yyp`^<Down>i
-inoremap <A-K> <Esc>yyP`^<Up>i
+nnoremap <A-J> mz"zyy"zp`zj
+nnoremap <A-K> mz"zyy'zp`z
+inoremap <A-J> <Esc>"zyy"zp`^<Down>i
+inoremap <A-K> <Esc>"zyy"zP`^<Up>i
 
 " Ctrl+u copy line
 nnoremap <C-U> mzyyp`zj
@@ -421,6 +422,8 @@ cnoremap <C-L> <Right>
 inoremap <C-E> <C-O>$
 " Move to beginning of line
 inoremap <C-W> <C-O>^
+" Move a word
+inoremap <C-F> <C-Left>
 
 " Delete character in insert mode
 inoremap <C-D> <Del>
@@ -434,8 +437,8 @@ vnoremap <S-J> L3j
 nnoremap <S-K> H3k
 vnoremap <S-K> H3k
 "Join and split lines
-" nnoremap <C-J> <S-J>
-" nnoremap <C-K> i<CR><Esc>
+nnoremap gJ J
+nnoremap gK i<CR><Esc>
 
 "Shift H L to move to front/end of the line
 nnoremap H <Home>
@@ -456,7 +459,7 @@ vnoremap < <gv
 "vnoremap <Tab> >gv " Disable for Snipmate compatibility
 " Shift tab to deindent
 "nnoremap <S-Tab> <<
-"inoremap <S-Tab> <C-D>
+inoremap <S-Tab> <C-D>
 "vnoremap <S-Tab> <gv
 
 " Surround visual selection
@@ -472,9 +475,15 @@ vnoremap } <ESC>`>a}<ESC>`<i{<ESC>
 "Visual mode set register
 vnoremap <C-R> "
 
+"save position on visual yank
+vnoremap y mzy`z
+
 " Negate boolean variable with !
-nnoremap ! :let @z=@/<CR>mzviWovi!<Esc>:s /!!=/==/e<CR>:s /!!//e<CR>:s /!true/false/e<CR>:s /!false/true/e<CR>:s /!==/!=/e<CR>:let @/=@z<CR>`z
+nnoremap ! :let @z=@/<CR>mzviwovi!<Esc>:s /!!=/==/e<CR>:s /!!//e<CR>:s /!true/false/e<CR>:s /!false/true/e<CR>:s /!==/!=/e<CR>:let @/=@z<CR>`z
 nnoremap <C-!> !
+
+" Append & in front of word
+nnoremap & :let @z=@/<CR>mzviwovi&<Esc>:s /&&//e<CR>:let @/=@z<CR>`z
 
 " inoremap <expr> (<Space> pumvisible() ? "\<CR>(\<Space>)\<Left>" : "(\<Space>)\<Left>"
 " inoremap [ []<Left>
@@ -700,7 +709,6 @@ call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', '\v\.pcx$|
 nnoremap <leader>r :<C-u>Unite -buffer-name=files -start-insert buffer file_rec<cr>
 nnoremap <leader>f :<C-u>Unite -buffer-name=files -start-insert file buffer<cr>
 " nnoremap <leader>f :<C-u>Unite -buffer-name=files -start-insert file buffer<cr>
-g:unite_ignore_source_files = ['*.svn', '*.spt', '*.frm']
 
 autocmd FileType unite call s:unite_my_settings()
 function! s:unite_my_settings() "{{{
