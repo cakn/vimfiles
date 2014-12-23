@@ -89,11 +89,11 @@ set showbreak=…
 set autoindent
 set cindent
 " Tab length for >> indenting
-set shiftwidth=2
+set shiftwidth=4
 " Tab distance when inserting a tab
-set softtabstop=2
+set softtabstop=4
 " Width that a \t is interpreted
-set tabstop=2
+set tabstop=4
 set expandtab
 
 " Disable textwidth so vim doesn't autobreak long lines
@@ -132,11 +132,6 @@ set listchars=tab:>-
 " set foldcolumn=2
 " set foldopen=block,hor,mark,percent,quickfix,search,tag,undo,jump
 
-" if has("win32")
-" 	set shell=\"C:\Program\ Files\ (x86)\Git\bin\sh.exe\"
-" 	set shellcmdflag=--login\ -c
-" endif
-
 " Fast terminal
 set tf
 
@@ -145,7 +140,11 @@ set matchpairs+=<:>
 
 set lazyredraw
 
-set timeoutlen=250
+set timeoutlen=1000
+autocmd InsertEnter * :setlocal timeoutlen=250
+autocmd InsertLeave * :setlocal timeoutlen=1000
+
+set virtualedit=onemore
 
 "Set encoding up here to avoid problems with alt
 set encoding=utf-8
@@ -282,9 +281,6 @@ nnoremap <A-J> mz"zyy"zp`zj
 nnoremap <A-K> mz"zyy'zp`z
 inoremap <A-J> <Esc>"zyy"zp`^<Down>i
 inoremap <A-K> <Esc>"zyy"zP`^<Up>i
-
-" Ctrl+u copy line
-nnoremap <C-U> mzyyp`zj
 
 " Ctrl+c copy
 vnoremap <C-C> "+y
@@ -432,23 +428,28 @@ inoremap <C-D> <Del>
 " cnoremap <A-r> <C-R>
 
 "Shift j k to move quickly up and down
-nnoremap <S-J> L3j
-vnoremap <S-J> L3j
-nnoremap <S-K> H3k
-vnoremap <S-K> H3k
+nnoremap J <C-E>j<C-E>j<C-E>j
+vnoremap J jjj
+nnoremap K <C-Y>k<C-Y>k<C-Y>k
+vnoremap K kkk
 "Join and split lines
 nnoremap gJ J
 nnoremap gK i<CR><Esc>
 
 "Shift H L to move to front/end of the line
-nnoremap H <Home>
-nnoremap L <End>
-vnoremap H <Home>
-vnoremap L <End>
+nnoremap H g^
+nnoremap L g$
+vnoremap H g^
+vnoremap L g$
 
 " Swap [ and { to move quickly between functions
-nnoremap [ [[
-nnoremap ] ]]
+" nnoremap [ [[
+" nnoremap ] ]]
+
+nnoremap [[ ?{<CR>w99[{
+nnoremap ][ /}<CR>b99]}
+nnoremap ]] j0[[%/{<CR>
+nnoremap [] k$][%?}<CR>
 
 nnoremap >> >>
 nnoremap << <<
