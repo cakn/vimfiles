@@ -1,5 +1,5 @@
 # For connection to xserver
-export DISPLAY="localhost:0"
+# export DISPLAY="localhost:0"
 
 # custom directory colours for solarized conemu
 eval "$(dircolors ~/.dir_colors)"
@@ -112,8 +112,9 @@ alias mv='mv -i'
 # alias less='less -r'                          # raw control characters
 # alias whence='type -a'                        # where, of a sort
 alias grep='grep --color'                     # show differences in colour
-alias sg='grep -r --exclude-dir=.svn --exclude=*.{swp,obj,pdb,exe,pcx,mp3,xma,xma2,wav}'
+alias sg='grep -r --exclude-dir=.svn --exclude=*.{swp,obj,pdb,exe,pcx,mp3,xma,xma2,wav,png,dll,snd-xma2}'
 alias sf='find . -name '
+alias sd='find . -type d -name '
 # alias egrep='egrep --color=auto'              # show differences in colour
 # alias fgrep='fgrep --color=auto'              # show differences in colour
 #
@@ -137,6 +138,9 @@ alias ga='git add'
 alias gap='git add -p'
 
 alias start='cygstart'
+
+# ssh-pageant
+alias pageant='eval $(/usr/bin/ssh-pageant -r -a "/tmp/.ssh-pageant-$USERNAME")'
 
 source ~/priPaths.sh
 

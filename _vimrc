@@ -38,8 +38,8 @@ au BufNewFile,BufRead *.jsfl set filetype=javascript
 set nomodeline
 
 "set guifont=Lucida_Sans_Typewriter:h12:cANSI
-" set guifont=Ubuntu_Mono_derivative_Powerlin:h12:cANSI
-set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
+set guifont=Ubuntu_Mono_derivative_Powerlin:h12:cANSI
+" set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
 
 " Make sure colorscheme is set first before highlight
 
@@ -200,8 +200,8 @@ onoremap ak aw
 onoremap ik iw
 onoremap aK aW
 onoremap iK iW
-onoremap w iw
-onoremap W iW
+" onoremap w iw
+" onoremap W iW
 onoremap ) i)
 onoremap ( i(
 onoremap { i{
@@ -248,6 +248,11 @@ noremap ^ 0
 nnoremap s b
 nnoremap <S-S> B
 vnoremap s b
+" Move right beginning of word
+nnoremap r w
+nnoremap R W
+nnoremap <C-R> r
+nnoremap <C-Y> <C-R>
 
 " Make marks harder
 nnoremap m <Nop>
@@ -338,6 +343,8 @@ inoremap <C-CR> <C-o>o
 inoremap sj <Esc>:call <SID>escape()<CR>
 vnoremap sj <Esc>:call <SID>escape()<CR>
 xnoremap sj <Esc>:call <SID>escape()<CR>
+" Quick save
+inoremap ksf <Esc>:call <SID>escape()<CR>:update<CR>
 
 " Copy line and increment number
 nnoremap <A-a> mzyy<C-A>P`z
@@ -362,7 +369,7 @@ nnoremap dl :normal dil<CR>
 " Stops vim from waiting for a command after dd
 nnoremap dd dd
 " Change bracket to leave space
-nnoremap c( ci(<Space><Space><Left>
+nnoremap c) ci)<Space><Space><Left>
 " Quick inner word
 " nnoremap cw ciw
 " " Quick yank word
@@ -531,8 +538,8 @@ nnoremap <Leader>sgv :so $MYGVIMRC<CR>
 nnoremap <Leader>en :tabnew ~/vimNotes.txt<CR>
 
 "Bash rc files
-nnoremap <Leader>eb :tabnew ~/.bashrc<CR>
-nnoremap <Leader>ebb :tabnew ~/.bashrc<CR>
+nnoremap <Leader>eb :tabnew ~/.vim/.bashrc<CR>
+nnoremap <Leader>ebb :tabnew ~/.vim/.bashrc<CR>
 nnoremap <Leader>ebi :tabnew ~/.inputrc<CR>
 
 " File plugin files
@@ -578,7 +585,8 @@ if has("win32")
 	nnoremap <silent> <Leader>od :silent :!start explorer %:p:h:8<CR>
 
 	" Run file
-	nnoremap <Leader>xe :silent :!cd %:p:h:8 && start %:p:8<CR>
+	nnoremap <Leader>xe :!start "%:p"<CR>
+	nnoremap <Leader>xp :!python "%:p"<CR>
 elseif has("win32unix")
 	nnoremap <silent> <Leader>od :silent :!cygstart '%:p:h:8'<CR>
 	nnoremap <Leader>xp :!/cygdrive/c/Python27/python.exe $(cygpath -d '%:p:8')<CR>

@@ -57,3 +57,12 @@ open_directory(){
 }
 complete -o nospace -F _open_directory open_directory
 complete -o nospace -F _open_directory od
+
+gvim()
+{
+    if [ -z "$1" ]; then
+        '/cygdrive/d/Program Files (x86)/Vim/vim74/gvim.exe' -u $(cygpath -d ~/.vim/_vimrc) -U $(cygpath -d ~/.vim/_gvimrc) --cmd 'set runtimepath^=D:\cygwin64\home\Kenneth\.vim' &
+    else
+        '/cygdrive/d/Program Files (x86)/Vim/vim74/gvim.exe' -u $(cygpath -d ~/.vim/_vimrc) -U $(cygpath -d ~/.vim/_gvimrc) --cmd 'set runtimepath^=D:\cygwin64\home\Kenneth\.vim' "$(cygpath -da $1)" &
+    fi
+}
