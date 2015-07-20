@@ -58,10 +58,15 @@ nnoremap <Leader>sv :source ~\_vsvimrc<CR>
 
 " PATCH
 nnoremap H ^
+" Fix macros ending with q
+unmap q;
+" Added :noh<CR> at end
+nnoremap ! :let @z=@/<CR>mzviwovi!<Esc>:s /!!=/==/e<CR>:s /!!//e<CR>:s /!true/false/e<CR>:s /!false/true/e<CR>:s /!==/!=/e<CR>:let @/=@z<CR>`z:noh<CR>
 
 " camelCase text object
-nnoremap cl <Right>v<Esc><Right>?\<\|\L<CR>v/\>\|\L<CR><Left><Esc>:noh<CR>gvc
-nnoremap dl <Right>v<Esc><Right>?\<\|\L<CR>v/\>\|\L<CR><Left><Esc>:noh<CR>gvd
+" move right twice because of bug
+nnoremap cl <Right><Right>?\<\|\L<CR>v/\L\|\>.<CR><Left><Esc>:noh<CR>gvc
+nnoremap dl <Right><Right>?\<\|\L<CR>v/\L\|\>.<CR><Left><Esc>:noh<CR>gvd
 
 " param text object
 nnoremap cj <Right>?[,(]<CR>/[^\s]<CR>v/[,)]<CR><Left><Esc>:noh<CR>gvc
@@ -112,7 +117,7 @@ vnoremap * <ESC>`><Left>a*/<ESC>`<i/*<ESC>
 " Insert single character
 nnoremap <Space> i_<Esc>r
 
-inoremap <C-Y> a<Esc>kyw`^a<BS><C-O>p<Right>
+inoremap <C-Y> a<Esc>kywja<BS><C-O>P<Right>
 
 " inoremap <C-o> <C-o>:vsc Edit.InvokeSnippetFromShortcut<CR>
 " Not working, visual selection does not stay
@@ -143,20 +148,14 @@ nnoremap bh gT
 " nnoremap gt :vsc Window.KeepTabOpen<CR>
 
 " Move to end of line fix
-inoremap <C-E> <Esc>$a
+inoremap <C-E> <Esc>A
 
-" Window navigation
-nnoremap wh :vsc TabGroupJumper.Connect.JumpLeft<CR>
-nnoremap wl :vsc TabGroupJumper.Connect.JumpRight<CR>
-nnoremap wk :vsc TabGroupJumper.Connect.JumpUp<CR>
-nnoremap wj :vsc TabGroupJumper.Connect.JumpDown<CR>
-" nnoremap wh :vsc vsExt.GotoLeftDocument<CR>
-" nnoremap wl :vsc vsExt.GotoRightDocument<CR>
-" nnoremap wk :vsc vsExt.GotoUpDocument<CR>
-" nnoremap wj :vsc vsExt.GotoDownDocument<CR>
 nnoremap wth :vsc Window.MovetoPreviousTabGroup<CR>
 nnoremap wtl :vsc Window.MovetoNextTabGroup<CR>
 nnoremap wc :close<CR>
+
+" Cut in visual mode
+vnoremap <C-X> ygvd
 
 " Align Assignments
 " Code align plugin
@@ -164,7 +163,6 @@ nnoremap <Leader>as :vsc Edit.AlignByString<CR>
 vnoremap <Leader>as :vsc Edit.AlignByString<CR>
 nnoremap <Leader>aa :vsc Edit.AlignByEquals<CR>
 vnoremap <Leader>aa :vsc Edit.AlignByEquals<CR>
-
 " nnoremap <Leader>aa :vsc Edit.AlignAssignments<CR>
 " vnoremap <Leader>aa :vsc Edit.AlignAssignments<CR>
 
@@ -184,8 +182,8 @@ nnoremap <Leader>dts mz:%s/\s\+$//e<CR>`z
 " Switch to header
 " VS2012
 nnoremap <Leader>g; :vsc EditorContextMenus.CodeWindow.GoToHeaderFile<CR>
-nnoremap <Leader>gh :vsc EditorContextMenus.CodeWindow.GoToHeaderFile<CR>:vsc Window.MovetoPreviousTabGroup<CR>
-nnoremap <Leader>gl :vsc EditorContextMenus.CodeWindow.GoToHeaderFile<CR>:vsc Window.MovetoNextTabGroup<CR>
+nnoremap <Leader>gh :vsc Window.MovetoPreviousTabGroup<CR>
+nnoremap <Leader>gl :vsc Window.MovetoNextTabGroup<CR>
 " VS2013
 " nnoremap <Leader>g; :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<CR>
 " nnoremap <Leader>gh :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<CR>:vsc Window.MovetoPreviousTabGroup<CR>
@@ -228,16 +226,15 @@ nnoremap <Leader>pac :vsc Project.AddClass<CR><CR>
 " Clang format
 nnoremap <Leader>cf mzggVG:vsc Tools.ClangFormat<CR>`z
 vnoremap <Leader>cf :vsc Tools.ClangFormat<CR>
-vnoremap gq :vsc Tools.ClangFormat<CR>
 
 " File Navigation
-nnoremap <Leader>f :vsc Edit.NavigateTo<CR>
+" nnoremap <Leader>f :vsc Edit.NavigateTo<CR>
 " nnoremap <Leader>f :vsc Window.QuickLaunch<CR>
+nnoremap <Leader>f :vsc View.CommandWindow<CR>
 
 nnoremap <S-Space> :vsc Edit.QuickInfo<CR>
 
 " Experiment
-nnoremap <Leader>sj :w<CR>
 inoremap <Esc> <Nop>
 vnoremap <Esc> <Nop>
 xnoremap <Esc> <Nop>

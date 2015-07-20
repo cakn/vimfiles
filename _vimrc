@@ -22,6 +22,8 @@ autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "norm
 " Enable marker folds for .vimrc files and shell files
 autocmd FileType vim,sh setlocal foldmethod=marker
 
+autocmd FileType sg setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab
+
 " Disable autocomment
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
@@ -252,6 +254,7 @@ vnoremap s b
 nnoremap r w
 nnoremap R W
 nnoremap <C-R> r
+nnoremap <A-r> R
 nnoremap <C-Y> <C-R>
 
 " Make marks harder
