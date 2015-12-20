@@ -112,7 +112,7 @@ alias mv='mv -i'
 # alias less='less -r'                          # raw control characters
 # alias whence='type -a'                        # where, of a sort
 alias grep='grep --color'                     # show differences in colour
-alias sg='grep -r --exclude-dir=.svn --exclude=*.{swp,obj,pdb,exe,pcx,mp3,xma,xma2,wav,png,dll,snd-xma2,psd,rar,adpcm,munged*,ttf,otf,jpg,db}'
+alias sg='grep -r --exclude-dir=.svn --exclude=*.{swp,obj,pdb,exe,pcx,mp3,xma,xma2,wav,png,dll,snd-xma2,psd,rar,adpcm,munged*,ttf,otf,jpg,db,ma}'
 alias sf='find . -iname '
 alias sd='find . -type d -name '
 # alias egrep='egrep --color=auto'              # show differences in colour

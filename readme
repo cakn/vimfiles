@@ -4,7 +4,7 @@ ln -s ~/.vim/_vimrc ~/.vimrc
 ln -s ~/.vim/_gvimrc ~/.gvimrc
 
 cd ~/.vim
-git submodule update --init
+git submodule update --init --recursive
 
 YouCompleteMe plugin
 cd ~/.vim/bundle/YouCompleteMe

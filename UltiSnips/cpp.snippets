@@ -113,10 +113,10 @@ ${4:void} ${1:`vim_snippets#Filename('$1', 'ClassName')`}::${2:memberFunction}($
 }
 endsnippet
 # namespace
-snippet ns
+snippet nsp
 namespace ${1:`vim_snippets#Filename('', 'my')`} {
 	${0}
-} /* namespace $1 */
+} // namespace $1
 endsnippet
 ##
 ## Input/Output
@@ -131,65 +131,53 @@ endsnippet
 ##
 ## Iteration
 # for i
-snippet fori
-for( int ${2:i} = 0; $2 < ${1:count}; ${3:++}$2 ){
-	${4}
+snippet for
+for (int ${2:i} = 0; $2 < ${1:count}; ++$2) {
+	$0
 }
 
 endsnippet
 # foreach
-snippet fore
-for( ${1:auto} ${2:i} : ${3:container} ){
-	${4}
+snippet fora
+for (const auto& ${2:item} : ${3:container}){
+	$0
 }
 endsnippet
 # iterator
-snippet iter
-for( ${1:std::vector}<${2:type}>::${3:const_iterator} ${4:it} = ${5:container}.begin(); $4 != $5.end(); ++$4 ){
-	${6}
-}
-
-endsnippet
-# auto iterator
-snippet ita
-for (auto ${1:i} = ${2:container}.begin(); $1 != $2.end(); ++$1) {
-	${3:std::cout << *$1 << std::endl;}
+snippet fori
+for (auto ${2:it} = ${1:container}.begin(); $2 != $1.end(); ++$2 ){
+	$0
 }
 endsnippet
 ##
 ## Lambdas
 # lamda (one line)
 snippet ld
-[${1}](${2}){${3}}
-endsnippet
-# lambda (multi-line)
-snippet lld
 [${1}](${2}){
 	${3}
 }
 endsnippet
+# lambda (multi-line)
+snippet lld
+[${1}](${2}){${3}}
+endsnippet
+
 # #include
+pre_expand "del snip.buffer[snip.line]; line = (i for i,v in enumerate(snip.buffer) if not (v.startswith('#include <') or v.startswith('#pragma'))).next(); snip.buffer[line:line] = ['']; snip.cursor.set(line, 0)"
 snippet inb
 #include <${1}>
+endsnippet
+pre_expand "del snip.buffer[snip.line]; line = (i for i,v in enumerate(snip.buffer) if not (v.startswith('#include "') or v.startswith('#pragma'))).next(); snip.buffer[line:line] = ['']; snip.cursor.set(line, 0)"
 snippet inq
 #include "${1}"
 endsnippet
-# Ctor and Dtor init
-snippet ncd
-#include "$1.h"
 
-${1:`vim_snippets#Filename('$1', 'name')`}::$1(${2})
-{
-}
-
-$1::~$1(${3})
-{
-}
-endsnippet
 # #pragma once
+pre_expand "del snip.buffer[snip.line]; snip.buffer[0:0] = [''];snip.cursor.set(0,0)"
 snippet prago
 #pragma once
 endsnippet
+
 # Types
 # unsigned int
 snippet uint
@@ -212,6 +200,7 @@ endsnippet
 snippet ss
 std::stringstream
 endsnippet
+
 # Casts
 # dynamic cast
 snippet dcast
@@ -220,12 +209,6 @@ endsnippet
 # static cast
 snippet scast
 static_cast<${1:T}>(${2})${3}
-endsnippet
-###########################################################################
-#                            TextMate Snippets                            #
-###########################################################################
-snippet beginend "$1.begin(), $1.end() (beginend)"
-${1:v}${1/^.*?(-)?(>)?$/(?2::(?1:>:.))/}begin(), $1${1/^.*?(-)?(>)?$/(?2::(?1:>:.))/}end()
 endsnippet
 
 snippet cl "class .. (class)"
@@ -240,24 +223,6 @@ private:
 };
 endsnippet
 
-snippet ns "namespace .. (namespace)"
-namespace${1/.+/ /m}${1:`!p snip.rv = snip.basename or "name"`}
-{
-	$0
-}${1/.+/ \/* /m}$1${1/.+/ *\/ /m}
-endsnippet
-
-snippet readfile "read file (readF)"
-std::vector<char> v;
-if (FILE *fp = fopen(${1:"filename"}, "r"))
-{
-	char buf[1024];
-	while(size_t len = fread(buf, 1, sizeof(buf), fp))
-		v.insert(v.end(), buf, buf + len);
-	fclose(fp);
-}
-endsnippet
-
 snippet map "std::map (map)"
 std::map<${1:key}, ${2:value}> map$0;
 endsnippet
@@ -269,5 +234,18 @@ endsnippet
 snippet tp "template <typename ..> (template)"
 template <typename ${1:_InputIter}>
 endsnippet
+
+snippet if
+if (${1:cond}) {
+	$0
+}
+endsnippet
+
+pre_expand "snip.buffer[snip.line] = ' '*(snip.column - 5); snip.cursor.set(snip.line, snip.column - 5)"
+snippet else
+} else {
+	$0
+endsnippet
+# `!p snip.shift(2);snip.rv = snip.mkline("} else {", None)`
 
 # vim:ft=snippets:

@@ -27,26 +27,38 @@ else
 endif
 
 
+hi cStatement           guifg=#66D9EF               gui=none
+hi cppSTLType           guifg=#66D9EF               gui=none
+hi cppSTLnamespace      guifg=#AE81FF               gui=none
+hi cppSTLFunction       guifg=#A6E22E               gui=none
+
+hi pythonEscape         guifg=#66D9EF               gui=none
+
+hi TagListFileName      guifg=#66D9EF guibg=#333333               gui=none
+
 hi Boolean         guifg=#AE81FF
 hi Character       guifg=#E6DB74
-hi Number          guifg=#AE81FF
+hi Number          guifg=#F92672
 hi String          guifg=#E6DB74
-hi Conditional     guifg=#F92672               gui=bold
+hi Conditional     guifg=#F92672               gui=none
 hi Constant        guifg=#AE81FF               gui=bold
 hi Cursor          guifg=#000000 guibg=#F8F8F0
 hi iCursor         guifg=#000000 guibg=#F8F8F0
 hi Debug           guifg=#BCA3A3               gui=bold
 hi Define          guifg=#66D9EF
 hi Delimiter       guifg=#8F8F8F
+hi DiffLine        guifg=#AE81FF               gui=none
 hi DiffAdd                       guibg=#13354A
+hi DiffAdded                     guibg=#13354A
 hi DiffChange      guifg=#89807D guibg=#4C4745
 hi DiffDelete      guifg=#960050 guibg=#1E0010
+hi DiffRemoved     guifg=#F92672 guibg=#1E0010
 hi DiffText                      guibg=#4C4745 gui=italic,bold
 
 hi Directory       guifg=#A6E22E               gui=bold
 hi Error           guifg=#E6DB74 guibg=#1E0010
 hi ErrorMsg        guifg=#F92672 guibg=#232526 gui=bold
-hi Exception       guifg=#A6E22E               gui=bold
+hi Exception       guifg=#A6E22E               gui=none
 hi Float           guifg=#AE81FF
 hi FoldColumn      guifg=#465457 guibg=#000000
 hi Folded          guifg=#465457 guibg=#000000
@@ -57,7 +69,7 @@ hi IncSearch       guifg=#C4BE89 guibg=#000000
 
 hi Keyword         guifg=#F92672               gui=bold
 hi Label           guifg=#E6DB74               gui=none
-hi Macro           guifg=#C4BE89               gui=italic
+hi Macro           guifg=#C4BE89               gui=none
 hi SpecialKey      guifg=#66D9EF               gui=italic
 
 hi MatchParen      guifg=#000000 guibg=#FD971F gui=bold
@@ -71,7 +83,7 @@ hi PmenuSel                      guibg=#808080
 hi PmenuSbar                     guibg=#080808
 hi PmenuThumb      guifg=#66D9EF
 
-hi PreCondit       guifg=#A6E22E               gui=bold
+hi PreCondit       guifg=#C4BE89               gui=italic
 hi PreProc         guifg=#A6E22E
 hi Question        guifg=#66D9EF
 hi Repeat          guifg=#F92672               gui=bold
@@ -87,10 +99,10 @@ if has("spell")
     hi SpellLocal  guisp=#70F0F0 gui=undercurl
     hi SpellRare   guisp=#FFFFFF gui=undercurl
 endif
-hi Statement       guifg=#F92672               gui=bold
+hi Statement       guifg=#F92672               gui=none
 hi StatusLine      guifg=#455354 guibg=fg
 hi StatusLineNC    guifg=#808080 guibg=#080808
-hi StorageClass    guifg=#FD971F               gui=italic
+hi StorageClass    guifg=#FD971F               gui=none
 hi Structure       guifg=#66D9EF
 hi Tag             guifg=#F92672               gui=italic
 hi Title           guifg=#ef5939
@@ -102,7 +114,8 @@ hi Underlined      guifg=#808080               gui=underline
 
 hi VertSplit       guifg=#808080 guibg=#080808 gui=bold
 hi VisualNOS                     guibg=#403D3D
-hi Visual                        guibg=#403D3D
+" hi Visual                        guibg=#403D3D
+hi Visual                        guibg=#888888
 hi WarningMsg      guifg=#FFFFFF guibg=#333333 gui=bold
 hi WildMenu        guifg=#66D9EF guibg=#000000
 
@@ -112,6 +125,7 @@ hi TabLine         guibg=#1B1D1E guifg=#808080 gui=none
 if s:molokai_original == 1
    hi Normal          guifg=#F8F8F2 guibg=#272822
    hi Comment         guifg=#75715E
+   hi VimCommentTitle         guifg=#75715E
    hi CursorLine                    guibg=#3E3D32
    hi CursorLineNr    guifg=#FD971F               gui=none
    hi CursorColumn                  guibg=#3E3D32
@@ -122,6 +136,7 @@ if s:molokai_original == 1
 else
    hi Normal          guifg=#F8F8F2 guibg=#1B1D1E
    hi Comment         guifg=#7E8E91
+   hi VimCommentTitle         guifg=#7E8E91
    hi CursorLine                    guibg=#293739
    hi CursorLineNr    guifg=#FD971F               gui=none
    hi CursorColumn                  guibg=#293739
@@ -163,7 +178,7 @@ if &t_Co > 255
    hi Directory       ctermfg=118               cterm=bold
    hi Error           ctermfg=219 ctermbg=89
    hi ErrorMsg        ctermfg=199 ctermbg=16    cterm=bold
-   hi Exception       ctermfg=118               cterm=bold
+   hi Exception       ctermfg=118               cterm=none
    hi Float           ctermfg=135
    hi FoldColumn      ctermfg=67  ctermbg=16
    hi Folded          ctermfg=67  ctermbg=16
@@ -172,7 +187,7 @@ if &t_Co > 255
    hi Ignore          ctermfg=244 ctermbg=232
    hi IncSearch       ctermfg=193 ctermbg=16
 
-   hi keyword         ctermfg=161               cterm=bold
+   hi keyword         ctermfg=161               cterm=none
    hi Label           ctermfg=229               cterm=none
    hi Macro           ctermfg=193
    hi SpecialKey      ctermfg=81
@@ -248,7 +263,7 @@ if &t_Co > 255
 
        hi Directory       ctermfg=154               cterm=bold
        hi Error           ctermfg=222 ctermbg=233
-       hi Exception       ctermfg=154               cterm=bold
+       hi Exception       ctermfg=154               cterm=none
        hi Float           ctermfg=141
        hi Function        ctermfg=154
        hi Identifier      ctermfg=208

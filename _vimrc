@@ -65,15 +65,16 @@ if !has("gui_running")
 	endif
 else
 	" colorscheme wombat
-	colorscheme Tomorrow
 	" highlight CursorSelect ctermbg=0 guibg=#333333
-	highlight CursorSelect ctermbg=0 guibg=#EAEAEA
 
-	" let g:molokai_original=1
+  " colorscheme Tomorrow
+	" highlight CursorSelect ctermbg=0 guibg=#EAEAEA
+
+	let g:molokai_original=1
 	" let g:rehash256=1
-	" set background=dark
-	" colorscheme molokai
-	" highlight CursorSelect ctermbg=0 guibg=#333333
+	set background=dark
+	colorscheme molokai
+	highlight CursorSelect ctermbg=0 guibg=#444444
 endif
 
 
@@ -97,6 +98,9 @@ set softtabstop=4
 " Width that a \t is interpreted
 set tabstop=4
 set expandtab
+nnoremap <Leader>t2 :set shiftwidth=2 softtabstop=2 tabstop=2<CR>
+" Stop # from being unindentable
+set indentkeys-=:,0#
 
 " Disable textwidth so vim doesn't autobreak long lines
 set textwidth=0
@@ -494,7 +498,9 @@ nnoremap ! :let @z=@/<CR>mzviwovi!<Esc>:s /!!=/==/e<CR>:s /!!//e<CR>:s /!true/fa
 nnoremap <C-!> !
 
 " Append & in front of word
-nnoremap & :let @z=@/<CR>mzviwovi&<Esc>:s /&&//e<CR>:let @/=@z<CR>`z
+nnoremap <A-7> :let @z=@/<CR>mzviwovi&<Esc>:s /&&//e<CR>:let @/=@z<CR>`z
+" const word&
+nnoremap & mzviwva&<C-O>b<C-O>b<C-O>Bconst <C-c>
 
 " inoremap <expr> (<Space> pumvisible() ? "\<CR>(\<Space>)\<Left>" : "(\<Space>)\<Left>"
 " inoremap [ []<Left>
@@ -549,6 +555,10 @@ nnoremap <Leader>ebi :tabnew ~/.inputrc<CR>
 nnoremap <Leader>efp :tabnew ~/.vim/ftplugin<CR>
 nnoremap <Leader>esp :tabnew ~/.vim/syntax<CR>
 nnoremap <Leader>eap :tabnew ~/.vim/after/plugin<CR>
+nnoremap <Leader>ecp :tabnew ~/.vim/colors<CR>
+
+" Add new file
+nnoremap <Leader>af :e <C-R>=expand("%:p:h") . "/" <CR>
 
 " Plugins
 " Snippet files
@@ -572,16 +582,16 @@ nnoremap <Leader>ifn i<C-R>=expand("%:t:r")<CR><Esc>
 " Fix trailing spaces
 nnoremap <Leader>dts :call <SID>deleteTrailingSpaces()<CR>
 
-" Run ctags
-nnoremap <Leader>xctag :!ctags-exuberant *.cpp *.h<CR>
-
 " Run python on selected
 nnoremap <Leader>py :.!python<CR>
-vnoremap <Leader>py :!python<CR>
+" vnoremap <Leader>py yppgv:!python<CR>
+vnoremap <Leader>py y`>p`[v`]:!python<CR>
+command! -range Py :<line1>,<line2>!python<CR>
 
 " Insert fold marker
 nnoremap <Leader>ifo o{{{<Esc>:normal gc<CR>
 nnoremap <Leader>ifc o}}}<Esc>:normal gc<CR>
+
 
 if has("win32")
 	" Open directory of file in explorer
@@ -590,9 +600,17 @@ if has("win32")
 	" Run file
 	nnoremap <Leader>xe :!start "%:p"<CR>
 	nnoremap <Leader>xp :!python "%:p"<CR>
+
+    command! Cmd :!start cmd /k cd %:p:h<CR>
+
+    " ctags
+    command! Ctags :execute '!ctags -R' getcwd()
 elseif has("win32unix")
 	nnoremap <silent> <Leader>od :silent :!cygstart '%:p:h:8'<CR>
 	nnoremap <Leader>xp :!/cygdrive/c/Python27/python.exe $(cygpath -d '%:p:8')<CR>
+
+    " Run ctags
+    nnoremap <Leader>xctag :!ctags-exuberant *.cpp *.h<CR>
 endif
 
 if has("gui_running")
@@ -630,6 +648,11 @@ endif
 " Mappings }}}
 
 "==================FUNCTIONS ====================
+" Syntax highlight debugging
+nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
 " VsVim has trouble parsing this. Moved down here so it would source all the mappings
 function! s:escape()
 	silent! .g/^\s*$/d
@@ -670,6 +693,10 @@ fun! s:toggleBackground()
 endfun
 
 "==================PLUGINS ======================
+" Clang format
+nnoremap <Leader>cf :pyf D:\Program Files\LLVM\share\clang\clang-format.py<cr>
+vnoremap <Leader>cf :pyf D:\Program Files\LLVM\share\clang\clang-format.py<cr>
+
 " Insert one character
 nnoremap <space> :<C-U>call InsertChar#insert(v:count1)<CR>
 
@@ -687,14 +714,19 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 autocmd FileType autohotkey setlocal commentstring=;%s
 autocmd FileType actionscript setlocal commentstring=//%s
 autocmd FileType sg setlocal commentstring=#%s
+autocmd FileType cmake setlocal commentstring=#%s
+autocmd FileType cpp setlocal commentstring=//%s
 
 " YouCompleteMe
+let g:ycm_key_list_select_completion = ['<TAB>']
+let g:ycm_key_list_previous_completion = ['<S-TAB>']
 " let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+let g:ycm_extra_conf_globlist = ['D:\dev\proj\.ycm_extra_conf.py']
 " if has("win32")
 " 	let g:ycm_path_to_python_interpreter = 'D:/Python27/pythonw.exe'
 " endif
 " if !has("gui_running")
-	let g:loaded_youcompleteme = 1
+	" let g:loaded_youcompleteme = 1
 " endif
 
 "Syntastic
@@ -716,7 +748,7 @@ nnoremap <Leader>gsl :FSSwitchRight<CR>
 "Unite
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 " Change async command to exclude files if slow
-call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', '\v\.pcx$|\.frm$')
+call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', '\v\.pcx$|\.frm$|\.tlog$')
 " Async is slow on windows?
 nnoremap <leader>r :<C-u>Unite -buffer-name=files -start-insert buffer file_rec<cr>
 nnoremap <leader>f :<C-u>Unite -buffer-name=files -start-insert file buffer<cr>
@@ -788,14 +820,17 @@ function! g:UltiSnips_Complete()
 endfunction
 
 let g:UltiSnipsExpandTrigger = '<Tab>'
+" let g:UltiSnipsExpandTrigger = '<C-b>'
 " let g:UltiSnipsListSnippets = '<C-b>'
-let g:UltiSnipsJumpForwardTrigger = '<Tab>'
-let g:UltiSnipsJumpBackwardTrigger = '<S-Tab>'
+let g:UltiSnipsListSnippets = '<C-b>'
+let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-inoremap <expr> <CR> pumvisible() ? neocomplete#close_popup() : "\<CR>"
 
 " Neocomplete {{{
-let g:neocomplete#enable_at_startup=1
+if 0
+inoremap <expr> <CR> pumvisible() ? neocomplete#close_popup() : "\<CR>"
+let g:neocomplete#enable_at_startup=0
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 " Define keyword.
@@ -851,7 +886,8 @@ autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
-	let g:neocomplete#sources#omni#input_patterns = {}
+    let g:neocomplete#sources#omni#input_patterns = {}
+endif
 endif
 "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'

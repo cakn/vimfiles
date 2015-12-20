@@ -30,8 +30,7 @@ iunmap z
 iunmap [1~
 iunmap [4~
 
-" use the relative number plugin
-set nonumber
+set number
 
 " allow normal backspace
 set backspace=indent,eol,start
@@ -98,10 +97,6 @@ nnoremap <A-j> :vsc Edit.MoveLineDown<CR>
 nnoremap <A-k> :vsc Edit.MoveLineUp<CR>
 vnoremap <A-j> :vsc Edit.MoveLineDown<CR>gv
 vnoremap <A-k> :vsc Edit.MoveLineUp<CR>gv
-" nnoremap <A-j> :vsc Edit.MoveSelectedLinesDown<CR>
-" nnoremap <A-k> :vsc Edit.MoveSelectedLinesUp<CR>
-" vnoremap <A-j> :vsc Edit.MoveSelectedLinesDown<CR>
-" vnoremap <A-k> :vsc Edit.MoveSelectedLinesUp<CR>
 
 vnoremap w iw
 vnoremap " <ESC>`><Left>a"<ESC>`<i"<ESC>
@@ -165,6 +160,9 @@ nnoremap <Leader>aa :vsc Edit.AlignByEquals<CR>
 vnoremap <Leader>aa :vsc Edit.AlignByEquals<CR>
 " nnoremap <Leader>aa :vsc Edit.AlignAssignments<CR>
 " vnoremap <Leader>aa :vsc Edit.AlignAssignments<CR>
+
+" Add file
+nnoremap <Leader>af :vsc ProjectandSolutionContextMenus.Project.Add.NewEmptyFile<CR>
 
 " Breakpoints
 " Create/Destroy
@@ -230,7 +228,8 @@ vnoremap <Leader>cf :vsc Tools.ClangFormat<CR>
 " File Navigation
 " nnoremap <Leader>f :vsc Edit.NavigateTo<CR>
 " nnoremap <Leader>f :vsc Window.QuickLaunch<CR>
-nnoremap <Leader>f :vsc View.CommandWindow<CR>
+" nnoremap <Leader>f :vsc View.CommandWindow<CR>
+nnoremap <Leader>f :vsc Tools.SonicFileFinderStartSearch<CR>
 
 nnoremap <S-Space> :vsc Edit.QuickInfo<CR>
 
@@ -241,13 +240,13 @@ xnoremap <Esc> <Nop>
 
 vnoremap <C-C> :vsc Edit.Copy<CR>
 
-" Insert file name
-" inoremap <C-B> <C-R>%<C-O>dF.<Del>
 " Insert file name with proper undo
 inoremap fln <Esc>mzi<C-R>%<Esc>F.hv`zyu"0pa::
 
 nnoremap j gj
 nnoremap k gk
+
+nnoremap <Leader>s15 :source ~/_vsvimrc2015<CR>
 
 " Manual settings
 " Ctrl+Enter Edit.LineOpenBelow

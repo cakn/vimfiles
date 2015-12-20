@@ -9,3 +9,8 @@ inoremap {<CR>  {<CR>}<Esc>O
 
 inoremap ; <ESC>A;<CR>
 inoremap <A-;> ;
+
+" insert filename
+inoremap fln <C-R>=expand("%:t:r")<CR>::
+" function declaration paste
+nmap <Leader>fdp 4<<Hf(Sifln<C-e><BS><CR>{<CR>
