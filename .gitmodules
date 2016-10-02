@@ -49,3 +49,6 @@
 [submodule "bundle/clang_complete"]
 	path = bundle/clang_complete
 	url = https://github.com/Rip-Rip/clang_complete.git
+[submodule "bundle/accelerated_jk"]
+	path = bundle/accelerated_jk
+	url = https://github.com/rhysd/accelerated-jk.git
