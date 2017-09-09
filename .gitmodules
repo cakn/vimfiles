@@ -34,9 +34,6 @@
 [submodule "bundle/YouCompleteMe"]
 	path = bundle/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe.git
-[submodule "bundle/neocomplete"]
-	path = bundle/neocomplete
-	url = https://github.com/Shougo/neocomplete.vim.git
 [submodule "bundle/ultisnips"]
 	path = bundle/ultisnips
 	url = https://github.com/SirVer/ultisnips
@@ -49,12 +46,6 @@
 [submodule "bundle/clang_complete"]
 	path = bundle/clang_complete
 	url = https://github.com/Rip-Rip/clang_complete.git
-[submodule "bundle/accelerated_jk"]
-	path = bundle/accelerated_jk
-	url = https://github.com/rhysd/accelerated-jk.git
-[submodule "bundle/vim-polyglot"]
-	path = bundle/vim-polyglot
-	url = https://github.com/sheerun/vim-polyglot.git
 [submodule "bundle/unite-outline"]
 	path = bundle/unite-outline
 	url = https://github.com/Shougo/unite-outline.git

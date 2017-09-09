@@ -72,9 +72,9 @@ nnoremap cj <Right>?[,(]<CR>/[^\s]<CR>v/[,)]<CR><Left><Esc>:noh<CR>gvc
 nnoremap dj <Right>?[,(]<CR><Right>v/[,)]<CR><Left><Esc>:noh<CR>gvd
 
 " sj as <Esc> and remove blank line at cursor
-inoremap sj <Esc>:.g/^\s*$/d<CR>
-vnoremap sj <Esc>:.g/^\s*$/d<CR>
-xnoremap sj <Esc>:.g/^\s*$/d<CR>
+inoremap sj <Esc>:.g/^\s*$/d<CR>:noh<CR>
+vnoremap sj <Esc>:.g/^\s*$/d<CR>:noh<CR>
+xnoremap sj <Esc>:.g/^\s*$/d<CR>:noh<CR>
 " ksf save
 inoremap ksf <Esc>:.g/^\s*$/d<CR>:w<CR>
 
@@ -121,6 +121,7 @@ inoremap <C-O> <Tab>
 vnoremap <C-O>:vsc SurroundWith<CR>
 xnoremap <C-O> <Tab>
 
+nnoremap gs :write<CR>
 nnoremap go "zyiw:vsc Edit.GoToDefinition <C-R>z<CR>
 " nnoremap go :vsc Edit.PeekDefinition<CR>
 nnoremap gf :vsc Edit.OpenFile<CR>

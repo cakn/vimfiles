@@ -1,71 +1,77 @@
 ## STL Collections
 # std::array
-snippet array
+snippet array "std::array" w
 std::array<${1:T}, ${2:N}> ${3};
 endsnippet
 # std::vector
-snippet vec
+snippet vec "std::vector" w
 std::vector<${1:T}> ${2}
 endsnippet
 # std::deque
-snippet deque
+snippet deque "std::deque" w
 std::deque<${1:T}> ${2};
 endsnippet
 # std::forward_list
-snippet flist
+snippet flist "std::forward_list" w
 std::forward_list<${1:T}> ${2};
 endsnippet
 # std::list
-snippet list
+snippet list "std::list" w
 std::list<${1:T}> ${2};
 endsnippet
 # std::set
-snippet set
+snippet set "std::set" w
 std::set<${1:T}> ${2};
 endsnippet
 # std::map
-snippet map
+snippet map "std::map" w
 std::map<${1:Key}, ${2:T}> ${3};
 endsnippet
 # std::multiset
-snippet mset
+snippet mset "std::multiset" w
 std::multiset<${1:T}> ${2};
 endsnippet
 # std::multimap
-snippet mmap
+snippet mmap "std::multimap" w
 std::multimap<${1:Key}, ${2:T}> ${3};
 endsnippet
 # std::unordered_set
-snippet uset
+snippet uset "std::unordered_set" w
 std::unordered_set<${1:T}> ${2};
 endsnippet
 # std::unordered_map
-snippet umap
+snippet umap "std::unordered_map" w
 std::unordered_map<${1:Key}, ${2:T}> ${3};
 endsnippet
 # std::unordered_multiset
-snippet umset
+snippet umset "std::unordered_multiset" w
 std::unordered_multiset<${1:T}> ${2};
 endsnippet
 # std::unordered_multimap
-snippet ummap
+snippet ummap "std::unordered_multimap" w
 std::unordered_multimap<${1:Key}, ${2:T}> ${3};
 endsnippet
 # std::stack
-snippet stack
+snippet stack "std::stack" w
 std::stack<${1:T}> ${2};
 endsnippet
 # std::queue
-snippet queue
+snippet queue "std::queue" w
 std::queue<${1:T}> ${2};
 endsnippet
 # std::priority_queue
-snippet pqueue
+snippet pqueue "std::priority_queue" w
 std::priority_queue<${1:T}> ${2};
 endsnippet
 # std::pair
-snippet pair
+snippet pair "std::pair" w
 std::pair< ${1:T}, ${2:T}>${3}
+endsnippet
+snippet uqp "std::unique_ptr" w
+std::unique_ptr<${1:T}>${3}
+endsnippet
+snippet muq "std::make_unique" w
+std::make_unique<${1:T}>${3}
 endsnippet
 ##
 ## Access Modifiers
@@ -128,6 +134,10 @@ endsnippet
 snippet cin
 std::cin >> ${1};
 endsnippet
+
+snippet cau "const auto" W
+const auto
+endsnippet
 ##
 ## Iteration
 # for i
@@ -135,17 +145,22 @@ snippet for
 for (int ${2:i} = 0; $2 < ${1:count}; ++$2) {
 	$0
 }
-
+endsnippet
+# for reverse
+snippet forr
+for (int ${2:i} = ${1:count} - 1; $2 >= 0; --$2) {
+	$0
+}
 endsnippet
 # foreach
 snippet fora
-for (const auto& ${2:item} : ${3:container}){
+for (const auto& ${2:item} : ${3:container}) {
 	$0
 }
 endsnippet
 # iterator
 snippet fori
-for (auto ${2:it} = ${1:container}.begin(); $2 != $1.end(); ++$2 ){
+for (auto ${2:it} = ${1:container}.begin(); $2 != $1.end(); ++$2 ) {
 	$0
 }
 endsnippet
@@ -163,11 +178,11 @@ snippet lld
 endsnippet
 
 # #include
-pre_expand "del snip.buffer[snip.line]; line = (i for i,v in enumerate(snip.buffer) if not (v.startswith('#include <') or v.startswith('#pragma'))).next(); snip.buffer[line:line] = ['']; snip.cursor.set(line, 0)"
+# pre_expand "del snip.buffer[snip.line]; line = (i for i,v in enumerate(snip.buffer) if not (v.startswith('#include <') or v.startswith('#pragma'))).next(); snip.buffer[line:line] = ['']; snip.cursor.set(line, 0)"
 snippet inb
 #include <${1}>
 endsnippet
-pre_expand "del snip.buffer[snip.line]; line = (i for i,v in enumerate(snip.buffer) if not (v.startswith('#include "') or v.startswith('#pragma'))).next(); snip.buffer[line:line] = ['']; snip.cursor.set(line, 0)"
+# pre_expand "del snip.buffer[snip.line]; line = (i for i,v in enumerate(snip.buffer) if not (v.startswith('#include') or v.startswith('#pragma'))).next(); snip.buffer[line:line] = ['']; snip.cursor.set(line, 0)"
 snippet inq
 #include "${1}"
 endsnippet
@@ -180,72 +195,124 @@ endsnippet
 
 # Types
 # unsigned int
-snippet uint
+snippet uint "unsigned int" w
 unsigned int
 endsnippet
 # STD types
 # string
-snippet str
+snippet str "std::string" w
 std::string
 endsnippet
+snippet strr "std::string&" w
+std::string
+endsnippet
+snippet cstrr "const std::string&" w
+const std::string&
+endsnippet
+snippet strv "std::string_view" w
+std::string_view
+endsnippet
 # endl
-snippet endl
+snippet endl "std::endl" w
 std::endl
 endsnippet
 # ofstream
-snippet ofs
+snippet ofs "std::ofstream" w
 std::ofstream
 endsnippet
 # stringstream
-snippet ss
+snippet strs "std::stringstream" w
 std::stringstream
+endsnippet
+
+# move
+snippet mv "std::move" w
+std::move
 endsnippet
 
 # Casts
 # dynamic cast
-snippet dcast
+snippet dcast "dynamic_cast" w
 dynamic_cast<${1:T}>(${2})${3}
 endsnippet
 # static cast
-snippet scast
+snippet scast "static_cast" w
 static_cast<${1:T}>(${2})${3}
 endsnippet
+snippet rcast "reinterpret_cast" w
+reinterpret_cast<${1:T}>
+endsnippet
 
+snippet sct "struct"
+struct ${1:name}
+{
+  ${2}
+};
+endsnippet
 snippet cl "class .. (class)"
 class ${1:`!p snip.rv = snip.basename or "name"`}
 {
-public:
-	${1/(\w+).*/$1/} (${2});
-	virtual ~${1/(\w+).*/$1/} ();
+ public:
+  ${1/(\w+).*/$1/} (${2});
+  virtual ~${1/(\w+).*/$1/} ();
 
-private:
-	${0:/* data */}
+ private:
+  ${0:/* data */}
 };
 endsnippet
 
-snippet map "std::map (map)"
-std::map<${1:key}, ${2:value}> map$0;
-endsnippet
-
-snippet vector "std::vector (v)"
-std::vector<${1:char}> v$0;
-endsnippet
-
-snippet tp "template <typename ..> (template)"
-template <typename ${1:_InputIter}>
+snippet tpt
+template <typename ${1:T}>
 endsnippet
 
 snippet if
 if (${1:cond}) {
-	$0
+  $0
 }
+endsnippet
+
+pre_expand "snip.buffer[snip.line] = ' '*(snip.column - 5); snip.cursor.set(snip.line, snip.column - 5)"
+snippet elif
+} else if (${1:cond}) {
 endsnippet
 
 pre_expand "snip.buffer[snip.line] = ' '*(snip.column - 5); snip.cursor.set(snip.line, snip.column - 5)"
 snippet else
 } else {
-	$0
+  $0
 endsnippet
-# `!p snip.shift(2);snip.rv = snip.mkline("} else {", None)`
+
+snippet swi
+switch (${1:var}) {
+  $0
+}
+endsnippet
+snippet case
+case ${1:var}:
+{
+  $0
+	break;
+}
+endsnippet
+
+snippet findit
+const auto it = ${1:container}.find(${2:item});
+if (it != $1.end()) {
+  $0
+}
+endsnippet
+
+snippet gtest
+#include <gtest/gtest.h>
+
+class `!p snip.rv = snip.basename or "name"` : public ::testing::Test
+{
+ public:
+};
+
+TEST(`!p snip.rv = snip.basename or "name"`, name)
+{
+}
+endsnippet
 
 # vim:ft=snippets:

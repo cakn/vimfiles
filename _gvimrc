@@ -1,5 +1,10 @@
+" Disable menus
 set guioptions-=T
 set guioptions-=m
+
+" Disable scrollbars
+set guioptions-=r
+set guioptions-=L
 
 " Airline
 let g:airline_powerline_fonts=1

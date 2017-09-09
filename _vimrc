@@ -16,21 +16,34 @@ syntax enable
 " Autosource vimrc
 " autocmd bufwritepost .vimrc source $MYVIMRC
 
-" Restore last cursor position of file
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+" Use augroup to prevent vim from duplicating autocmds on when re-sourcing
+augroup main_augroup
+  autocmd!
+  " Restore last cursor position of file
+  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
 
-" Enable marker folds for .vimrc files and shell files
-autocmd FileType vim,sh setlocal foldmethod=marker
+  " Enable marker folds for .vimrc files and shell files
+  autocmd FileType vim,sh setlocal foldmethod=marker
 
-autocmd FileType sg setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab
+  autocmd FileType sg setlocal tabstop=2 softtabstop=0 expandtab shiftwidth=2 smarttab
 
-" Disable autocomment
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+  " Disable autocomment
+  autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
-" Highlight word cursor is on
-autocmd CursorMoved * exe printf('match CursorSelect /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+  " Highlight word cursor is on
+  autocmd CursorMoved * exe printf('match CursorSelect /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
-au BufNewFile,BufRead *.jsfl set filetype=javascript
+  " Allow Enter to quick jump to error in quickfix windows
+  autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+
+  autocmd BufNewFile,BufRead *.jsfl set filetype=javascript
+augroup END
+
+" augroup quickFixWindowExpand
+    " autocmd!
+    " autocmd QuickFixCmdPost [^l]* botright copen
+    " autocmd QuickFixCmdPost l* botright lopen
+" augroup END
 
 " }}}
 
@@ -92,15 +105,17 @@ set showbreak=…
 set autoindent
 set cindent
 " Tab length for >> indenting
-set shiftwidth=4
+set shiftwidth=2
 " Tab distance when inserting a tab
-set softtabstop=4
+set softtabstop=2
 " Width that a \t is interpreted
-set tabstop=4
+set tabstop=2
 set expandtab
 nnoremap <Leader>t2 :set shiftwidth=2 softtabstop=2 tabstop=2<CR>
+nnoremap <Leader>t4 :set shiftwidth=4 softtabstop=4 tabstop=4<CR>
 " Stop # from being unindentable
 set indentkeys-=:,0#
+set cinkeys-=0#
 
 " Disable textwidth so vim doesn't autobreak long lines
 set textwidth=0
@@ -147,13 +162,17 @@ set matchpairs+=<:>
 set lazyredraw
 
 set timeoutlen=1000
-autocmd InsertEnter * :setlocal timeoutlen=250
-autocmd InsertLeave * :setlocal timeoutlen=1000
+augroup insert_timeout_augroup
+  autocmd!
+  autocmd InsertEnter * :setlocal timeoutlen=250
+  autocmd InsertLeave * :setlocal timeoutlen=1000
+augroup END
 
-set virtualedit=onemore
+set virtualedit=block,onemore
 
 "Set encoding up here to avoid problems with alt
 set encoding=utf-8
+
 " Settings }}}
 
 
@@ -269,19 +288,52 @@ nnoremap m m
 " Buffer moving
 nnoremap bn :bn<CR>
 nnoremap bp :bp<CR>
-nnoremap bd :bp<bar>sp<bar>bn<bar>bd<CR>
+nnoremap bd :bn\|bd #<CR>
 nnoremap bb :b#<CR>
+
+" Windows
+function! s:MarkWindowSwap()
+    let g:markedWinNum = winnr()
+endfunction
+
+function! s:DoWindowSwap()
+    "Mark destination
+    let curNum = winnr()
+    let curBuf = bufnr( "%" )
+    exe g:markedWinNum . "wincmd w"
+    "Switch to source and shuffle dest->source
+    let markedBuf = bufnr( "%" )
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' curBuf
+    "Switch to dest and shuffle source->dest
+    exe curNum . "wincmd w"
+    "Hide and open so that we aren't prompted and keep history
+    exe 'hide buf' markedBuf
+endfunction
+
+nnoremap w <C-W>
+nnoremap wtl :call <SID>MarkWindowSwap()<CR><C-W>l:call <SID>DoWindowSwap()<CR>
+nnoremap wth :call <SID>MarkWindowSwap()<CR><C-W>h:call <SID>DoWindowSwap()<CR>
+" nnoremap wtl <C-w>r
+" nnoremap wth <C-w>R
 
 " Tag moving
 nnoremap go g<C-]>
+" Tag open in split
+nnoremap wgol :let word=expand("<cword>")<CR><C-W>l:exe "tjump" word<CR>
+nnoremap wgoh :let word=expand("<cword>")<CR><C-W>h:exe "tjump" word<CR>
 
-" Windows
-nnoremap w <C-w>
+" File open in split
+nnoremap wfl <C-W>f:call <SID>MarkWindowSwap()<CR><C-W>l:call <SID>DoWindowSwap()<CR><C-W>h:close<CR><C-W>l
+nnoremap wfh <C-W>f:call <SID>MarkWindowSwap()<CR><C-W>h:call <SID>DoWindowSwap()<CR><C-W>l:close<CR><C-W>h
+nnoremap wfj <C-W>f:call <SID>MarkWindowSwap()<CR><C-W>j:call <SID>DoWindowSwap()<CR><C-W>k:close<CR><C-W>j
+nnoremap wfk <C-W>f:call <SID>MarkWindowSwap()<CR><C-W>k:call <SID>DoWindowSwap()<CR><C-W>j:close<CR><C-W>k
 
 " Ctrl+S saving
 nnoremap <C-S> :update<CR>
 vnoremap <C-S> <C-C>:update<CR>
 inoremap <C-S> <Esc>:call <SID>escape()<CR>:update<CR>
+nnoremap gs :update<CR>
 
 " Ctrl+c jk comment and copy line
 nnoremap <C-C>j mzyyp`z:normal gcc<CR>j
@@ -315,6 +367,8 @@ vnoremap <C-V> "+P
 
 " yank pasting
 nnoremap py "0p
+" Last delete/change paste
+nnoremap pd "1p
 nnoremap pc "+p
 nnoremap pp p
 inoremap <C-P>c <C-O>"+P
@@ -323,6 +377,7 @@ inoremap <C-P>y <C-O>"0P
 inoremap <C-P><C-Y> <C-O>"0P
 nnoremap Py "0P
 nnoremap Pc "+P
+nnoremap Pd "1P
 nnoremap PP P
 
 " Replace motion with last yanked
@@ -354,8 +409,11 @@ xnoremap sj <Esc>:call <SID>escape()<CR>
 inoremap ksf <Esc>:call <SID>escape()<CR>:update<CR>
 
 " Copy line and increment number
-nnoremap <A-a> mzyy<C-A>P`z
-nnoremap a mzyy<C-A>P`z
+nnoremap <A-a> :call <SID>IncAllNumbersInLine()<CR>
+nnoremap a :call <SID>IncAllNumbersInLine()<CR>
+function! s:IncAllNumbersInLine()
+    execute "normal! mzyyp:s/\\d\\+/\\=(submatch(0)+1)/g\<CR>`zj"
+endfunction
 
 " Quick delete
 " Map each to avoid recursive calls in normal
@@ -533,9 +591,9 @@ nnoremap <Leader>tn :tabnew<CR>
 nnoremap <Leader>bt <C-W>s<C-W>T
 
 " Make file
-nnoremap <Leader>mk :make<CR>
-nnoremap <Leader>md :make debug<CR>
-nnoremap <Leader>mr :make run<CR>
+nnoremap <Leader>mk :Make<CR>
+nnoremap <Leader>md :Make debug<CR>
+nnoremap <Leader>mr :Make run<CR>
 
 " Edit vimrc, gvimrc files
 nnoremap <Leader>ev :tabnew $MYVIMRC<CR>
@@ -559,11 +617,6 @@ nnoremap <Leader>ecp :tabnew ~/.vim/colors<CR>
 
 " Add new file
 nnoremap <Leader>af :e <C-R>=expand("%:p:h") . "/" <CR>
-
-" Plugins
-" Snippet files
-" nnoremap <Leader>eps :tabnew ~/.vim/bundle/vim-snippets/UltiSnips/<CR>
-nnoremap <Leader>eps :UltiSnipsEdit<CR>
 
 if( has("win32") || has("win32unix") )
 	nnoremap <Leader>ehk :tabnew ~/Autohotkey.ahk<CR>
@@ -592,19 +645,72 @@ command! -range Py :<line1>,<line2>!python<CR>
 nnoremap <Leader>ifo o{{{<Esc>:normal gc<CR>
 nnoremap <Leader>ifc o}}}<Esc>:normal gc<CR>
 
+" Quick fix show
+nnoremap gq :botright copen<CR>
+" Quick fix next
+nnoremap ge :cn<CR>
+nnoremap gE :cp<CR>
+command! ClearQuickfixList cexpr []
+" Clear and close quickfix
+nnoremap <leader>qcl :ClearQuickfixList<CR>:cclose<CR>
+
+" Quick fix do (runs command on all files in quick list)
+function! s:QFDo(command)
+    " Create a dictionary so that we can
+    " get the list of buffers rather than the
+    " list of lines in buffers (easy way
+    " to get unique entries)
+    let buffer_numbers = {}
+    " For each entry, use the buffer number as
+    " a dictionary key (won't get repeats)
+    for fixlist_entry in getqflist()
+        let buffer_numbers[fixlist_entry['bufnr']] = 1
+    endfor
+    " Make it into a list as it seems cleaner
+    let buffer_number_list = keys(buffer_numbers)
+
+    " For each buffer
+    for num in buffer_number_list
+        " Select the buffer
+        exe 'buffer' num
+        " Run the command that's passed as an argument
+        exe a:command
+        " Save if necessary
+        update
+    endfor
+endfunction
+command! -nargs=+ Cdo call <SID>QFDo(<q-args>)
+
+
+" Find all
+set grepprg=ag
+command! -nargs=? FindAll :silent grep!<space><args><bar>botright<space>copen
+nnoremap <C-S-F> :FindAll<space>
 
 if has("win32")
 	" Open directory of file in explorer
 	nnoremap <silent> <Leader>od :silent :!start explorer %:p:h:8<CR>
 
+  " Touch for windows
+  command! -nargs=1 -complete=file Touch :!D:/cygwin64/bin/touch.exe <args><CR>
+
 	" Run file
 	nnoremap <Leader>xe :!start "%:p"<CR>
 	nnoremap <Leader>xp :!python "%:p"<CR>
 
-    command! Cmd :!start cmd /k cd %:p:h<CR>
+  command! Cmd :!start cmd /k cd %:p:h<CR>
 
-    " ctags
-    command! Ctags :execute '!ctags -R' getcwd()
+  " ctags
+  " command! Ctags :execute '!ctags -R' getcwd()
+  command! Ctags :execute '!ctags --c++-kinds=+p --fields=+iaS --extra=+q --language-force=C++ -R' getcwd()
+  " cscope
+  command! -nargs=? Find :!D:/cygwin64/bin/find.exe <args>
+  set cscopeprg=D:/cygwin64/bin/cscope.exe
+  command! -nargs=? Cscope :!D:/cygwin64/bin/cscope.exe <args>
+  nmap <F11> :Find . -iname '*.c' -o -iname '*.cpp' -o -iname '*.h' -o -iname '*.hpp' > cscope.files<CR>
+    \:Cscope -b -i cscope.files -f cscope.out<CR>
+    \:cscope kill -1<CR>:cscope add cscope.out<CR>
+
 elseif has("win32unix")
 	nnoremap <silent> <Leader>od :silent :!cygstart '%:p:h:8'<CR>
 	nnoremap <Leader>xp :!/cygdrive/c/Python27/python.exe $(cygpath -d '%:p:8')<CR>
@@ -692,7 +798,43 @@ fun! s:toggleBackground()
 	endif
 endfun
 
+" Create directory and file at same time with command :E
+function! s:MKDir(...)
+    if         !a:0
+           \|| isdirectory(a:1)
+           \|| filereadable(a:1)
+           \|| isdirectory(fnamemodify(a:1, ':p:h'))
+        return
+    endif
+    return mkdir(fnamemodify(a:1, ':p:h'), 'p')
+endfunction
+command! -bang -bar -nargs=? -complete=file E :call s:MKDir(<f-args>) | e<bang> <args>
+
+" ================== INDIVIDUAL PROJECT SETTINGS =====================
+command! -bar -nargs=? -complete=dir MciMv :!python D:/dev/proj/ProjScripts/moveCppHAndTests.py <args>
+command! -bar -nargs=? -complete=dir MciAddFile :!python D:/dev/proj/ProjScripts/addFile.py <args>
+nnoremap <leader>mb :wa<CR>:Make<CR>
+augroup mci_augroup
+  autocmd!
+  autocmd BufNewFile,BufRead D:/dev/proj/* setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab path=D:\dev\lib\boost_1_65_0,D:\dev\proj\EntityEngine\include,D:\dev\proj\EntityGenerator\include,D:\dev\proj\Console\include,D:\dev\lib\gtest\googletest\include,D:\dev\lib\gtest\googlemock\include,D:\dev\proj\Core\include,D:\dev\proj\Mochi\include
+  autocmd BufNewFile,BufRead D:/dev/proj/* cd D:/dev/proj
+  autocmd BufNewFile,BufRead D:/dev/proj/* setlocal makeprg=cmake\ --build\ D:/dev/proj/Mochi/build\ --config\ Debug\ --\ /property:GenerateFullPaths=true\ /m
+  autocmd BufNewFile,BufRead D:/dev/proj/* nnoremap <leader>me :Dispatch D:/dev/proj/Mochi/makeEm.bat<CR>
+  " Linker errors
+  autocmd BufNewFile,BufRead D:/dev/proj/* setlocal errorformat=%*\\s%*\\d>%*[A-Z%.()]\ :\ error\ %m
+  " Compiler errors
+  autocmd BufNewFile,BufRead D:/dev/proj/* setlocal errorformat+=%*\\s%*\\d>%f(%l):\ error\ %t%n:\ %m
+  autocmd BufNewFile,BufRead D:/dev/proj/* setlocal errorformat+=%*\\s%*\\d>%f(%l):%m
+  autocmd BufNewFile,BufRead D:/dev/proj/* nnoremap <leader>af :MciAddFile
+  autocmd BufNewFile,BufRead D:/dev/proj/* nnoremap <leader>mr :Start cd D:\dev\proj\Mochi\root && D:\dev\proj\Mochi\bin\Debug\Mochi.exe<CR>
+augroup END
+
 "==================PLUGINS ======================
+" accelerated jk
+" nmap j <Plug>(accelerated_jk_gj)
+" nmap k <Plug>(accelerated_jk_gk)
+" let g:accelerated_jk_acceleration_table=[7, 20, 35, 45]
+
 " Clang format
 nnoremap <Leader>cf :pyf D:\Program Files\LLVM\share\clang\clang-format.py<cr>
 vnoremap <Leader>cf :pyf D:\Program Files\LLVM\share\clang\clang-format.py<cr>
@@ -711,20 +853,21 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 " let g:airline#extensions#whitespace#checks = [ 'trailing' ]
 
 " Commentary
-autocmd FileType autohotkey setlocal commentstring=;%s
-autocmd FileType actionscript setlocal commentstring=//%s
-autocmd FileType sg setlocal commentstring=#%s
-autocmd FileType cmake setlocal commentstring=#%s
-autocmd FileType cpp setlocal commentstring=//%s
+augroup commentary_augroup
+  autocmd!
+  autocmd FileType autohotkey setlocal commentstring=;%s
+  autocmd FileType actionscript setlocal commentstring=//%s
+  autocmd FileType sg setlocal commentstring=#%s
+  autocmd FileType cmake setlocal commentstring=#%s
+  autocmd FileType cpp setlocal commentstring=//%s
+augroup END
 
 " YouCompleteMe
 let g:ycm_key_list_select_completion = ['<TAB>']
 let g:ycm_key_list_previous_completion = ['<S-TAB>']
 " let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-let g:ycm_extra_conf_globlist = ['D:\dev\proj\.ycm_extra_conf.py']
-" if has("win32")
-" 	let g:ycm_path_to_python_interpreter = 'D:/Python27/pythonw.exe'
-" endif
+" No warning of loading ycm_extra_conf if the file matches this
+let g:ycm_extra_conf_globlist = ['D:/dev/proj/*/.ycm_extra_conf.py']
 " if !has("gui_running")
 	" let g:loaded_youcompleteme = 1
 " endif
@@ -736,7 +879,12 @@ let g:ycm_extra_conf_globlist = ['D:\dev\proj\.ycm_extra_conf.py']
 let g:syntastic_enable_signs = 0
 let g:syntastic_javascript_checkers = ['closurecompiler']
 let g:syntastic_javascript_closurecompiler_path = 'D:\\cygwin64\\home\\Kenneth\\compiler.jar'
+let g:syntastic_javascript_closurecompiler_args = '--language_in=ECMASCRIPT6'
 " let g:syntastic_javascript_closurecompiler_path = '/cygdrive/d/cygwin64/home/Kenneth/compiler.jar'
+
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_lua_checkers = ["luacheck"]
+" let g:syntastic_lua_luacheck_args = "--no-unused-args"
 
 " FSwitch
 nnoremap <Leader>g; :FSHere<CR>
@@ -744,28 +892,50 @@ nnoremap <Leader>gh :FSLeft<CR>
 nnoremap <Leader>gsh :FSSwitchLeft<CR>
 nnoremap <Leader>gl :FSRight<CR>
 nnoremap <Leader>gsl :FSSwitchRight<CR>
+let g:fsnonewfiles = 1
+augroup mycppfiles_augroup
+    autocmd!
+    autocmd BufEnter *.cpp let b:fswitchdst = 'h,hpp' | let b:fswitchlocs = 'reg:|src|include/**|'
+    autocmd BufEnter *.h let b:fswitchdst  = 'cpp,cc,C' | let b:fswitchlocs = 'reg:|include[\\/][^\\/]*|src|'
+augroup END
 
 "Unite
+let g:unite_source_rec_async_command = ['ag', '--follow',  '--nocolor',
+                \ '--nogroup', '--hidden', '-g', '']
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 " Change async command to exclude files if slow
 call unite#custom#source('file_rec,file_rec/async', 'ignore_pattern', '\v\.pcx$|\.frm$|\.tlog$')
-" Async is slow on windows?
-nnoremap <leader>r :<C-u>Unite -buffer-name=files -start-insert buffer file_rec<cr>
-nnoremap <leader>f :<C-u>Unite -buffer-name=files -start-insert file buffer<cr>
-" nnoremap <leader>f :<C-u>Unite -buffer-name=files -start-insert file buffer<cr>
+call unite#custom#source('file_rec,file_rec/async', 'ignore_globs', ['*.pdb', '*.obj', '*.pyc', '**/build/**', '**/buildEm/**', '**/bin/**', '**/.svn/**', '**/munged/**'])
 
-autocmd FileType unite call s:unite_my_settings()
+" Search on file names only, not path
+call unite#custom#source(
+        \ 'buffer,file_rec/async,file_rec', 'matchers',
+        \ ['converter_tail', 'matcher_default'])
+call unite#custom#source(
+        \ 'buffer,file_rec/async,file_rec', 'converters',
+        \ ['converter_file_directory'])
+
+" nnoremap <leader>r :<C-u>UniteWithProjectDir -buffer-name=files -start-insert file_rec/async<cr>
+nnoremap <leader>r :<C-u>Unite -buffer-name=files -start-insert file_rec/async<cr>
+" nnoremap <leader>r :<C-u>Unite -buffer-name=files -start-insert file_rec<cr>
+nnoremap <leader>f :<C-u>UniteWithBufferDir -buffer-name=files -start-insert buffer file file/new directory/new<cr>
+nnoremap <leader>b :<C-u>Unite -start-insert bookmark buffer<CR>
+nnoremap <leader>d :<C-u>Unite -vertical -winwidth=35 outline<CR>
+
+augroup unite_augroup
+  autocmd!
+  autocmd FileType unite call s:unite_my_settings()
+augroup END
 function! s:unite_my_settings() "{{{
 	" Overwrite settings.
 	imap <buffer> sj <Plug>(unite_insert_leave)
-	nmap <buffer> sj <Plug>(unite_all_exit)bp
-	nmap <buffer> q <Plug>(unite_all_exit)bp
+	nmap <buffer> sj <Plug>(unite_all_exit)
+	nmap <buffer> q <Plug>(unite_all_exit)
 	imap <buffer> <TAB> <Plug>(unite_complete)
 	nmap <buffer> J <Plug>(unite_select_next_line)
 	nmap <buffer> K <Plug>(unite_select_previous_line)<Plug>(unite_select_previous_line)<Plug>(unite_select_previous_line)
 	imap <buffer> <C-j> <Plug>(unite_select_next_line)
 	imap <buffer> <C-k> <Plug>(unite_select_previous_line)
-	"imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
 	imap <buffer><expr> j unite#smart_map('j', '')
 	imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
 	imap <buffer> ' <Plug>(unite_quick_match_default_action)
@@ -804,6 +974,7 @@ vnoremap <leader>aa :Tabularize /=<CR>
 nnoremap <Leader>js :%s /\n//<CR>:%s /\(nA\)/ \1\r/g<CR>
 
 " Ultisnips
+nnoremap <Leader>eps :UltiSnipsEdit<CR>
 function! g:UltiSnips_Complete()
     call UltiSnips#ExpandSnippet()
     if g:ulti_expand_res == 0
@@ -825,7 +996,10 @@ let g:UltiSnipsExpandTrigger = '<Tab>'
 let g:UltiSnipsListSnippets = '<C-b>'
 let g:UltiSnipsJumpForwardTrigger = '<C-j>'
 let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
-au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+augroup ultisnips_augroup
+  autocmd!
+  autocmd BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+augroup END
 
 " Neocomplete {{{
 if 0
@@ -879,11 +1053,14 @@ let g:neocomplete#sources#syntax#min_keyword_length = 3
 "let g:neocomplete#disable_auto_complete = 1
 "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 " Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+augroup omnifunc_augroup
+  autocmd!
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+augroup END
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
     let g:neocomplete#sources#omni#input_patterns = {}
