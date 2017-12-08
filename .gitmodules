@@ -49,3 +49,6 @@
 [submodule "bundle/unite-outline"]
 	path = bundle/unite-outline
 	url = https://github.com/Shougo/unite-outline.git
+[submodule "bundle/vimfiler"]
+	path = bundle/vimfiler
+	url = https://github.com/Shougo/vimfiler.vim.git
