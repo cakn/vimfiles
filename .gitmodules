@@ -37,6 +37,7 @@
 [submodule "bundle/vimproc"]
 	path = bundle/vimproc
 	url = https://github.com/Shougo/vimproc.vim
+  ignore = dirty
 [submodule "bundle/unite-outline"]
 	path = bundle/unite-outline
 	url = https://github.com/Shougo/unite-outline.git
