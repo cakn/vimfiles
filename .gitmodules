@@ -19,9 +19,6 @@
 [submodule "bundle/unite"]
 	path = bundle/unite
 	url = https://github.com/Shougo/unite.vim
-[submodule "bundle/syntastic"]
-	path = bundle/syntastic
-	url = https://github.com/scrooloose/syntastic
 [submodule "bundle/colorizer"]
 	path = bundle/colorizer
 	url = https://github.com/lilydjwg/colorizer.git
@@ -43,9 +40,6 @@
 [submodule "bundle/syntax"]
 	path = bundle/syntax
 	url = https://github.com/octol/vim-cpp-enhanced-highlight.git
-[submodule "bundle/clang_complete"]
-	path = bundle/clang_complete
-	url = https://github.com/Rip-Rip/clang_complete.git
 [submodule "bundle/unite-outline"]
 	path = bundle/unite-outline
 	url = https://github.com/Shougo/unite-outline.git

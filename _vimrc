@@ -5,6 +5,9 @@ set nocompatible
 
 let g:pathogen_disabled = []
 " call add( g:pathogen_disabled, 'YouCompleteMe' )
+call add( g:pathogen_disabled, 'vimproc' )
+call add( g:pathogen_disabled, 'unite' )
+call add( g:pathogen_disabled, 'unite-outline' )
 
 execute pathogen#infect()
 
@@ -1163,9 +1166,10 @@ vnoremap <leader>aa :Tabularize /=<CR>
 " NERDTree
 nnoremap <leader>e :<C-u>NERDTreeFocus<CR>
 let NERDTreeIgnore=['\.pyc$', '\~$']
-let NERDTreeQuitOnOpen=1
+let NERDTreeQuitOnOpen = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeNaturalSort = 1
+  let NERDTreeShowHidden = 1
 
 " Ultisnips {{{
 nnoremap <Leader>eps :UltiSnipsEdit<CR>
