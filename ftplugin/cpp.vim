@@ -16,7 +16,7 @@ inoremap <A-;> ;
 inoremap fln <C-R>=expand("%:t:r")<CR>::
 
 " function declaration paste
-nmap <Leader>fdp V<<<<<Esc>Hf(Sifln<C-e><BS><CR>{<CR>
+nmap <Leader>cfp V<<<<<Esc>Hf(Sifln<C-e><BS><CR>{<CR>
 
 " Search cpp only
 set grepprg=ag\ --cpp

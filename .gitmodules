@@ -52,3 +52,24 @@
 [submodule "bundle/nerdtree"]
 	path = bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
+[submodule "bundle/vim-grepper"]
+	path = bundle/vim-grepper
+	url = https://github.com/mhinz/vim-grepper.git
+[submodule "bundle/vim-abolish"]
+	path = bundle/vim-abolish
+	url = https://github.com/tpope/vim-abolish.git
+[submodule "bundle/vim-eunuch"]
+	path = bundle/vim-eunuch
+	url = https://github.com/tpope/vim-eunuch.git
+[submodule "bundle/denite"]
+	path = bundle/denite
+	url = https://github.com/Shougo/denite.nvim.git
+[submodule "bundle/vim-gutentags"]
+	path = bundle/vim-gutentags
+	url = https://github.com/ludovicchabant/vim-gutentags.git
+[submodule "bundle/vim-easymotion"]
+	path = bundle/vim-easymotion
+	url = https://github.com/easymotion/vim-easymotion.git
+[submodule "bundle/vim-airline-themes"]
+	path = bundle/vim-airline-themes
+	url = https://github.com/vim-airline/vim-airline-themes.git

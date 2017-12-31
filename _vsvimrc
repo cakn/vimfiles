@@ -62,21 +62,27 @@ unmap q;
 " Added :noh<CR> at end
 nnoremap ! :let @z=@/<CR>mzviwovi!<Esc>:s /!!=/==/e<CR>:s /!!//e<CR>:s /!true/false/e<CR>:s /!false/true/e<CR>:s /!==/!=/e<CR>:let @/=@z<CR>`z:noh<CR>
 
+ounmap j
+ounmap n
+ounmap u
+ounmap y
 " camelCase text object
 " move right twice because of bug
+ounmap l
 nnoremap cl <Right><Right>?\<\|\L<CR>v/\L\|\>.<CR><Left><Esc>:noh<CR>gvc
 nnoremap dl <Right><Right>?\<\|\L<CR>v/\L\|\>.<CR><Left><Esc>:noh<CR>gvd
-
-" param text object
-nnoremap cj <Right>?[,(]<CR>/[^\s]<CR>v/[,)]<CR><Left><Esc>:noh<CR>gvc
-nnoremap dj <Right>?[,(]<CR><Right>v/[,)]<CR><Left><Esc>:noh<CR>gvd
+" word including . and :
+ounmap L
+" Hypen at end of bracket list
+nnoremap cL <Right><Right>?[a-zA-Z0-9_\.:>-]*<CR>v/[a-zA-Z0-9_\.:>-]*<CR><Left><Esc>:noh<CR>gvc
+nnoremap dL <Right><Right>?[a-zA-Z0-9_\.:>-]*<CR>v/[a-zA-Z0-9_\.:>-]*<CR><Left><Esc>:noh<CR>gvd
 
 " sj as <Esc> and remove blank line at cursor
 inoremap sj <Esc>:.g/^\s*$/d<CR>:noh<CR>
 vnoremap sj <Esc>:.g/^\s*$/d<CR>:noh<CR>
 xnoremap sj <Esc>:.g/^\s*$/d<CR>:noh<CR>
 " ksf save
-inoremap ksf <Esc>:.g/^\s*$/d<CR>:w<CR>
+inoremap ksf <Esc>:.g/^\s*$/d<CR>:w<CR>:noh<CR>
 
 " Ctrl+s also escapes
 nnoremap <C-S> :vsc File.SaveSelectedItems<CR>
@@ -108,9 +114,6 @@ vnoremap ] <ESC>`><Left>a]<ESC>`<i[<ESC>
 vnoremap { <ESC>`><Left>a }<ESC>`<i{ <ESC><Left>
 vnoremap } <ESC>`><Left>a}<ESC>`<i{<ESC>
 vnoremap * <ESC>`><Left>a*/<ESC>`<i/*<ESC>
-
-" Insert single character
-nnoremap <Space> i_<Esc>r
 
 inoremap <C-Y> a<Esc>kywja<BS><C-O>P<Right>
 
@@ -180,20 +183,22 @@ nnoremap <Leader>dts mz:%s/\s\+$//e<CR>`z
 
 " Switch to header
 " VS2012
-nnoremap <Leader>g; :vsc EditorContextMenus.CodeWindow.GoToHeaderFile<CR>
-nnoremap <Leader>gh :vsc Window.MovetoPreviousTabGroup<CR>
-nnoremap <Leader>gl :vsc Window.MovetoNextTabGroup<CR>
+" nnoremap <Leader>g; :vsc EditorContextMenus.CodeWindow.GoToHeaderFile<CR>
+" nnoremap <Leader>gh :vsc Window.MovetoPreviousTabGroup<CR>
+" nnoremap <Leader>gl :vsc Window.MovetoNextTabGroup<CR>
 " VS2013
-" nnoremap <Leader>g; :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<CR>
-" nnoremap <Leader>gh :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<CR>:vsc Window.MovetoPreviousTabGroup<CR>
-" nnoremap <Leader>gl :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<CR>:vsc Window.MovetoNextTabGroup<CR>
+nnoremap <Leader>g; :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<CR>
+nnoremap <Leader>gh :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<CR>:vsc Window.MovetoPreviousTabGroup<CR>
+nnoremap <Leader>gl :vsc EditorContextMenus.CodeWindow.ToggleHeaderCodeFile<CR>:vsc Window.MovetoNextTabGroup<CR>
 
 " Go to error
 nnoremap ge :vsc View.ErrorList<CR>
 
 " Comment out
-nnoremap gc :vsc Edit.CommentSelection<CR>:s ?////??<CR>
-vnoremap gc :s?^\s*?&//?<CR>gv:s?////??<CR>
+" nnoremap gc :vsc Edit.CommentSelection<CR>:s ?////??<CR>
+" vnoremap gc :s?^\s*?&//?<CR>gv:s?////??<CR>vv
+nnoremap gcc :vsc Edit.ToggleComment<CR>
+vnoremap gc :vsc Edit.ToggleComment<CR><Esc><Esc>
 nnoremap <C-C>j mzyyp`z:vsc Edit.CommentSelection<CR>hhj
 nnoremap <C-C>k mzyyP`z:vsc Edit.CommentSelection<CR>hhk
 
@@ -244,10 +249,41 @@ vnoremap <C-C> :vsc Edit.Copy<CR>
 " Insert file name with proper undo
 inoremap fln <Esc>mzi<C-R>%<Esc>F.hv`zyu"0pa::
 
+" Convert function declaration to definition
+nmap <Leader>fdp V<<<<vvHf(Sifln<C-e><BS><CR>{<CR>
+
 nnoremap j gj
 nnoremap k gk
 
-nnoremap <Leader>s15 :source ~/_vsvimrc2015<CR>
+" Custom plugin
+nnoremap cn :vsc CAction.TextObjectPython cpp.text_object_type true<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`zc
+nnoremap yn :vsc CAction.TextObjectPython cpp.text_object_type true<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`zy
+nnoremap dn :vsc CAction.TextObjectPython cpp.text_object_type true<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`zd
+nnoremap <space>n :vsc CAction.TextObjectPython cpp.text_object_type true<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`z"0d
+
+nnoremap cu :vsc CAction.TextObjectPython cpp.text_object_function true<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`zc
+nnoremap yu :vsc CAction.TextObjectPython cpp.text_object_function true<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`zy
+nnoremap du :vsc CAction.TextObjectPython cpp.text_object_function true<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`zd
+nnoremap <space>u :vsc CAction.TextObjectPython cpp.text_object_function true<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`z"0d
+
+nnoremap cj :vsc CAction.TextObjectPython cpp.text_object_param true<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`zc
+nnoremap yj :vsc CAction.TextObjectPython cpp.text_object_param true<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`zy
+nnoremap dj :vsc CAction.TextObjectPython cpp.text_object_param false<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`zd
+nnoremap <space>j :vsc CAction.TextObjectPython cpp.text_object_param false<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`z"0d
+
+nnoremap cgc :vsc CAction.TextObjectPython cpp.text_object_comment true<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`zc
+nnoremap ygc :vsc CAction.TextObjectPython cpp.text_object_comment true<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`zy
+nnoremap dgc :vsc CAction.TextObjectPython cpp.text_object_comment true<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`zd
+nnoremap <space>gc :vsc CAction.TextObjectPython cpp.text_object_comment true<CR>ma:vsc CAction.SelectionEnd<CR>mz`av`z"0d
+
+" const type&
+nnoremap & :vsc CAction.TextObjectPython cpp.text_object_type true<CR>mz:vsc CAction.SelectionEnd<CR>a&<Esc>`ziconst <Esc>
+
+vnoremap <leader>gctor V`<:vsc CAction.SetSelectionStart<CR>`>:vsc CAction.SetSelectionEnd<CR>:vsc CAction.SelectionAppendPython cpp.ctor_stub<CR>
+vnoremap <leader>gopeq V`<:vsc CAction.SetSelectionStart<CR>`>:vsc CAction.SetSelectionEnd<CR>:vsc CAction.SelectionAppendPython cpp.stub_opeq<CR>
+
+" nnoremap <Leader>s15 :source ~/_vsvimrc2015<CR>
 
 " Manual settings
 " Ctrl+Enter Edit.LineOpenBelow
+

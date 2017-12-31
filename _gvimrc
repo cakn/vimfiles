@@ -1,3 +1,11 @@
+" Beware setting guifont resizes the window
+set guifont=Ubuntu_Mono_derivative_Powerlin:h12:cANSI
+" set guifont=Lucida_Sans_Typewriter:h12:cANSI
+" set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
+
+" Directx font rendering
+" set renderoptions=type:directx,gamma:1.0,contrast:0.5,level:1,geom:1,renmode:4,taamode:1
+
 " Disable menus
 set guioptions-=T
 set guioptions-=m
@@ -7,7 +15,7 @@ set guioptions-=r
 set guioptions-=L
 
 " Airline
-let g:airline_powerline_fonts=1
+" let g:airline_powerline_fonts=1
 
 " Set window size
 if has("gui_running")
